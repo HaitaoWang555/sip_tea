@@ -5,9 +5,21 @@
   "main": "index.js",
   "scripts": {
     "be:dev": "pnpm run -C packages/be start:dev",
-    "fe:dev": "pnpm run -C packages/fe dev"
+    "fe:dev": "pnpm run -C packages/fe dev",
+    "be:lint": "pnpm run -C packages/be lint",
+    "fe:lint": "pnpm run -C packages/fe lint",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "lint:fix": "pnpm be:lint && pnpm fe:lint"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "pnpm lint:fix"
+  }
 }

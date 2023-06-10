@@ -14,16 +14,14 @@ function App() {
   const [text, setText] = useState('')
 
   function getText() {
-    testApi().then(res => {
+    testApi().then((res) => {
       setText(res.data)
     })
   }
 
   return (
     <>
-      <button onClick={getText}>
-        测试接口
-      </button>
+      <button onClick={getText}>测试接口</button>
       <p>{text}</p>
     </>
   )

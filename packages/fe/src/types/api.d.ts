@@ -1,4 +1,3 @@
-
 export type ResponseBodyType<T> = {
   message?: string
   timestamp?: number

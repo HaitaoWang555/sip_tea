@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 // create an axios instance
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
