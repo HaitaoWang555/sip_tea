@@ -1,0 +1,12 @@
+{
+  "name": "sip_tea",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "be:dev": "pnpm run -C packages/be start:dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
