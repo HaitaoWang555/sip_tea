@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "be:dev": "pnpm run -C packages/be start:dev"
+    "be:dev": "pnpm run -C packages/be start:dev",
+    "fe:dev": "pnpm run -C packages/fe dev"
   },
   "keywords": [],
   "author": "",
