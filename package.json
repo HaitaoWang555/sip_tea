@@ -8,6 +8,7 @@
     "fe:dev": "pnpm run -C packages/fe dev",
     "be:lint": "pnpm run -C packages/be lint",
     "fe:lint": "pnpm run -C packages/fe lint",
+    "g": "pnpm run -C packages/be g",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "lint:fix": "pnpm be:lint && pnpm fe:lint"
