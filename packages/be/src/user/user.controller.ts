@@ -3,10 +3,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IsNotObjectEmpty } from '../common/pipes/is-not-object-empty';
 import { SearchUserDto } from './dto/search-user.dto';
-import { ApiPaginatedResponse } from '../utils/swagger';
+import { ApiPaginatedResponse } from '@/utils/swagger';
 import { User } from './entities/user.entity';
+import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
 
 @ApiTags('users')
 @Controller('users')

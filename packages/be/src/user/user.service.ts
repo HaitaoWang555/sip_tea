@@ -5,7 +5,7 @@ import { SearchUserDto } from './dto/search-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Equal, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { PageInfo } from '../common/api/common-page';
+import { PageInfo } from '@/common/api/common-page';
 
 @Injectable()
 export class UserService {
