@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "be:dev": "pnpm run -C packages/be start:dev",
+    "be:debug": "pnpm run -C packages/be start:debug",
     "fe:dev": "pnpm run -C packages/fe dev",
     "be:lint": "pnpm run -C packages/be lint",
     "fe:lint": "pnpm run -C packages/fe lint",
