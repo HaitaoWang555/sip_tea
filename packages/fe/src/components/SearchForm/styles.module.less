@@ -1,0 +1,28 @@
+.pro-searchForm {
+  text-align: center;
+}
+.pro-advance-searchForm {
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    :global .ant-form-item {
+      flex-basis: 100px;
+      margin-right: 12px;
+    }
+    :global .ant-form-item:nth-child(4) {
+      flex: 1;
+      margin-right: 0;
+    }
+    .operate {
+      font-size: 20px;
+      flex-basis: 80px;
+      text-align: center;
+      margin-bottom: 24px;
+      :global svg {
+        cursor: pointer;
+        margin-left: 12px;
+      }
+    }
+  }
+}

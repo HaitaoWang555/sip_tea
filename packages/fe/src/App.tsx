@@ -1,30 +1,15 @@
-import { useState } from 'react'
-import './App.css'
-import { AxiosPromise } from 'axios'
-import request from './utils/request'
+// import usePermission from './hooks/permission'
+import { useRoutes } from 'react-router-dom'
+import { routes } from '@/routes'
+import { ApiContext, api } from '@/context/api-context'
 
-function testApi(): AxiosPromise<string> {
-  return request({
-    url: '',
-    method: 'get',
-  })
-}
-
-function App() {
-  const [text, setText] = useState('')
-
-  function getText() {
-    testApi().then((res) => {
-      setText(res.data)
-    })
-  }
+export default function App() {
+  // const element = usePermission()
+  const element = useRoutes(routes)
 
   return (
-    <>
-      <button onClick={getText}>测试接口</button>
-      <p>{text}</p>
-    </>
+    <ApiContext.Provider value={api}>
+      <div className="app">{element}</div>
+    </ApiContext.Provider>
   )
 }
-
-export default App

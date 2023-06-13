@@ -1,3 +1,5 @@
+import { FilterValue, SorterResult } from 'antd/es/table/interface'
+
 export type ResponseBodyType<T> = {
   message?: string
   timestamp?: number
@@ -13,8 +15,8 @@ export type PageInfo<T> = {
 }
 
 export type Pagination = {
-  pageNum?: number
-  pageSize?: number
+  pageNum: number
+  pageSize: number
 }
 
 export type BaseEntity = {
@@ -23,4 +25,9 @@ export type BaseEntity = {
   updateBy?: string
   updateTime?: string
   remark?: string
+}
+
+export type ProTableSearchParams = Pagination & {
+  filters: Record<string, FilterValue | null> | undefined
+  sorter: SorterResult<any> | SorterResult<any>[] | undefined
 }

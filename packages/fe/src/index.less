@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body  {
+  color: rgba(0,0,0,.85);
+  font-size: 14px;
+  font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  background-color: #fff;
+  font-feature-settings: "tnum","tnum";
+}
+
+.footer-btn-wrap {
+  text-align: right;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  button {
+    margin-right: 16px;
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}
+.footer-btn-wrap-card {
+  text-align: center;
+  button {
+    margin-right: 16px;
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+}
+
+.tableAction {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  button:last-child {
+    margin-right: 0;
+  }
+  button {
+    padding: 0;
+    height: 22px;
+    margin-right: 16px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: hsla(0, 0%, 100%, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(95, 95, 95, 0.4);
+  transition: all 0.2s;
+  border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+}
