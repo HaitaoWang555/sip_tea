@@ -28,7 +28,7 @@ export class User {
   email: string;
 
   /**
-   * 生效状态 0 启用；1 禁用
+   * 生效状态 0 禁用 ；1 启用
    */
   @ApiProperty({ enum: [Status.ENABLE, Status.DISABLE] })
   @Type(() => Number)

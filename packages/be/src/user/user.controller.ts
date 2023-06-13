@@ -1,14 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IsNotObjectEmpty } from '../common/pipes/is-not-object-empty';
+import { SearchUserDto } from './dto/search-user.dto';
+import { ApiPaginatedResponse } from '../utils/swagger';
+import { User } from './entities/user.entity';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  /**
+   * 分页查询
+   */
+  @Get('/query')
+  @ApiPaginatedResponse(User)
+  query(@Query() searchUserDto: SearchUserDto) {
+    return this.userService.query(searchUserDto);
+  }
 
   /**
    * 创建用户
