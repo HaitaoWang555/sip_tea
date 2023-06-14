@@ -16,21 +16,28 @@ function ExpandArea(props: Props) {
 
   function toSetOffset(expand: boolean) {
     if (expand) {
-      const allSpan = props.columnList
+      const allSpanList = props.columnList
         .filter((i) => i.isSearch)
         .map((i) => {
           return i.span || 6
         })
-        .reduce((sum, current) => sum + current, 0)
 
-      setOffset(24 - (allSpan % 24) - 6)
+      let num = 0
+      allSpanList.forEach((item) => {
+        if (num + item > 24) {
+          num = 0
+        }
+        num = num + item
+      })
+
+      setOffset(24 - (num % 24) - 6)
     } else {
       setOffset(0)
     }
   }
 
   return (
-    <Col span={6} offset={offset} style={{ textAlign: 'right' }}>
+    <Col span={6} offset={offset} style={{ textAlign: 'right', marginBottom: '24px' }}>
       <Button
         onClick={() => {
           props.resetFields()
