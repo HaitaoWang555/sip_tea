@@ -2,12 +2,11 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Status } from '@/common/enum';
 
-export enum Status {
-  ENABLE = 0,
-  DISABLE = 1,
-}
-
+/**
+ * 系统用户
+ */
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -30,7 +29,7 @@ export class User {
   /**
    * 生效状态 0 禁用 ；1 启用
    */
-  @ApiProperty({ enum: [Status.ENABLE, Status.DISABLE] })
+  @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
   @Column()
