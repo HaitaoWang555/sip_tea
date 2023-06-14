@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lib": "workspace:*",
     "@ant-design/icons": "^5.1.4",
     "@faker-js/faker": "^8.0.2",
     "antd": "^5.6.1",

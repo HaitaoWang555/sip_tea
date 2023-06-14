@@ -8,12 +8,15 @@
     "be:build": "pnpm run -C packages/be build",
     "be:debug": "pnpm run -C packages/be start:debug",
     "fe:dev": "pnpm run -C packages/fe dev",
+    "lib:build": "pnpm run -C packages/lib build",
     "be:lint": "pnpm run -C packages/be lint",
     "fe:lint": "pnpm run -C packages/fe lint",
+    "lib:lint": "pnpm run -C packages/lib lint",
     "g": "pnpm run -C packages/be g",
     "prepare": "husky install",
+    "postinstall": "pnpm lib:build",
     "lint-staged": "lint-staged",
-    "lint:fix": "pnpm be:lint && pnpm fe:lint"
+    "lint:fix": "pnpm be:lint && pnpm fe:lint && pnpm lib:lint"
   },
   "keywords": [],
   "author": "",

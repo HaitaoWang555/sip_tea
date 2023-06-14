@@ -22,6 +22,9 @@ export default defineConfig(({ command, mode }) => {
         be: beSrc,
       },
     },
+    optimizeDeps: {
+      include: ['lib'],
+    },
     define: {
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
       __BUILD_DATE__: JSON.stringify(new Date().toLocaleString()),
