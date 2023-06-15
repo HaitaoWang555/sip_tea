@@ -12,7 +12,7 @@ import { TableProps } from 'antd/lib/table/InternalTable'
 
 export type Props<RecordType> = {
   columnList: any
-  loadData: (tableParams: any) => AxiosPromise
+  loadData: (tableParams: any) => AxiosPromise | Promise<any>
   style?: CSSProperties
   queryParams?: any
   searchDataCallBack?: (val?: boolean) => void
@@ -44,7 +44,7 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
   const [data, setData] = useState<any[]>()
   const [loading, setLoading] = useState(false)
   const [paginationParams, setPaginationParams] = useState<MyTablePaginationConfig>(defaultPaginationParams)
-  const [tableWidth, setTableWidth] = useState(window.innerWidth - 350)
+  const [tableWidth, setTableWidth] = useState<number | string>(window.innerWidth - 350)
 
   function initColumns(columnList: any) {
     setTableWidth(initTableWidth(columnList))

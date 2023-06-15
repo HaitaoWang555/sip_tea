@@ -235,6 +235,7 @@ export function equalColumnList(arr1: ProItem[], arr2: ProItem[]) {
 }
 
 export function initTableWidth(columnList: ProItem[]) {
+  if (!columnList || columnList.length === 0) return 'auto'
   const arr = columnList
     .filter((i) => !i.noTable)
     .map((i) => {

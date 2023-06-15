@@ -10,6 +10,7 @@ export type Props = {
   type?: 'dialog'
   setOpen?: (value: React.SetStateAction<boolean>) => void
   formValues?: Record<string, unknown>
+  children?: React.ReactNode
 }
 
 export default function ProInfo(props: Props) {
@@ -49,6 +50,7 @@ export default function ProInfo(props: Props) {
               )
             })}
         </Descriptions>
+        {props.children}
       </Card>
       {props.type === 'dialog' && (
         <div className="footer-btn-wrap">

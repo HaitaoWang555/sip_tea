@@ -8,6 +8,7 @@ import { getFormDefaultValues } from '@/utils/components'
 import { Button } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
+import { EdiTable } from './ediTable'
 
 function BaseCrud() {
   const [list, updateList] = useColumnList(columnList)
@@ -80,6 +81,7 @@ function BaseCrud() {
 
   return (
     <Crud<GenTable>
+      width="100%"
       title="用户"
       formType={formType}
       columnList={list}
@@ -100,6 +102,7 @@ function BaseCrud() {
       tableActionChild={(props: ActionRenderProps<GenTable>) => {
         return <TableActionChild {...props} />
       }}
+      formChild={<EdiTable formParams={formParams} />}
     ></Crud>
   )
 }

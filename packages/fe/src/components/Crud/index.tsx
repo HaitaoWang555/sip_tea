@@ -30,6 +30,8 @@ type Props<RecordType> = SearchFormProps &
     setQueryParams?: React.Dispatch<React.SetStateAction<Partial<RecordType>>>
     tableActionChild?: (params: ActionRenderProps<RecordType>) => JSX.Element
     operatorTableChild?: () => JSX.Element
+    formChild?: React.ReactNode
+    infoChild?: React.ReactNode
   }
 function Crud<RecordType extends object>(props: Props<RecordType>) {
   const Api = useContext(ApiContext)
@@ -169,6 +171,7 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
       />
       {props.formType && (
         <Dialog
+          width={props.width}
           open={props.open}
           title={getTitle(props.formType)}
           setOpen={props.setOpen}
@@ -184,7 +187,9 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
                 type="dialog"
                 setOpen={props.setOpen}
                 column={1}
-              ></Info>
+              >
+                {props.infoChild}
+              </Info>
             ) : (
               <ProForm
                 labelWidth={props.labelWidth}
@@ -197,7 +202,9 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
                 onRender={saveForm}
                 updateColumnList={props.updateColumnList}
                 setOpen={props.setOpen}
-              ></ProForm>
+              >
+                {props.formChild}
+              </ProForm>
             )}
           </Spin>
         </Dialog>

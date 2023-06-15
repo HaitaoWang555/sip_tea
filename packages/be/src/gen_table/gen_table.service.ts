@@ -39,8 +39,10 @@ export class GenTableService {
     return this.genTableRepository.findOne({ where: { id }, relations: { columns: true } });
   }
 
-  update(id: number, updateGenTableDto: UpdateGenTableDto) {
-    return this.genTableRepository.update({ id }, updateGenTableDto);
+  async update(id: number, updateGenTableDto: UpdateGenTableDto) {
+    const genTable = await this.findOne(id);
+    Object.assign(genTable, updateGenTableDto);
+    return this.genTableRepository.save(genTable);
   }
 
   remove(id: number) {

@@ -1,5 +1,4 @@
 import type { ProItem } from '@/types/components-utils'
-
 export const columnList: ProItem[] = [
   {
     dataIndex: 'tableName',

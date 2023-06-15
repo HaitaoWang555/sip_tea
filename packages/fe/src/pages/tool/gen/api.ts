@@ -7,9 +7,17 @@ import type {
   SearchGenTableDto,
   SearchGenTableDtoWithNotPage,
   GenTable,
+  GenTableColumn,
 } from 'be/gen_table/type'
 
-export type { CreateGenTableDto, UpdateGenTableDto, SearchGenTableDto, SearchGenTableDtoWithNotPage, GenTable }
+export type {
+  CreateGenTableDto,
+  UpdateGenTableDto,
+  SearchGenTableDto,
+  SearchGenTableDtoWithNotPage,
+  GenTable,
+  GenTableColumn,
+}
 
 export function query(params: SearchGenTableDto): AxiosPromise<ResponseBodyType<PageInfo<GenTable[]>>> {
   return request({

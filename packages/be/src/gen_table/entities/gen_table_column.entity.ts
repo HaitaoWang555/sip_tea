@@ -78,13 +78,29 @@ export class GenTableColumn {
   isQuery: Status;
 
   /**
-   * 是否查询字段（1是）(0不是)
+   * 是否详情字段（1是）(0不是)
    */
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
   @Column()
   isInfo: Status;
+
+  /**
+   * 是否必填（1是）(0不是)
+   */
+  @ApiProperty({ enum: [Status.YES, Status.NO] })
+  @Type(() => Number)
+  @IsEnum(Status)
+  @Column()
+  isRequired: Status;
+
+  /**
+   * 查询类型
+   */
+  @Allow()
+  @Column({ nullable: true })
+  queryType: string;
 
   /**
    * 字典类型
