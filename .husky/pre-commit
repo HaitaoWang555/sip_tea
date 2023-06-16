@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+ # evaluate fnm 
+eval $(fnm env | sed 1d)
+export PATH=$(cygpath $FNM_MULTISHELL_PATH):$PATH
+
 pnpm lint-staged
