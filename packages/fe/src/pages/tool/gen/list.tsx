@@ -2,7 +2,13 @@ import Crud from '@/components/Crud'
 import useColumnList from '@/hooks/columnList'
 import { columnList } from './data'
 import { query, create, update, findOne, remove } from './api'
-import type { CreateGenTableDto, UpdateGenTableDto, SearchGenTableDtoWithNotPage, GenTable } from './api'
+import type {
+  CreateGenTableDto,
+  UpdateGenTableDto,
+  SearchGenTableDtoWithNotPage,
+  GenTable,
+  GenTableColumn,
+} from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
 import { Button } from 'antd'
@@ -47,6 +53,16 @@ function BaseCrud() {
 
   function submit(params: (CreateGenTableDto | UpdateGenTableDto) & GenTable) {
     const met = formType === 'add' ? create : update
+    if (formParams?.columns) {
+      formParams.columns = formParams.columns.map((i) => {
+        if (i.id && i.id < 1) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          delete i.id
+        }
+        return i
+      })
+    }
     return met(params).then((res) => {
       return res
     })
@@ -56,6 +72,20 @@ function BaseCrud() {
     return remove(params.id).then((res) => {
       return res
     })
+  }
+
+  function updateFormParamsEdiTableColumns(column: GenTableColumn) {
+    if (formParams && formParams.columns) {
+      const element = formParams.columns.find((i) => i.id === column.id)
+      if (element) {
+        Object.assign(element, column)
+      } else {
+        formParams.columns.push(column)
+      }
+    }
+    if (formParams && !formParams.columns) {
+      formParams.columns = [column]
+    }
   }
 
   function OperatorTableChild() {
@@ -82,7 +112,7 @@ function BaseCrud() {
   return (
     <Crud<GenTable>
       width="100%"
-      title="用户"
+      title="表"
       formType={formType}
       columnList={list}
       queryParams={queryParam}
@@ -102,7 +132,7 @@ function BaseCrud() {
       tableActionChild={(props: ActionRenderProps<GenTable>) => {
         return <TableActionChild {...props} />
       }}
-      formChild={<EdiTable formParams={formParams} />}
+      formChild={<EdiTable formParams={formParams} updateColumns={updateFormParamsEdiTableColumns} />}
     ></Crud>
   )
 }

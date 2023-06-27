@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react'
 import type { GenTable, GenTableColumn } from './api'
-import { Table, Form, Input, FormInstance, Spin, Select, Switch, SwitchProps } from 'antd'
+import { Table, Form, Input, FormInstance, Spin, Select, Switch, SwitchProps, Button } from 'antd'
 import React from 'react'
 import { optionType } from '@/types/components-utils'
 
 type Props = {
   formParams?: GenTable
+  updateColumns?: (column: GenTableColumn) => void
 }
-type Colomn = {
+type Column = {
   dataIndex: string
   valueType: string
   title?: string
@@ -27,7 +28,7 @@ function MySwitch(props: MySwitchProps) {
   return <Switch {...props} checked={props.value === 1} onChange={changeVal}></Switch>
 }
 
-function formItems(item: Colomn, fn: () => void) {
+function formItems(item: Column, fn: () => void) {
   if (item.valueType === 'input') {
     return <Input allowClear placeholder={`请输入${item.title}`} onBlur={fn} />
   } else if (item.valueType === 'select') {
@@ -43,6 +44,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   index: number
   valueType: string
   option?: Array<optionType>
+  updateColumns: (column: GenTableColumn) => void
 }
 const EditableContext = React.createContext<FormInstance<any> | null>(null)
 
@@ -60,12 +62,21 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
     </Form>
   )
 }
-const EditableCell: React.FC<EditableCellProps> = ({ dataIndex, record, valueType, option, title, ...restProps }) => {
+const EditableCell: React.FC<EditableCellProps> = ({
+  dataIndex,
+  record,
+  valueType,
+  option,
+  title,
+  updateColumns,
+  ...restProps
+}) => {
   const form = useContext(EditableContext)
 
   function save() {
     const values = form?.getFieldsValue()
     Object.assign(record, values)
+    updateColumns(record)
   }
 
   useEffect(() => {
@@ -86,18 +97,18 @@ const EditableCell: React.FC<EditableCellProps> = ({ dataIndex, record, valueTyp
 export function EdiTable(props: Props) {
   const [data, setData] = useState(props.formParams?.columns)
   const [spin, setSpin] = useState(true)
-  const columns: Colomn[] = [
+  const columns: Column[] = [
     {
       dataIndex: 'columnName',
       title: '字段名',
       valueType: 'input',
-      width: '100px',
+      width: '200px',
     },
     {
       dataIndex: 'columnComment',
       title: '字段描述',
       valueType: 'input',
-      width: '100px',
+      width: '200px',
     },
     {
       dataIndex: 'columnType',
@@ -213,6 +224,21 @@ export function EdiTable(props: Props) {
     },
   ]
 
+  const defaultData = {
+    id: '',
+    columnName: '',
+    columnComment: '',
+    columnType: undefined,
+    isPk: 0,
+    isTable: 0,
+    isForm: 0,
+    isQuery: 0,
+    isInfo: 0,
+    isRequired: 0,
+    queryType: undefined,
+    dictType: undefined,
+  } as unknown as GenTableColumn
+
   const mergedColumns = columns.map((col) => {
     return {
       ...col,
@@ -222,34 +248,54 @@ export function EdiTable(props: Props) {
         title: col.title,
         valueType: col.valueType,
         option: col.option,
+        updateColumns: props.updateColumns,
       }),
     }
   })
 
+  function add() {
+    defaultData.id = Math.random()
+    if (data) {
+      setData([...data, defaultData])
+    } else {
+      setData([defaultData])
+    }
+  }
+
   useEffect(() => {
     if (!data && props.formParams?.columns && props.formParams?.columns.length > 0) {
       setData(props.formParams?.columns)
-      setSpin(false)
+    }
+    setSpin(false)
+    return () => {
+      setSpin(true)
+      setData(undefined)
     }
   }, [props.formParams])
 
   return (
-    <Spin spinning={spin}>
-      {data && (
-        <Table
-          rowKey="id"
-          components={{
-            body: {
-              row: EditableRow,
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={data}
-          columns={mergedColumns}
-          pagination={false}
-        />
-      )}
-    </Spin>
+    <div style={{ textAlign: 'center', marginLeft: '24px', marginRight: '24px' }}>
+      <Spin spinning={spin}>
+        {data && (
+          <Table
+            rowKey="id"
+            components={{
+              body: {
+                row: EditableRow,
+                cell: EditableCell,
+              },
+            }}
+            scroll={{ x: '1800px' }}
+            bordered
+            dataSource={data}
+            columns={mergedColumns}
+            pagination={false}
+          />
+        )}
+      </Spin>
+      <div style={{ margin: '12px 0' }}>
+        <Button onClick={add}>新增一列</Button>
+      </div>
+    </div>
   )
 }
