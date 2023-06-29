@@ -18,6 +18,18 @@ export const columnList: ProItem[] = [
     isForm: true,
   },
   {
+    dataIndex: 'package',
+    title: '生成文件包名',
+    valueType: 'input',
+    isForm: true,
+  },
+  {
+    dataIndex: 'isHaveBase',
+    title: '是否包含基础字段',
+    valueType: 'switch',
+    isForm: true,
+  },
+  {
     dataIndex: 'createdAt',
     title: '创建时间',
     renderType: 'date',

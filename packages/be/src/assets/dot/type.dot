@@ -1,0 +1,10 @@
+{{var className = it.fn.camel(it.tableName, true);}}
+export type { Create{{=className}}Dto } from './dto/create-{{=it.tableName}}.dto';
+export type { Update{{=className}}Dto } from './dto/update-{{=it.tableName}}.dto';
+export type { Search{{=className}}DtoWithNotPage, Search{{=className}}Dto } from './dto/search-{{=it.tableName}}.dto';
+export type { {{=className}} } from './entities/{{=it.tableName}}.entity';
+$blankline
+
+
+
+

@@ -5,7 +5,7 @@ import { CommonResult } from './common/api/common-result';
 
 @Injectable()
 export class AppInterceptor implements NestInterceptor {
-  private logger = new Logger();
+  private readonly logger = new Logger(AppInterceptor.name);
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
@@ -18,7 +18,7 @@ export class AppInterceptor implements NestInterceptor {
         if (err.status) {
           return of(new CommonResult().fail(err.response.message, err.status));
         }
-        return of(new CommonResult().fail());
+        return of(new CommonResult().fail(err.message));
       }),
     );
   }

@@ -63,3 +63,10 @@ export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
     method: 'delete',
   })
 }
+
+export function generate(id: number): AxiosPromise<ResponseBodyType<void>> {
+  return request({
+    url: '/gen-table/generate/' + id,
+    method: 'post',
+  })
+}

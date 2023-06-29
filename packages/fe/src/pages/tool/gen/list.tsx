@@ -1,7 +1,7 @@
 import Crud from '@/components/Crud'
 import useColumnList from '@/hooks/columnList'
 import { columnList } from './data'
-import { query, create, update, findOne, remove } from './api'
+import { query, create, update, findOne, remove, generate } from './api'
 import type {
   CreateGenTableDto,
   UpdateGenTableDto,
@@ -11,7 +11,7 @@ import type {
 } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 import { EdiTable } from './ediTable'
@@ -24,6 +24,7 @@ function BaseCrud() {
   const [open, setOpen] = useState(false)
   const [formParams, setFormParams] = useState<GenTable>()
   const [formType, setFormType] = useState('add')
+  const [editableColumns, setEditableColumns] = useState<GenTableColumn[]>([])
 
   function formatParams(values: SearchGenTableDtoWithNotPage) {
     return values
@@ -47,22 +48,23 @@ function BaseCrud() {
   function loadInfo() {
     if (!formParams) throw new Error()
     return findOne(formParams.id).then((res) => {
+      setEditableColumns(res.data.data.columns)
       return res
     })
   }
 
   function submit(params: (CreateGenTableDto | UpdateGenTableDto) & GenTable) {
     const met = formType === 'add' ? create : update
-    if (formParams?.columns) {
-      formParams.columns = formParams.columns.map((i) => {
+    if (editableColumns.length > 0) {
+      editableColumns.forEach((i) => {
         if (i.id && i.id < 1) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           delete i.id
         }
-        return i
       })
     }
+    params.columns = editableColumns
     return met(params).then((res) => {
       return res
     })
@@ -74,17 +76,22 @@ function BaseCrud() {
     })
   }
 
-  function updateFormParamsEdiTableColumns(column: GenTableColumn) {
-    if (formParams && formParams.columns) {
-      const element = formParams.columns.find((i) => i.id === column.id)
+  function updateFormParamsEdiTableColumns(column: GenTableColumn, type?: string) {
+    if (editableColumns.length > 0) {
+      const index = editableColumns.findIndex((i) => i.id === column.id)
+      if (type === 'delete') {
+        editableColumns.splice(index, 1)
+        return
+      }
+      const element = editableColumns[index]
+
       if (element) {
         Object.assign(element, column)
       } else {
-        formParams.columns.push(column)
+        editableColumns.push(column)
       }
-    }
-    if (formParams && !formParams.columns) {
-      formParams.columns = [column]
+    } else {
+      editableColumns.push(column)
     }
   }
 
@@ -96,14 +103,16 @@ function BaseCrud() {
     )
   }
   function TableActionChild(props: ActionRenderProps<GenTable>) {
-    function otherMethod() {
-      console.log(props)
+    function generateFiles() {
+      generate(props.record.id).then((res) => {
+        message.success(res.data.message)
+      })
     }
 
     return (
       <>
-        <Button type="link" onClick={otherMethod}>
-          其它
+        <Button type="link" onClick={generateFiles}>
+          生成
         </Button>
       </>
     )
@@ -112,6 +121,7 @@ function BaseCrud() {
   return (
     <Crud<GenTable>
       width="100%"
+      labelWidth="140px"
       title="表"
       formType={formType}
       columnList={list}

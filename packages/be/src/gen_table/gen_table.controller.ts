@@ -60,4 +60,12 @@ export class GenTableController {
   remove(@Param('id') id: string) {
     return this.genTableService.remove(+id);
   }
+
+  /**
+   * 生成代码
+   */
+  @Post('/generate/:id')
+  generate(@Param('id') id: string) {
+    return this.genTableService.generate(+id);
+  }
 }

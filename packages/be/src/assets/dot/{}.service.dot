@@ -1,0 +1,60 @@
+{{
+  var className = it.fn.camel(it.tableName, true);
+  var searchColumns = it.columns.filter(i => i.isQuery);
+  var queryTypes = Array.from(new Set(searchColumns.map(i => i.queryType)));
+}}
+import { Injectable } from '@nestjs/common';
+import { Create{{=className}}Dto } from './dto/create-{{=it.tableName}}.dto';
+import { Update{{=className}}Dto } from './dto/update-{{=it.tableName}}.dto';
+import { Search{{=className}}Dto } from './dto/search-{{=it.tableName}}.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository{{? queryTypes && queryTypes.length > 0 }}, {{=queryTypes.join(', ')}}{{?}} } from 'typeorm';
+import { {{=className}} } from './entities/{{=it.tableName}}.entity';
+import { PageInfo } from '@/common/api/common-page';
+$blankline
+@Injectable()
+export class {{=className}}Service {
+  constructor(
+    @InjectRepository({{=className}})
+    private {{=it.tableName}}Repository: Repository<{{=className}}>,
+  ) {}
+$blankline
+  async query(search{{=className}}Dto: Search{{=className}}Dto) {
+    const data = await this.{{=it.tableName}}Repository.findAndCount({
+      where: {
+{{~searchColumns:column:index}}
+{{? column.queryType === 'Like' }}
+        {{=column.columnName}}: search{{=className}}Dto.{{=column.columnName}} && {{=column.queryType}}('%' + search{{=className}}Dto.{{=column.columnName}} + '%'),
+{{??}}
+        {{=column.columnName}}: search{{=className}}Dto.{{=column.columnName}} && {{=column.queryType}}(search{{=className}}Dto.{{=column.columnName}}),
+{{?}}
+{{~}}
+      },
+      skip: search{{=className}}Dto.pageNum - 1,
+      take: search{{=className}}Dto.pageSize,
+    });
+$blankline
+    return new PageInfo(search{{=className}}Dto.pageNum, search{{=className}}Dto.pageSize, data[1], data[0]);
+  }
+$blankline
+  create(create{{=className}}Dto: Create{{=className}}Dto) {
+    return this.{{=it.tableName}}Repository.save(create{{=className}}Dto);
+  }
+$blankline
+  findAll() {
+    return this.{{=it.tableName}}Repository.find();
+  }
+$blankline
+  findOne(id: number) {
+    return this.{{=it.tableName}}Repository.findOneBy({ id });
+  }
+$blankline
+  update(id: number, update{{=className}}Dto: Update{{=className}}Dto) {
+    return this.{{=it.tableName}}Repository.update({ id }, update{{=className}}Dto);
+  }
+$blankline
+  remove(id: number) {
+    return this.{{=it.tableName}}Repository.delete(id);
+  }
+}
+$blankline

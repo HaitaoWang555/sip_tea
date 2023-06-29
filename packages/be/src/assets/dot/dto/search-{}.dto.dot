@@ -1,0 +1,12 @@
+{{
+  var className = it.fn.camel(it.tableName, true);
+  var formColumns = it.columns.filter(i => i.isQuery).map(i => i.columnName);
+}}
+import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { {{=className}} } from '../entities/{{=it.tableName}}.entity';
+import { PageParams } from '@/common/api/common-page';
+$blankline
+export class Search{{=className}}DtoWithNotPage extends PartialType(PickType({{=className}}, [{{~formColumns:column:i}}'{{=column}}'{{? i < formColumns.length - 1 }}, {{?}}{{~}}])) {}
+$blankline
+export class Search{{=className}}Dto extends IntersectionType(PageParams, Search{{=className}}DtoWithNotPage) {}
+$blankline

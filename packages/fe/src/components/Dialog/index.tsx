@@ -9,5 +9,5 @@ export default function ProDialog(props: Props) {
     props.setOpen && props.setOpen(false)
   }
 
-  return <Modal onCancel={handleCancel} maskClosable={false} {...props}></Modal>
+  return <Modal onCancel={handleCancel} destroyOnClose={true} maskClosable={false} {...props}></Modal>
 }

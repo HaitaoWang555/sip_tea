@@ -1,0 +1,69 @@
+{{
+  var className = it.fn.camel(it.tableName, true);
+}}
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { {{=className}}Service } from './{{=it.tableName}}.service';
+import { Create{{=className}}Dto } from './dto/create-{{=it.tableName}}.dto';
+import { Update{{=className}}Dto } from './dto/update-{{=it.tableName}}.dto';
+import { Search{{=className}}Dto } from './dto/search-{{=it.tableName}}.dto';
+import { ApiPaginatedResponse } from '@/utils/swagger';
+import { {{=className}} } from './entities/{{=it.tableName}}.entity';
+import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
+$blankline
+
+@ApiTags('{{=it.tableName}}')
+@Controller('{{=it.tableName}}')
+export class {{=className}}Controller {
+  constructor(private readonly {{=it.tableName}}Service: {{=className}}Service) {}
+$blankline
+  /**
+   * 分页查询
+   */
+  @Get('/query')
+  @ApiPaginatedResponse({{=className}})
+  query(@Query() search{{=className}}Dto: Search{{=className}}Dto) {
+    return this.{{=it.tableName}}Service.query(search{{=className}}Dto);
+  }
+$blankline
+  /**
+   * 创建{{=it.tableComment}}
+   */
+  @Post()
+  create(@Body() create{{=className}}Dto: Create{{=className}}Dto) {
+    return this.{{=it.tableName}}Service.create(create{{=className}}Dto);
+  }
+$blankline
+  /**
+   * 获取所有{{=it.tableComment}}
+   */
+  @Get()
+  findAll() {
+    return this.{{=it.tableName}}Service.findAll();
+  }
+$blankline
+  /**
+   * 通过ID获取{{=it.tableComment}}
+   */
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.{{=it.tableName}}Service.findOne(+id);
+  }
+$blankline
+  /**
+   * 更新{{=it.tableComment}}
+   */
+  @Patch(':id')
+  update(@Param('id') id: string, @Body(new IsNotObjectEmpty()) update{{=className}}Dto: Update{{=className}}Dto) {
+    return this.{{=it.tableName}}Service.update(+id, update{{=className}}Dto);
+  }
+$blankline
+  /**
+   * 删除{{=it.tableComment}}
+   */
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.{{=it.tableName}}Service.remove(+id);
+  }
+}
+$blankline

@@ -1,0 +1,8 @@
+{{
+  var className = it.fn.camel(it.tableName, true);  
+}}
+import { PartialType } from '@nestjs/swagger';
+import { Create{{=className}}Dto } from './create-{{=it.tableName}}.dto';
+$blankline
+export class Update{{=className}}Dto extends PartialType(Create{{=className}}Dto) {}
+$blankline

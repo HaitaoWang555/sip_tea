@@ -1,0 +1,17 @@
+{{
+  var className = it.fn.camel(it.tableName, true);  
+}}
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { {{=className}}Service } from './{{=it.tableName}}.service';
+import { {{=className}}Controller } from './{{=it.tableName}}.controller';
+import { {{=className}} } from './entities/{{=it.tableName}}.entity';
+$blankline
+
+@Module({
+  imports: [TypeOrmModule.forFeature([{{=className}}])],
+  controllers: [{{=className}}Controller],
+  providers: [{{=className}}Service],
+})
+export class {{=className}}Module {}
+$blankline

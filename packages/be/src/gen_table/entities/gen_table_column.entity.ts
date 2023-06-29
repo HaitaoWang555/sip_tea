@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Allow, IsEnum, IsNotEmpty } from 'class-validator';
+import { Allow, IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -40,6 +40,14 @@ export class GenTableColumn {
   @IsNotEmpty()
   @Column()
   columnType: string;
+
+  /**
+   * 列为字符串时的长度
+   */
+  @Allow()
+  @IsNumber()
+  @Column()
+  length: number;
 
   /**
    * 是否主键（1是）(0不是)
@@ -94,6 +102,13 @@ export class GenTableColumn {
   @IsEnum(Status)
   @Column()
   isRequired: Status;
+
+  /**
+   * 校验规则
+   */
+  @Allow()
+  @Column({ nullable: true })
+  validatorType: string;
 
   /**
    * 查询类型

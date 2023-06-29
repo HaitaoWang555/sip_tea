@@ -6,7 +6,7 @@ import { optionType } from '@/types/components-utils'
 
 type Props = {
   formParams?: GenTable
-  updateColumns?: (column: GenTableColumn) => void
+  updateColumns?: (column: GenTableColumn, type?: string) => void
 }
 type Column = {
   dataIndex: string
@@ -39,11 +39,12 @@ function formItems(item: Column, fn: () => void) {
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-  dataIndex: keyof GenTableColumn
+  dataIndex: keyof GenTableColumn & 'action'
   record: GenTableColumn
   index: number
   valueType: string
   option?: Array<optionType>
+  children: React.ReactNode
   updateColumns: (column: GenTableColumn) => void
 }
 const EditableContext = React.createContext<FormInstance<any> | null>(null)
@@ -68,6 +69,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   valueType,
   option,
   title,
+  children,
   updateColumns,
   ...restProps
 }) => {
@@ -87,9 +89,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   return (
     <td {...restProps}>
-      <Form.Item name={dataIndex} style={{ margin: 0 }}>
-        {formItems({ dataIndex, valueType, option, title }, save)}
-      </Form.Item>
+      {dataIndex === 'action' ? (
+        children
+      ) : (
+        <Form.Item name={dataIndex} style={{ margin: 0 }}>
+          {formItems({ dataIndex, valueType, option, title }, save)}
+        </Form.Item>
+      )}
     </td>
   )
 }
@@ -97,18 +103,20 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export function EdiTable(props: Props) {
   const [data, setData] = useState(props.formParams?.columns)
   const [spin, setSpin] = useState(true)
-  const columns: Column[] = [
+  const columns: any[] = [
     {
       dataIndex: 'columnName',
       title: '字段名',
       valueType: 'input',
       width: '200px',
+      fixed: 'left',
     },
     {
       dataIndex: 'columnComment',
       title: '字段描述',
       valueType: 'input',
       width: '200px',
+      fixed: 'left',
     },
     {
       dataIndex: 'columnType',
@@ -133,6 +141,12 @@ export function EdiTable(props: Props) {
           value: 'Date',
         },
       ],
+    },
+    {
+      dataIndex: 'length',
+      title: '字符长度',
+      valueType: 'input',
+      width: '100px',
     },
     {
       dataIndex: 'isPk',
@@ -177,36 +191,36 @@ export function EdiTable(props: Props) {
       width: '100px',
       option: [
         {
-          label: 'LIKE',
-          value: 'LIKE',
+          label: 'Like',
+          value: 'Like',
         },
         {
-          label: 'BETWEEN',
-          value: 'BETWEEN',
+          label: 'Equal',
+          value: 'Equal',
+        },
+      ],
+    },
+    {
+      dataIndex: 'validatorType',
+      title: '校验规则',
+      valueType: 'select',
+      width: '150px',
+      option: [
+        {
+          label: 'Allow',
+          value: 'Allow',
         },
         {
-          label: '=',
-          value: '=',
+          label: 'IsEnum',
+          value: 'IsEnum',
         },
         {
-          label: '!=',
-          value: '!=',
+          label: 'IsNotEmpty',
+          value: 'IsNotEmpty',
         },
         {
-          label: '>',
-          value: '>',
-        },
-        {
-          label: '>=',
-          value: '>=',
-        },
-        {
-          label: '<',
-          value: '<',
-        },
-        {
-          label: '<=',
-          value: '<=',
+          label: 'IsNumber',
+          value: 'IsNumber',
         },
       ],
     },
@@ -214,13 +228,20 @@ export function EdiTable(props: Props) {
       dataIndex: 'dictType',
       title: '字典类型',
       valueType: 'select',
-      width: '100px',
+      width: '150px',
       option: [
         {
-          label: '状态',
-          value: 'status',
+          label: 'Status',
+          value: 'Status',
         },
       ],
+    },
+    {
+      width: '80px',
+      dataIndex: 'action',
+      fixed: 'right',
+      title: '操作',
+      render: (_: any, record: GenTableColumn) => <a onClick={() => remove(record)}>删除</a>,
     },
   ]
 
@@ -230,11 +251,11 @@ export function EdiTable(props: Props) {
     columnComment: '',
     columnType: undefined,
     isPk: 0,
-    isTable: 0,
-    isForm: 0,
-    isQuery: 0,
-    isInfo: 0,
-    isRequired: 0,
+    isTable: 1,
+    isForm: 1,
+    isQuery: 1,
+    isInfo: 1,
+    isRequired: 1,
     queryType: undefined,
     dictType: undefined,
   } as unknown as GenTableColumn
@@ -262,21 +283,23 @@ export function EdiTable(props: Props) {
     }
   }
 
+  function remove(record: GenTableColumn) {
+    if (data) {
+      const newData = data.filter((item) => item.id !== record.id)
+      setData(newData)
+      props.updateColumns && props.updateColumns(record, 'delete')
+    }
+  }
+
   useEffect(() => {
-    if (!data && props.formParams?.columns && props.formParams?.columns.length > 0) {
-      setData(props.formParams?.columns)
-    }
+    setData(props.formParams?.columns)
     setSpin(false)
-    return () => {
-      setSpin(true)
-      setData(undefined)
-    }
   }, [props.formParams])
 
   return (
     <div style={{ textAlign: 'center', marginLeft: '24px', marginRight: '24px' }}>
       <Spin spinning={spin}>
-        {data && (
+        {data && data.length > 0 && (
           <Table
             rowKey="id"
             components={{
@@ -285,7 +308,7 @@ export function EdiTable(props: Props) {
                 cell: EditableCell,
               },
             }}
-            scroll={{ x: '1800px' }}
+            scroll={{ x: '2000px' }}
             bordered
             dataSource={data}
             columns={mergedColumns}

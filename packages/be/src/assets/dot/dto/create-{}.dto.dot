@@ -1,0 +1,9 @@
+{{
+  var className = it.fn.camel(it.tableName, true);
+  var formColumns = it.columns.filter(i => i.isForm).map(i => i.columnName);
+}}
+import { PickType } from '@nestjs/swagger';
+import { {{=className}} } from '../entities/{{=it.tableName}}.entity';
+$blankline
+export class Create{{=className}}Dto extends PickType({{=className}}, [{{~formColumns:column:i}}'{{=column}}'{{? i < formColumns.length - 1 }}, {{?}}{{~}}]) {}
+$blankline

@@ -1,0 +1,56 @@
+{{
+var className = it.fn.camel(it.tableName, true);
+var isHaveBase = Boolean(it.isHaveBase);
+var dictArr = it.columns.filter(i => Boolean(i.dictType));
+var validatorArr = Array.from(new Set(it.columns.filter(i => Boolean(i.validatorType)).map(i => i.validatorType)));
+}}
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+{{? validatorArr && validatorArr.length > 0 }}
+import { {{~validatorArr:column:i}}{{=column}}{{? i < validatorArr.length - 1 }}, {{?}}{{~}} } from 'class-validator';
+{{?}}
+{{? dictArr && dictArr.length > 0 }}
+import { Status } from '@/common/enum';
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+{{?}}
+{{? isHaveBase }}
+import { Base } from '@/common/entities/base';
+{{?}}
+$blankline
+/**
+ * {{=it.tableComment}}
+ */
+@Entity()
+{{? isHaveBase }}
+export class {{=className}} extends Base {
+{{??}}
+export class {{=className}} {
+{{?}}
+{{~it.columns:column:index}}
+{{? column.columnComment }}
+  /**
+   * {{=column.columnComment}}
+   */
+{{?}}
+  {{? column.isPk }}
+  @PrimaryGeneratedColumn()
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?? Boolean(column.dictType)}}
+{{? column.dictType === 'Status' }}
+  @ApiProperty({ enum: [Status.YES, Status.NO] })
+  @Type(() => Number)
+  @IsEnum(Status)
+  @Column({ default: Status.NO })
+  {{=column.columnName}}: Status;
+{{?}}
+  {{??}}
+  @Column({{{? column.columnComment }} comment: '{{=column.columnComment}}'{{?}}{{? column.columnType === 'string' && column.length > 0 }}, length: {{=column.length}}{{?}} })
+{{? column.validatorType }}
+  @{{=column.validatorType}}()
+{{?}}  
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?}}
+{{? index < it.columns.length - 1 }}$blankline{{?}}
+{{~}}
+}
+$blankline

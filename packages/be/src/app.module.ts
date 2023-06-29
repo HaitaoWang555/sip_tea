@@ -4,9 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategy';
 import { AppInterceptor } from './app.interceptor';
-import { UserModule } from './user/user.module';
 import { join } from 'path';
-import { GenTableModule } from './gen_table/gen_table.module';
+import * as modules from './modules';
 
 @Module({
   imports: [
@@ -25,8 +24,7 @@ import { GenTableModule } from './gen_table/gen_table.module';
       synchronize: process.env.SYNCHRONIZE && process.env.SYNCHRONIZE === '1',
       namingStrategy: new SnakeNamingStrategy(),
     }),
-    UserModule,
-    GenTableModule,
+    ...Object.values(modules),
   ],
   controllers: [],
   providers: [
