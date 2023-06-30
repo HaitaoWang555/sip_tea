@@ -71,7 +71,7 @@ export class GenTableService {
       }
       return i;
     });
-    const templetePathStr = process.cwd() + '/src/assets/dot';
+    const templetePathStr = process.cwd() + '/src/assets/dot/be';
     const generateFilePathPackage = data.package || data.tableName;
 
     const generateFilePathPrefix = process.cwd() + '/src/' + generateFilePathPackage;
