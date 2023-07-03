@@ -84,7 +84,7 @@ export const columnList: ProItem[] = [
       },
       {
         label: '{}.entity.dot',
-        value: '/entities/dto/{}.entity.dot',
+        value: '/entities/{}.entity.dot',
       },
       {
         label: 'type.dot',

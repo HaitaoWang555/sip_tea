@@ -1,13 +1,13 @@
 import type { ResponseBodyType, PageInfo } from '@/types/api'
 import request from '@/utils/request'
 import type { AxiosPromise } from 'axios'
-import type { CreateUserDto, UpdateUserDto, SearchUserDto, SearchUserDtoWithNotPage, User } from 'be/user/type'
+import type { CreateUserDto, UpdateUserDto, SearchUserDto, SearchUserDtoWithNotPage, User } from 'be/system/user/type'
 
 export type { CreateUserDto, UpdateUserDto, SearchUserDto, SearchUserDtoWithNotPage, User }
 
 export function query(params: SearchUserDto): AxiosPromise<ResponseBodyType<PageInfo<User[]>>> {
   return request({
-    url: '/users/query',
+    url: '/user/query',
     method: 'get',
     params,
   })
@@ -15,7 +15,7 @@ export function query(params: SearchUserDto): AxiosPromise<ResponseBodyType<Page
 
 export function create(data: CreateUserDto): AxiosPromise<ResponseBodyType<void>> {
   return request({
-    url: '/users',
+    url: '/user',
     method: 'post',
     data,
   })
@@ -23,21 +23,21 @@ export function create(data: CreateUserDto): AxiosPromise<ResponseBodyType<void>
 
 export function findAll(): AxiosPromise<ResponseBodyType<User[]>> {
   return request({
-    url: '/users',
+    url: '/user',
     method: 'get',
   })
 }
 
 export function findOne(id: number): AxiosPromise<ResponseBodyType<User>> {
   return request({
-    url: '/users/' + id,
+    url: '/user/' + id,
     method: 'get',
   })
 }
 
 export function update(data: UpdateUserDto & User): AxiosPromise<ResponseBodyType<User>> {
   return request({
-    url: '/users/' + data.id,
+    url: '/user/' + data.id,
     method: 'patch',
     data,
   })
@@ -45,7 +45,7 @@ export function update(data: UpdateUserDto & User): AxiosPromise<ResponseBodyTyp
 
 export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
   return request({
-    url: '/users/' + id,
+    url: '/user/' + id,
     method: 'delete',
   })
 }

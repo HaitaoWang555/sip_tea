@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SearchUserDto } from './dto/search-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Equal, Repository } from 'typeorm';
+import { Repository, Like, Equal } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PageInfo } from '@/common/api/common-page';
 
@@ -11,14 +11,15 @@ import { PageInfo } from '@/common/api/common-page';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async query(searchUserDto: SearchUserDto) {
-    const data = await this.usersRepository.findAndCount({
+    const data = await this.userRepository.findAndCount({
       where: {
+        username: searchUserDto.username && Like('%' + searchUserDto.username + '%'),
         email: searchUserDto.email && Like('%' + searchUserDto.email + '%'),
-        name: searchUserDto.name && Like('%' + searchUserDto.name + '%'),
+        nickName: searchUserDto.nickName && Like('%' + searchUserDto.nickName + '%'),
         status: searchUserDto.status && Equal(searchUserDto.status),
       },
       skip: searchUserDto.pageNum - 1,
@@ -29,22 +30,22 @@ export class UserService {
   }
 
   create(createUserDto: CreateUserDto) {
-    return this.usersRepository.save(createUserDto);
+    return this.userRepository.save(createUserDto);
   }
 
   findAll() {
-    return this.usersRepository.find();
+    return this.userRepository.find();
   }
 
   findOne(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    return this.userRepository.findOneBy({ id });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update({ id }, updateUserDto);
+    return this.userRepository.update({ id }, updateUserDto);
   }
 
   remove(id: number) {
-    return this.usersRepository.delete(id);
+    return this.userRepository.delete(id);
   }
 }

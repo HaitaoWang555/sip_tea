@@ -8,8 +8,8 @@ import { ApiPaginatedResponse } from '@/utils/swagger';
 import { User } from './entities/user.entity';
 import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
 
-@ApiTags('users')
-@Controller('users')
+@ApiTags('user')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

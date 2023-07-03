@@ -1,6 +1,7 @@
 {{
 var className = it.fn.camel(it.tableName, true);
 var isHaveBase = Boolean(it.isHaveBase);
+var isHaveDate = it.columns.filter(i => i.columnType === 'Date').length > 0;
 var dictArr = it.columns.filter(i => Boolean(i.dictType));
 var validatorArr = Array.from(new Set(it.columns.filter(i => Boolean(i.validatorType)).map(i => i.validatorType)));
 }}
@@ -15,6 +16,9 @@ import { Type } from 'class-transformer';
 {{?}}
 {{? isHaveBase }}
 import { Base } from '@/common/entities/base';
+{{?}}
+{{? isHaveDate }}
+import { formatDate } from 'lib';
 {{?}}
 $blankline
 /**
@@ -34,6 +38,20 @@ export class {{=className}} {
 {{?}}
   {{? column.isPk }}
   @PrimaryGeneratedColumn()
+  {{=column.columnName}}: {{=column.columnType}};
+  {{?? column.columnType === 'Date'}}
+  @Column({
+    nullable: true,
+    type: 'timestamp',
+    transformer: {
+      from(value: Date): string {
+        return formatDate(value, 'YYYY-MM-DD HH:mm:ss');
+      },
+      to(value: Date): Date {
+        return value;
+      },
+    },
+  })
   {{=column.columnName}}: {{=column.columnType}};
   {{?? Boolean(column.dictType)}}
 {{? column.dictType === 'Status' }}

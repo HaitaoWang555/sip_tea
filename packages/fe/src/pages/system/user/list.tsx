@@ -9,7 +9,7 @@ import { Button } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 
-function BaseCrud() {
+function UserCrud() {
   const [list, updateList] = useColumnList(columnList)
   const [queryParam, setQueryParams] = useState<SearchUserDtoWithNotPage>(
     formatParams(getFormDefaultValues(columnList))
@@ -104,4 +104,4 @@ function BaseCrud() {
   )
 }
 
-export default BaseCrud
+export default UserCrud
