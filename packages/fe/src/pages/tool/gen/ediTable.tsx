@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
-import type { GenTable, GenTableColumn } from './api'
-import { Table, Form, Input, FormInstance, Spin, Select, Switch, SwitchProps, Button } from 'antd'
+import { generate, type GenTable, type GenTableColumn } from './api'
+import { Table, Form, Input, FormInstance, Spin, Select, Switch, SwitchProps, Button, message } from 'antd'
 import React from 'react'
 import { optionType } from '@/types/components-utils'
 
 type Props = {
   formParams?: GenTable
   updateColumns?: (column: GenTableColumn, type?: string) => void
+  form?: FormInstance<unknown>
 }
 type Column = {
   dataIndex: string
@@ -122,7 +123,7 @@ export function EdiTable(props: Props) {
       dataIndex: 'columnType',
       title: '字段类型',
       valueType: 'select',
-      width: '100px',
+      width: '120px',
       option: [
         {
           label: 'string',
@@ -237,6 +238,22 @@ export function EdiTable(props: Props) {
       ],
     },
     {
+      dataIndex: 'formType',
+      title: '前端编辑组件',
+      valueType: 'select',
+      width: '150px',
+      option: [
+        {
+          label: 'input',
+          value: 'input',
+        },
+        {
+          label: 'select',
+          value: 'select',
+        },
+      ],
+    },
+    {
       width: '80px',
       dataIndex: 'action',
       fixed: 'right',
@@ -291,6 +308,16 @@ export function EdiTable(props: Props) {
     }
   }
 
+  function generateFiles() {
+    if (props.formParams && props.form) {
+      const FieldsValue = props.form.getFieldsValue() as GenTable
+
+      generate(props.formParams.id, FieldsValue.templeteFiles).then((res) => {
+        message.success(res.data.message)
+      })
+    }
+  }
+
   useEffect(() => {
     setData(props.formParams?.columns)
     setSpin(false)
@@ -319,6 +346,13 @@ export function EdiTable(props: Props) {
       <div style={{ margin: '12px 0' }}>
         <Button onClick={add}>新增一列</Button>
       </div>
+      {props.formParams && (
+        <div style={{ position: 'absolute', bottom: 16, right: 184 }}>
+          <Button type="primary" onClick={generateFiles}>
+            生成
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

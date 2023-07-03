@@ -64,9 +64,10 @@ export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
   })
 }
 
-export function generate(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function generate(id: number, templeteFiles?: string[]): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/gen-table/generate/' + id,
     method: 'post',
+    data: templeteFiles,
   })
 }

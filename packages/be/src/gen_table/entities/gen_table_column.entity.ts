@@ -118,6 +118,13 @@ export class GenTableColumn {
   queryType: string;
 
   /**
+   * 前端编辑组件
+   */
+  @Allow()
+  @Column({ nullable: true })
+  formType: string;
+
+  /**
    * 字典类型
    */
   @Allow()

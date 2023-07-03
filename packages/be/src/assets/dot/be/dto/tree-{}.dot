@@ -1,0 +1,11 @@
+{{
+  var className = it.fn.camel(it.tableName, true);
+}}
+import { ApiProperty } from '@nestjs/swagger';
+import { {{=className}} } from '../entities/{{=it.tableName}}.entity';
+$blankline
+export class Tree{{=className}} extends {{=className}} {
+  @ApiProperty({ type: [{{=className}}] })
+  children: Tree{{=className}}[];
+}
+$blankline

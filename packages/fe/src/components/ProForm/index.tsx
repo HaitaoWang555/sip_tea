@@ -1,5 +1,5 @@
 import type { ConvertInterfaceToDict, ProItem } from '@/types/components-utils'
-import { formatNullToUndefined, getFormDefaultValues, setFormDefaultValues, transformDate } from '@/utils/components'
+import { formatNullToUndefined, getFormDefaultValues, setFormDefaultValues, transformData } from '@/utils/components'
 import {
   Card,
   Col,
@@ -84,7 +84,7 @@ function ProForm<RecordType extends object>(props: Props<RecordType>) {
   }, [props.columnList])
 
   function onFinish(values: ConvertInterfaceToDict<RecordType>) {
-    props.onSubmit && props.onSubmit(transformDate(values, props.columnList))
+    props.onSubmit && props.onSubmit(transformData(values, props.columnList))
   }
 
   function initRows() {
@@ -180,7 +180,7 @@ function ProForm<RecordType extends object>(props: Props<RecordType>) {
                 </Card>
               )
             })}
-            {props.children && <div style={{ marginTop: 20 }}>{props.children}</div>}
+            {props.children && <div style={{ marginTop: 20, borderBottom: '1px solid #f0f0f0' }}>{props.children}</div>}
             {props.type === 'dialog' && (
               <div className="footer-btn-wrap">
                 <Button

@@ -46,9 +46,25 @@ export class GenTable extends Base {
   isHaveBase: Status;
 
   /**
+   * 是否树形结构
+   */
+  @Allow()
+  @ApiProperty({ enum: [Status.YES, Status.NO] })
+  @Type(() => Number)
+  @IsEnum(Status)
+  @Column({ default: Status.NO })
+  isTree: Status;
+
+  /**
    * 一对多关联 代码生成表属性
    */
   @OneToMany(() => GenTableColumn, (column) => column.table, { cascade: true })
   @Allow()
   columns: GenTableColumn[];
+
+  /**
+   * 本次要生成的文件
+   */
+  @Allow()
+  templeteFiles: string[];
 }

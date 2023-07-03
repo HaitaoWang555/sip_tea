@@ -11,7 +11,7 @@ import type {
 } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button, message } from 'antd'
+import { Button, FormInstance, message } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 import { EdiTable } from './ediTable'
@@ -25,6 +25,11 @@ function BaseCrud() {
   const [formParams, setFormParams] = useState<GenTable>()
   const [formType, setFormType] = useState('add')
   const [editableColumns, setEditableColumns] = useState<GenTableColumn[]>([])
+  const [form, setForm] = useState<FormInstance<unknown>>()
+
+  function onRender(form: FormInstance<unknown>) {
+    setForm(form)
+  }
 
   function formatParams(values: SearchGenTableDtoWithNotPage) {
     return values
@@ -138,11 +143,12 @@ function BaseCrud() {
       updateColumnList={updateList}
       del={del}
       submit={submit}
+      onRender={onRender}
       operatorTableChild={() => <OperatorTableChild />}
       tableActionChild={(props: ActionRenderProps<GenTable>) => {
         return <TableActionChild {...props} />
       }}
-      formChild={<EdiTable formParams={formParams} updateColumns={updateFormParamsEdiTableColumns} />}
+      formChild={<EdiTable formParams={formParams} updateColumns={updateFormParamsEdiTableColumns} form={form} />}
     ></Crud>
   )
 }

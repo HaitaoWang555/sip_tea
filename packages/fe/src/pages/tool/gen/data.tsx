@@ -27,7 +27,95 @@ export const columnList: ProItem[] = [
     dataIndex: 'isHaveBase',
     title: '是否包含基础字段',
     valueType: 'switch',
+    renderType: 'dict',
+    option: [
+      {
+        label: '包含',
+        value: 1,
+      },
+      {
+        label: '不包含',
+        value: 0,
+      },
+    ],
     isForm: true,
+  },
+  {
+    dataIndex: 'isTree',
+    title: '是否树形结构',
+    valueType: 'switch',
+    renderType: 'dict',
+    option: [
+      {
+        label: '是',
+        value: 1,
+      },
+      {
+        label: '否',
+        value: 0,
+      },
+    ],
+    isForm: true,
+  },
+  {
+    dataIndex: 'templeteFiles',
+    formItemAttrs: {
+      tooltip: '不保存数据库中',
+    },
+    title: '需要生成的模版',
+    valueType: 'checkbox',
+    option: [
+      {
+        label: 'create-{}.dto.dot',
+        value: '/dto/create-{}.dto.dot',
+      },
+      {
+        label: 'search-{}.dto.dot',
+        value: '/dto/search-{}.dto.dot',
+      },
+      {
+        label: 'tree-{}.dot',
+        value: '/dto/tree-{}.dot',
+      },
+      {
+        label: 'update-{}.dto.dot',
+        value: '/dto/update-{}.dto.dot',
+      },
+      {
+        label: '{}.entity.dot',
+        value: '/entities/dto/{}.entity.dot',
+      },
+      {
+        label: 'type.dot',
+        value: '/type.dot',
+      },
+      {
+        label: '{}.controller.dot',
+        value: '/{}.controller.dot',
+      },
+      {
+        label: '{}.module.dot',
+        value: '/{}.module.dot',
+      },
+      {
+        label: '{}.service.dot',
+        value: '/{}.service.dot',
+      },
+      {
+        label: 'api.dot',
+        value: '/api.dot',
+      },
+      {
+        label: 'data.dot',
+        value: '/data.dot',
+      },
+      {
+        label: 'list.dot',
+        value: '/list.dot',
+      },
+    ],
+    isForm: true,
+    noTable: true,
   },
   {
     dataIndex: 'createdAt',
@@ -40,7 +128,7 @@ export const columnList: ProItem[] = [
     renderType: 'date',
   },
   {
-    width: '180px',
+    width: '200px',
     dataIndex: 'action',
     fixed: 'right',
     title: '操作',

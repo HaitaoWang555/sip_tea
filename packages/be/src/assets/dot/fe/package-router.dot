@@ -1,0 +1,27 @@
+{{
+  var package = it.package;
+  var className = it.fn.camel(it.tableName, true);
+}}
+import { Outlet } from 'react-router-dom'
+import { SettingOutlined } from '@ant-design/icons'
+$blankline
+import {{=className}}List from '@/pages/{{=package}}/{{=it.tableName}}/list'
+$blankline
+const {{=package}}Router = {
+  path: '/{{=package}}',
+{{?it.packageName}}
+  label: '{{=package}}',
+{{?}}
+  icon: <SettingOutlined />,
+  element: <Outlet />,
+  children: [
+    {
+      path: '/{{=package}}/{{=it.tableName}}',
+      label: '{{=it.tableComment}}',
+      element: <{{=className}}List />,
+    },
+  ],
+}
+$blankline
+export default {{=package}}Router
+$blankline

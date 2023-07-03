@@ -44,7 +44,7 @@ export class {{=className}} {
   {{=column.columnName}}: Status;
 {{?}}
   {{??}}
-  @Column({{{? column.columnComment }} comment: '{{=column.columnComment}}'{{?}}{{? column.columnType === 'string' && column.length > 0 }}, length: {{=column.length}}{{?}} })
+  @Column({{{? column.columnComment }} comment: '{{=column.columnComment}}'{{?}}{{? column.columnType === 'string' && column.length > 0 }}, length: {{=column.length}}{{?}}{{? !column.isRequired }}, nullable: true{{?}} })
 {{? column.validatorType }}
   @{{=column.validatorType}}()
 {{?}}  

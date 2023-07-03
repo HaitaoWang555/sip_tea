@@ -1,0 +1,67 @@
+{{
+var className = it.fn.camel(it.tableName, true);
+var package = it.package ? it.package + '/' + it.tableName : it.tableName;
+var isTree = Boolean(it.isTree);
+}}
+import type { ResponseBodyType, PageInfo } from '@/types/api'
+import request from '@/utils/request'
+import type { AxiosPromise } from 'axios'
+import type { Create{{=className}}Dto, Update{{=className}}Dto, Search{{=className}}Dto, Search{{=className}}DtoWithNotPage, {{=className}} } from 'be/{{=package}}/type'
+$blankline
+export type { Create{{=className}}Dto, Update{{=className}}Dto, Search{{=className}}Dto, Search{{=className}}DtoWithNotPage, {{=className}} }
+$blankline
+export function query(params: Search{{=className}}Dto): AxiosPromise<ResponseBodyType<PageInfo<{{=className}}[]>>> {
+  return request({
+    url: '/{{=it.tableName}}/query',
+    method: 'get',
+    params,
+  })
+}
+$blankline
+export function create(data: Create{{=className}}Dto): AxiosPromise<ResponseBodyType<void>> {
+  return request({
+    url: '/{{=it.tableName}}',
+    method: 'post',
+    data,
+  })
+}
+$blankline
+export function findAll(): AxiosPromise<ResponseBodyType<{{=className}}[]>> {
+  return request({
+    url: '/{{=it.tableName}}',
+    method: 'get',
+  })
+}
+{{? isTree }}
+$blankline
+export function tree(params: Search{{=className}}DtoWithNotPage): AxiosPromise<ResponseBodyType<Department[]>> {
+  return request({
+    url: '/department/tree',
+    method: 'get',
+    params,
+  })
+}
+{{?}}
+$blankline
+export function findOne(id: number): AxiosPromise<ResponseBodyType<{{=className}}>> {
+  return request({
+    url: '/{{=it.tableName}}/' + id,
+    method: 'get',
+  })
+}
+$blankline
+export function update(data: Update{{=className}}Dto & {{=className}}): AxiosPromise<ResponseBodyType<{{=className}}>> {
+  return request({
+    url: '/{{=it.tableName}}/' + data.id,
+    method: 'patch',
+    data,
+  })
+}
+$blankline
+export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+  return request({
+    url: '/{{=it.tableName}}/' + id,
+    method: 'delete',
+  })
+}
+$blankline

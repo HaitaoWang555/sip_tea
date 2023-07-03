@@ -5,12 +5,12 @@ export class Base {
   /**
    * 创建人
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 64 })
   createdBy?: string;
   /**
    * 更新人
    */
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 64 })
   updatedBy?: string;
   /**
    * 创建时间
@@ -47,4 +47,10 @@ export class Base {
     },
   })
   updatedAt: Date;
+
+  /**
+   * 备注
+   */
+  @Column({ nullable: true, length: 500 })
+  remark?: string;
 }

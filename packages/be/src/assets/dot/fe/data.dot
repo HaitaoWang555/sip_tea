@@ -1,0 +1,74 @@
+{{
+  var isTree = Boolean(it.isTree);
+}}
+import type { ProItem } from '@/types/components-utils'
+{{? isTree }}
+import { findAll } from './api'
+{{?}}
+export const columnList: ProItem[] = [
+{{~it.columns:column:index}}
+  {
+    width: '120px',
+    dataIndex: '{{=column.columnName}}',
+    title: '{{=column.columnComment}}',
+{{?column.formType}}
+    valueType: '{{=column.formType}}',
+{{?}}
+{{?column.isRequired}}
+    formItemAttrs: {
+      rules: [{ required: true }],
+    },
+{{?}}
+    isSearch: {{=Boolean(column.isQuery)}},
+    isForm: {{=Boolean(column.isForm)}},
+    noTable: {{=!Boolean(column.isTable)}},
+{{? isTree && column.columnName === 'parentId'}}
+    defaultOption: [
+      {
+        label: '顶级{{=it.tableComment}}',
+        value: 0,
+      },
+    ],
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    optionMth: findAll,
+    noCacheOptionMth: true,
+{{?}}
+{{?column.dictType === 'Status'}}
+    renderType: 'dict',
+    option: [
+      {
+        label: '生效',
+        value: 1,
+      },
+      {
+        label: '失效',
+        value: 0,
+      },
+    ],
+{{?}}
+  },
+{{~}}
+{{?it.isHaveBase}}
+  {
+    dataIndex: 'createdAt',
+    title: '创建时间',
+    renderType: 'date',
+  },
+  {
+    dataIndex: 'updatedAt',
+    title: '更新时间',
+    renderType: 'date',
+  },
+{{?}}
+  {
+    width: '180px',
+    dataIndex: 'action',
+    fixed: 'right',
+    title: '操作',
+    noInfo: true,
+  },
+]
+$blankline

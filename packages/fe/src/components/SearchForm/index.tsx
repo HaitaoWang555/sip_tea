@@ -1,5 +1,5 @@
 import type { ProItem } from '@/types/components-utils'
-import { setFormDefaultValues, transformDate } from '@/utils/components'
+import { setFormDefaultValues, transformData } from '@/utils/components'
 import { Card, Col, Form, Row, Spin } from 'antd'
 import { useState } from 'react'
 
@@ -22,7 +22,7 @@ function SearchForm(props: Props) {
   const [form] = Form.useForm()
 
   function onFinish(values: Record<string, unknown>) {
-    props.onSearch(transformDate(values, props.columnList))
+    props.onSearch(transformData(values, props.columnList))
   }
 
   if (loading) {

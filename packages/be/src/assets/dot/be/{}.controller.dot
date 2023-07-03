@@ -1,15 +1,20 @@
 {{
   var className = it.fn.camel(it.tableName, true);
+  var isTree = Boolean(it.isTree);
 }}
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags{{? isTree }}, ApiOkResponse{{?}} } from '@nestjs/swagger';
 import { {{=className}}Service } from './{{=it.tableName}}.service';
 import { Create{{=className}}Dto } from './dto/create-{{=it.tableName}}.dto';
 import { Update{{=className}}Dto } from './dto/update-{{=it.tableName}}.dto';
-import { Search{{=className}}Dto } from './dto/search-{{=it.tableName}}.dto';
+import { Search{{=className}}Dto{{? isTree }}, Search{{=className}}DtoWithNotPage{{?}} } from './dto/search-{{=it.tableName}}.dto';
 import { ApiPaginatedResponse } from '@/utils/swagger';
 import { {{=className}} } from './entities/{{=it.tableName}}.entity';
 import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
+{{? isTree }}
+import { arrayToTree } from '@/utils/tree';
+import { TreeDepartment } from './dto/tree-department';
+{{?}}
 $blankline
 
 @ApiTags('{{=it.tableName}}')
@@ -41,6 +46,18 @@ $blankline
   findAll() {
     return this.{{=it.tableName}}Service.findAll();
   }
+{{? isTree }}
+$blankline
+  /**
+   * 获取{{=it.tableComment}}树形结构数据
+   */
+  @Get('/tree')
+  @ApiOkResponse({ type: Tree{{=className}} })
+  async tree(@Query() search{{=className}}Dto: Search{{=className}}DtoWithNotPage) {
+    const arr = await this.departmentService.tree(search{{=className}}Dto);
+    return arrayToTree<{{=className}}>(arr);
+  }
+{{?}}
 $blankline
   /**
    * 通过ID获取{{=it.tableComment}}

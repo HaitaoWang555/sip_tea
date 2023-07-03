@@ -43,6 +43,7 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
 
   function saveForm(form: FormInstance<unknown>) {
     setFormInstanceVal(form)
+    props.onRender && props.onRender(form)
   }
 
   function dialogClose() {
@@ -92,10 +93,10 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
         props.onSearch(Object.assign({}, props.queryParams || {}))
         props.setFormParams && props.setFormParams(undefined)
         message.success(res.data.message)
+        props.setOpen && props.setOpen(false)
       })
       .finally(() => {
         setConfirmLoading(false)
-        props.setOpen && props.setOpen(false)
       })
   }
 

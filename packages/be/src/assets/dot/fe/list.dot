@@ -1,0 +1,117 @@
+{{
+var className = it.fn.camel(it.tableName, true);
+var isTree = Boolean(it.isTree);
+}}
+import Crud from '@/components/Crud'
+import useColumnList from '@/hooks/columnList'
+import { columnList } from './data'
+import { query, create, update, findOne, remove{{? isTree }}, tree{{?}} } from './api'
+import type { Create{{=className}}Dto, Update{{=className}}Dto, Search{{=className}}DtoWithNotPage, {{=className}} } from './api'
+import { useState } from 'react'
+import { getFormDefaultValues } from '@/utils/components'
+import { Button } from 'antd'
+import { ActionRenderProps } from '@/components/Crud/actionRender'
+import { ProTableSearchParams } from '@/types/api'
+$blankline
+function {{=className}}Crud() {
+  const [list, updateList] = useColumnList(columnList)
+  const [queryParam, setQueryParams] = useState<Search{{=className}}DtoWithNotPage>(
+    formatParams(getFormDefaultValues(columnList))
+  )
+  const [open, setOpen] = useState(false)
+  const [formParams, setFormParams] = useState<{{=className}}>()
+  const [formType, setFormType] = useState('add')
+$blankline
+  function formatParams(values: Search{{=className}}DtoWithNotPage) {
+    return values
+  }
+$blankline
+  function onSearch(values: Search{{=className}}DtoWithNotPage) {
+    setQueryParams(formatParams(values))
+  }
+$blankline
+  function loadData(tableParams: ProTableSearchParams) {
+    if (tableParams.sorter && Object.keys(tableParams.sorter).length > 0) {
+      // 排序与筛选
+      delete tableParams.sorter
+    }
+    const requestParameters = Object.assign({}, tableParams, queryParam)
+    return  {{? isTree }}tree{{??}}query{{?}}(requestParameters).then((res) => {
+      return res
+    })
+  }
+$blankline
+  function loadInfo() {
+    if (!formParams) throw new Error()
+    return findOne(formParams.id).then((res) => {
+      return res
+    })
+  }
+$blankline
+  function submit(params: (Create{{=className}}Dto | Update{{=className}}Dto) & {{=className}}) {
+    const met = formType === 'add' ? create : update
+    return met(params).then((res) => {
+      return res
+    })
+  }
+$blankline
+  function del(params: {{=className}}) {
+    return remove(params.id).then((res) => {
+      return res
+    })
+  }
+$blankline
+  function OperatorTableChild() {
+    return (
+      <>
+        <Button type="primary">其它</Button>
+      </>
+    )
+  }
+  function TableActionChild(props: ActionRenderProps<{{=className}}>) {
+    function otherMethod() {
+      console.log(props)
+    }
+$blankline
+    return (
+      <>
+        <Button type="link" onClick={otherMethod}>
+          其它
+        </Button>
+      </>
+    )
+  }
+$blankline
+  return (
+    <Crud<{{=className}}>
+      title="{{=it.tableComment}}"
+      formType={formType}
+      columnList={list}
+      queryParams={queryParam}
+      formParams={formParams}
+      open={open}
+      setOpen={setOpen}
+      setFormType={setFormType}
+      setFormParams={setFormParams}
+      setQueryParams={setQueryParams}
+      onSearch={onSearch}
+      loadData={loadData}
+      info={loadInfo}
+      updateColumnList={updateList}
+      del={del}
+      submit={submit}
+      operatorTableChild={() => <OperatorTableChild />}
+      tableActionChild={(props: ActionRenderProps<{{=className}}>) => {
+        return <TableActionChild {...props} />
+      }}
+{{? isTree }}
+    tableProps={
+      { pagination: false }
+    }
+{{?}}
+    ></Crud>
+  )
+}
+$blankline
+export default {{=className}}Crud
+$blankline

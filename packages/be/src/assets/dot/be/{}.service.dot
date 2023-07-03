@@ -2,11 +2,12 @@
   var className = it.fn.camel(it.tableName, true);
   var searchColumns = it.columns.filter(i => i.isQuery);
   var queryTypes = Array.from(new Set(searchColumns.map(i => i.queryType)));
+  var isTree = Boolean(it.isTree);
 }}
 import { Injectable } from '@nestjs/common';
 import { Create{{=className}}Dto } from './dto/create-{{=it.tableName}}.dto';
 import { Update{{=className}}Dto } from './dto/update-{{=it.tableName}}.dto';
-import { Search{{=className}}Dto } from './dto/search-{{=it.tableName}}.dto';
+import { Search{{=className}}Dto{{? isTree }}, Search{{=className}}DtoWithNotPage{{?}} } from './dto/search-{{=it.tableName}}.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository{{? queryTypes && queryTypes.length > 0 }}, {{=queryTypes.join(', ')}}{{?}} } from 'typeorm';
 import { {{=className}} } from './entities/{{=it.tableName}}.entity';
@@ -44,6 +45,22 @@ $blankline
   findAll() {
     return this.{{=it.tableName}}Repository.find();
   }
+{{? isTree }}
+$blankline
+  tree(search{{=className}}Dto: Search{{=className}}DtoWithNotPage) {
+    return this.departmentRepository.find({
+      where: {
+{{~searchColumns:column:index}}
+{{? column.queryType === 'Like' }}
+        {{=column.columnName}}: search{{=className}}Dto.{{=column.columnName}} && {{=column.queryType}}('%' + search{{=className}}Dto.{{=column.columnName}} + '%'),
+{{??}}
+        {{=column.columnName}}: search{{=className}}Dto.{{=column.columnName}} && {{=column.queryType}}(search{{=className}}Dto.{{=column.columnName}}),
+{{?}}
+{{~}}
+      },
+    });
+  }
+{{?}}
 $blankline
   findOne(id: number) {
     return this.{{=it.tableName}}Repository.findOneBy({ id });

@@ -12,7 +12,7 @@ function formatGetParams(params: Record<string, any>) {
       if (params[key] instanceof Array) {
         if (key === 'advancedQueryList') {
           delete params[key]
-          break
+          continue
         }
         params[key] = params[key].join(',')
       }

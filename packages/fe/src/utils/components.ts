@@ -155,11 +155,11 @@ export function setFormDefaultValues(item: ProItem[]) {
   return form
 }
 
-export function transformDate<RecordType>(values: any, columnList: ProItem[]) {
+export function transformData<RecordType>(values: any, columnList: ProItem[]) {
   const params: Record<string, any> = {}
   for (const key in values) {
     const item = columnList.find((i) => i.dataIndex === key)
-    if (!item) break
+    if (!item) continue
     if (item.valueType === 'date-picker') {
       params[key] = values[key].format((item.formAttrs && item.formAttrs.format) || DateFormat.DatePicker)
     } else if (item.valueType === 'range-picker') {
@@ -168,7 +168,13 @@ export function transformDate<RecordType>(values: any, columnList: ProItem[]) {
           ? values[key].map((i: any) => i.format((item.formAttrs && item.formAttrs.format) || DateFormat.DatePicker))
           : []
     } else {
+      if (typeof values[key] === 'string') {
+        values[key] = values[key].trim()
+      }
       params[key] = values[key]
+      if (['', undefined, null].includes(values[key])) {
+        delete params[key]
+      }
     }
   }
   return params as ConvertInterfaceToDict<RecordType>

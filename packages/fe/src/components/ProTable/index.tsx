@@ -7,7 +7,7 @@ import styles from './styles.module.less'
 import { Card } from 'antd'
 import Setting from './setting'
 import TooltipTitle from './tooltipTitle'
-import { ApiContext } from '@/context/api-context'
+import { ApiContext, TREEDATAKEY, DATAKEY } from '@/context/api-context'
 import { TableProps } from 'antd/lib/table/InternalTable'
 
 export type Props<RecordType> = {
@@ -123,12 +123,23 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
   }, [props.queryParams])
 
   useEffect(() => {
+    if (props.tableProps && !props.tableProps.pagination) {
+      // 不分页
+      Api.tablePageKey.data = TREEDATAKEY
+    } else {
+      Api.tablePageKey.data = DATAKEY
+    }
     initColumns(props.columnList)
   }, [props.columnList])
 
   return (
     <div className={styles['pro-table']} style={props.style}>
-      <Card bodyStyle={{ paddingBottom: props.tableProps && props.tableProps.pagination === false ? 'auto' : 0 }}>
+      <Card
+        bodyStyle={{
+          paddingBottom:
+            (props.tableProps && props.tableProps.pagination === false) || !(data && data.length > 0) ? 'auto' : 0,
+        }}
+      >
         <div className={styles['table-operator']}>
           <div>{props.operatorRender && props.operatorRender()}</div>
           <Setting></Setting>
