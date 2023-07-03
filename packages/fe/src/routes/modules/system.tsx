@@ -4,6 +4,7 @@ import { SettingOutlined } from '@ant-design/icons'
 import UserList from '@/pages/system/user/list'
 import PositionList from '@/pages/system/position/list'
 import DepartmentList from '@/pages/system/department/list'
+import RoleList from '@/pages/system/role/list'
 
 const systemRouter = {
   path: '/system',
@@ -15,6 +16,11 @@ const systemRouter = {
       path: '/system/user',
       label: '用户',
       element: <UserList />,
+    },
+    {
+      path: '/system/role',
+      label: '角色',
+      element: <RoleList />,
     },
     {
       path: '/system/department',
