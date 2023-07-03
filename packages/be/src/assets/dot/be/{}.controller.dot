@@ -13,7 +13,7 @@ import { {{=className}} } from './entities/{{=it.tableName}}.entity';
 import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
 {{? isTree }}
 import { arrayToTree } from '@/utils/tree';
-import { TreeDepartment } from './dto/tree-department';
+import { Tree{{=className}} } from './dto/tree-{{=it.tableName}}';
 {{?}}
 $blankline
 
@@ -54,7 +54,7 @@ $blankline
   @Get('/tree')
   @ApiOkResponse({ type: Tree{{=className}} })
   async tree(@Query() search{{=className}}Dto: Search{{=className}}DtoWithNotPage) {
-    const arr = await this.departmentService.tree(search{{=className}}Dto);
+    const arr = await this.{{=it.tableName}}Service.tree(search{{=className}}Dto);
     return arrayToTree<{{=className}}>(arr);
   }
 {{?}}

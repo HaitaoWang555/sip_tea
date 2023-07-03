@@ -45,6 +45,7 @@ export const columnList: ProItem[] = [
     title: '是否树形结构',
     valueType: 'switch',
     renderType: 'dict',
+    defaultValue: false,
     option: [
       {
         label: '是',

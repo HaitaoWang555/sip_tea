@@ -48,7 +48,7 @@ $blankline
 {{? isTree }}
 $blankline
   tree(search{{=className}}Dto: Search{{=className}}DtoWithNotPage) {
-    return this.departmentRepository.find({
+    return this.{{=it.tableName}}Repository.find({
       where: {
 {{~searchColumns:column:index}}
 {{? column.queryType === 'Like' }}

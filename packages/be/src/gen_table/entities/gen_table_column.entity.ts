@@ -46,7 +46,7 @@ export class GenTableColumn {
    */
   @Allow()
   @IsNumber()
-  @Column()
+  @Column({ nullable: true })
   length: number;
 
   /**

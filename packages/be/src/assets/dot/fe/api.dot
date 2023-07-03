@@ -34,9 +34,9 @@ export function findAll(): AxiosPromise<ResponseBodyType<{{=className}}[]>> {
 }
 {{? isTree }}
 $blankline
-export function tree(params: Search{{=className}}DtoWithNotPage): AxiosPromise<ResponseBodyType<Department[]>> {
+export function tree(params: Search{{=className}}DtoWithNotPage): AxiosPromise<ResponseBodyType<{{=className}}[]>> {
   return request({
-    url: '/department/tree',
+    url: '/{{=it.tableName}}/tree',
     method: 'get',
     params,
   })
