@@ -133,13 +133,8 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
   }, [props.columnList])
 
   return (
-    <div className={styles['pro-table']} style={props.style}>
-      <Card
-        bodyStyle={{
-          paddingBottom:
-            (props.tableProps && props.tableProps.pagination === false) || !(data && data.length > 0) ? 'auto' : 0,
-        }}
-      >
+    <div className={styles['pro-table'] + ' pro-table-wrap'} style={props.style}>
+      <Card>
         <div className={styles['table-operator']}>
           <div>{props.operatorRender && props.operatorRender()}</div>
           <Setting></Setting>

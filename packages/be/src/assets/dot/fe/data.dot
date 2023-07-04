@@ -53,11 +53,13 @@ export const columnList: ProItem[] = [
 {{~}}
 {{?it.isHaveBase}}
   {
+    width: '180px',
     dataIndex: 'createdAt',
     title: '创建时间',
     renderType: 'date',
   },
   {
+    width: '180px',
     dataIndex: 'updatedAt',
     title: '更新时间',
     renderType: 'date',

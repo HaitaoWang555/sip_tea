@@ -1,10 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { IsNotEmpty, Allow, IsEnum } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Base } from '@/common/entities/base';
 
+import { User } from '../../user/entities/user.entity';
 /**
  * 部门
  */
@@ -45,4 +46,10 @@ export class Department extends Base {
   @Column({ comment: '部门编码', length: 64 })
   @IsNotEmpty()
   code: string;
+
+  /**
+   * 用户
+   */
+  @ManyToMany(() => User, (user) => user.positions)
+  users?: User[];
 }

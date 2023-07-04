@@ -1,4 +1,7 @@
 import type { ProItem } from '@/types/components-utils'
+import { Position, findAll as findAllPosition } from '../position/api'
+import { Department, findAll as findAllDepartment } from '../department/api'
+import { Role, findAll as findAllRole } from '../role/api'
 export const columnList: ProItem[] = [
   {
     width: '120px',
@@ -9,7 +12,7 @@ export const columnList: ProItem[] = [
     noTable: true,
   },
   {
-    width: '120px',
+    width: '200px',
     dataIndex: 'username',
     title: '用户名',
     valueType: 'input',
@@ -19,6 +22,7 @@ export const columnList: ProItem[] = [
     isSearch: true,
     isForm: true,
     noTable: false,
+    fixed: 'left',
   },
   {
     width: '120px',
@@ -31,9 +35,10 @@ export const columnList: ProItem[] = [
     isSearch: false,
     isForm: false,
     noTable: true,
+    noInfo: true,
   },
   {
-    width: '120px',
+    width: '200px',
     dataIndex: 'email',
     title: '邮箱',
     valueType: 'input',
@@ -55,6 +60,96 @@ export const columnList: ProItem[] = [
     isSearch: true,
     isForm: true,
     noTable: false,
+  },
+  {
+    dataIndex: 'positionIds',
+    title: '职位',
+    valueType: 'select',
+    formItemAttrs: {
+      rules: [{ required: true }],
+    },
+    optionMth: findAllPosition,
+    formAttrs: {
+      mode: 'multiple',
+    },
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    noCacheOptionMth: true,
+    isForm: true,
+    isSearch: true,
+    noTable: true,
+    noInfo: true,
+  },
+  {
+    width: '120px',
+    dataIndex: 'positions',
+    title: '职位',
+    tableRender: (val: Position[]) => {
+      if (!(val && val.length > 0)) return '-'
+      return val.map((i) => i.title).join(', ')
+    },
+  },
+  {
+    dataIndex: 'departmentIds',
+    title: '部门',
+    valueType: 'select',
+    formItemAttrs: {
+      rules: [{ required: true }],
+    },
+    optionMth: findAllDepartment,
+    formAttrs: {
+      mode: 'multiple',
+    },
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    noCacheOptionMth: true,
+    isForm: true,
+    isSearch: true,
+    noTable: true,
+    noInfo: true,
+  },
+  {
+    width: '120px',
+    dataIndex: 'departments',
+    title: '部门',
+    tableRender: (val: Department[]) => {
+      if (!(val && val.length > 0)) return '-'
+      return val.map((i) => i.title).join(', ')
+    },
+  },
+  {
+    dataIndex: 'roleIds',
+    title: '角色',
+    valueType: 'select',
+    formItemAttrs: {
+      rules: [{ required: true }],
+    },
+    optionMth: findAllRole,
+    formAttrs: {
+      mode: 'multiple',
+    },
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    noCacheOptionMth: true,
+    isSearch: true,
+    isForm: true,
+    noTable: true,
+    noInfo: true,
+  },
+  {
+    width: '120px',
+    dataIndex: 'roles',
+    title: '角色',
+    tableRender: (val: Role[]) => {
+      if (!(val && val.length > 0)) return '-'
+      return val.map((i) => i.title).join(', ')
+    },
   },
   {
     width: '120px',
@@ -88,17 +183,19 @@ export const columnList: ProItem[] = [
     ],
   },
   {
+    width: '180px',
     dataIndex: 'createdAt',
     title: '创建时间',
     renderType: 'date',
   },
   {
+    width: '180px',
     dataIndex: 'updatedAt',
     title: '更新时间',
     renderType: 'date',
   },
   {
-    width: '180px',
+    width: '200px',
     dataIndex: 'action',
     fixed: 'right',
     title: '操作',

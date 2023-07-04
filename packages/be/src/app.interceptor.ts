@@ -13,7 +13,7 @@ export class AppInterceptor implements NestInterceptor {
         return new CommonResult().success(data);
       }),
       catchError((err) => {
-        this.logger.error(err);
+        this.logger.error(err, err.stack);
 
         if (err.status) {
           return of(new CommonResult().fail(err.response.message, err.status));

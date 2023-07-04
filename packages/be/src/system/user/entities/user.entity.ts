@@ -1,10 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsNotEmpty, Allow, IsEnum } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany } from 'typeorm';
+import { IsNotEmpty, Allow, IsEnum, IsEmail } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { Base } from '@/common/entities/base';
 import { formatDate } from 'lib';
+
+import { Position } from '../../position/entities/position.entity';
+import { Department } from '../../department/entities/department.entity';
+import { Role } from '../../role/entities/role.entity';
 
 /**
  * 用户
@@ -25,9 +29,9 @@ export class User extends Base {
   username: string;
 
   /**
-   * 密码
+   * 密码 TODO: 密码暂时为空
    */
-  @Column({ comment: '密码', length: 512 })
+  @Column({ comment: '密码', length: 512, nullable: true })
   @Allow()
   password: string;
 
@@ -36,6 +40,7 @@ export class User extends Base {
    */
   @Column({ comment: '邮箱', length: 256 })
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   /**
@@ -70,4 +75,66 @@ export class User extends Base {
   @IsEnum(Status)
   @Column({ default: Status.NO })
   status: Status;
+
+  /**
+   * 职位
+   */
+  @ManyToMany(() => Position, (position) => position.users)
+  @JoinTable()
+  positions?: Position[];
+
+  /**
+   * 职位id 集合
+   */
+  @Allow()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((i) => Number(i));
+    } else {
+      return value;
+    }
+  })
+  positionIds?: number[];
+
+  /**
+   * 部门
+   */
+  @ManyToMany(() => Department, (department) => department.users)
+  @JoinTable()
+  @Allow()
+  departments?: Department[];
+
+  /**
+   * 部门id 集合
+   */
+  @Allow()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((i) => Number(i));
+    } else {
+      return value;
+    }
+  })
+  departmentIds?: number[];
+
+  /**
+   * 角色
+   */
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  @Allow()
+  roles?: Role[];
+
+  /**
+   * 角色id 集合
+   */
+  @Allow()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((i) => Number(i));
+    } else {
+      return value;
+    }
+  })
+  roleIds?: number[];
 }

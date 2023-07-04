@@ -120,6 +120,10 @@ function formatArr(arr: Array<any>, element: ProItem) {
       obj.value = i['value']
     }
 
+    if (element.selectValType && element.selectValType === '_self') {
+      obj.value = JSON.stringify(i)
+    }
+
     if (obj.children && obj.children.length > 0) {
       obj.children = formatArr(obj.children, element)
     }
@@ -173,6 +177,9 @@ export function transformData<RecordType>(values: any, columnList: ProItem[]) {
       }
       params[key] = values[key]
       if (['', undefined, null].includes(values[key])) {
+        delete params[key]
+      }
+      if (['{}', '[]'].includes(JSON.stringify(values[key]))) {
         delete params[key]
       }
     }

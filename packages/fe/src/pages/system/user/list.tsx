@@ -46,6 +46,9 @@ function UserCrud() {
 
   function submit(params: (CreateUserDto | UpdateUserDto) & User) {
     const met = formType === 'add' ? create : update
+    if (params.positions) delete params.positions
+    if (params.departments) delete params.departments
+    if (params.roles) delete params.roles
     return met(params).then((res) => {
       return res
     })
