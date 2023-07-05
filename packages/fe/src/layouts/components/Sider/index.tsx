@@ -62,8 +62,8 @@ const MySider = (props: Props) => {
           return []
         }
       } else {
-        const menusPath = user.menus.map((i) => i.name).concat('/')
-        arr = arr.filter((r) => !r.hidden && menusPath.includes(r.path))
+        const menusPath = user.menus.map((i) => i.title).concat('/')
+        arr = arr.filter((r) => !r.hidden && menusPath.includes(r.path as string))
       }
 
       arr.forEach((r) => {

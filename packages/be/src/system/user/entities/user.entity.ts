@@ -31,8 +31,8 @@ export class User extends Base {
   /**
    * 密码 TODO: 密码暂时为空
    */
-  @Column({ comment: '密码', length: 512, nullable: true })
-  @Allow()
+  @Column({ comment: '密码', length: 512, select: false })
+  @IsNotEmpty()
   password: string;
 
   /**

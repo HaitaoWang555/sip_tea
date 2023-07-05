@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './utils/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './app.exceptions';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,8 @@ async function bootstrap() {
     setupSwagger(app);
   }
 
+  // app.exceptions
+  app.useGlobalFilters(new HttpExceptionFilter());
   // validator @Allow()
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 

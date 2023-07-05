@@ -3,12 +3,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SearchUserDto } from './dto/search-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, Equal, In, FindOptionsWhere } from 'typeorm';
+import { Repository, Like, Equal, In, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PageInfo } from '@/common/api/common-page';
 import { Position } from '../position/type';
 import { Department } from '../department/type';
 import { Role } from '../role/type';
+import { encrypt } from '@/utils/crypto';
 
 @Injectable()
 export class UserService {
@@ -54,6 +55,7 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     const user = createUserDto as User;
     this.changeUser(user);
+    user.password = encrypt(user.password);
     return this.userRepository.save(user);
   }
 
@@ -72,10 +74,19 @@ export class UserService {
     return user;
   }
 
+  async findOneByUsername(username: string) {
+    return this.userRepository.findOne({
+      where: { username },
+      relations: { positions: true, departments: true, roles: true },
+      select: ['email', 'id', 'password', 'username', 'status', 'positions', 'departments', 'roles'],
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.findOne(id);
     Object.assign(user, updateUserDto);
     this.changeUser(user);
+    delete user.password;
     return this.userRepository.save(user);
   }
 

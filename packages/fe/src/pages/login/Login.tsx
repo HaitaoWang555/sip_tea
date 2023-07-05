@@ -12,6 +12,39 @@ import { useStore } from '@/stores/index'
 
 let randomImageKey = ''
 
+const columnList: ProItem[] = [
+  {
+    dataIndex: 'username',
+    title: '姓名',
+    valueType: 'input',
+    isForm: true,
+    formItemAttrs: {
+      rules: [{ required: true, trigger: 'blur' }],
+    },
+  },
+  {
+    dataIndex: 'password',
+    title: '密码',
+    valueType: 'input',
+    isForm: true,
+    formItemAttrs: {
+      rules: [{ required: true, trigger: 'blur' }],
+    },
+    formAttrs: {
+      type: 'password',
+    },
+  },
+  // {
+  //   dataIndex: 'captcha',
+  //   title: '验证码',
+  //   formRender: (props: ProItem) => <CaptchaFormItem {...props} />,
+  //   isForm: true,
+  //   formItemAttrs: {
+  //     rules: [{ required: true, trigger: 'blur' }],
+  //   },
+  // },
+]
+
 function CaptchaFormItem(props: ProItem) {
   const [randCodeImage, setRandCodeImage] = useState('')
   const [spin, setSpin] = useState(false)
@@ -58,38 +91,7 @@ function CaptchaFormItem(props: ProItem) {
 }
 
 export default function Login() {
-  const [list] = useColumnList([
-    {
-      dataIndex: 'username',
-      title: '姓名',
-      valueType: 'input',
-      isForm: true,
-      formItemAttrs: {
-        rules: [{ required: true, trigger: 'blur' }],
-      },
-    },
-    {
-      dataIndex: 'password',
-      title: '密码',
-      valueType: 'input',
-      isForm: true,
-      formItemAttrs: {
-        rules: [{ required: true, trigger: 'blur' }],
-      },
-      formAttrs: {
-        type: 'password',
-      },
-    },
-    {
-      dataIndex: 'captcha',
-      title: '验证码',
-      formRender: (props: ProItem) => <CaptchaFormItem {...props} />,
-      isForm: true,
-      formItemAttrs: {
-        rules: [{ required: true, trigger: 'blur' }],
-      },
-    },
-  ])
+  const [list] = useColumnList(columnList)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState<FormInstance<unknown>>()
   const navigate = useNavigate()

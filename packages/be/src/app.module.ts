@@ -6,10 +6,12 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategy';
 import { AppInterceptor } from './app.interceptor';
 import { join } from 'path';
 import * as modules from './modules';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     TypeOrmModule.forRoot({
@@ -24,6 +26,7 @@ import * as modules from './modules';
       synchronize: process.env.SYNCHRONIZE && process.env.SYNCHRONIZE === '1',
       namingStrategy: new SnakeNamingStrategy(),
     }),
+    AuthModule,
     ...Object.values(modules),
   ],
   controllers: [],

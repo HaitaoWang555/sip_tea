@@ -2,7 +2,8 @@ import { ResponseBodyType } from '@/types/api'
 import axios, { AxiosResponse } from 'axios'
 import { mock } from '@/utils/prodMock'
 import { message, Modal } from 'antd'
-import { ACCESS_TOKEN, getToken, removeToken } from './auth'
+import { getToken, removeToken } from './auth'
+import { AUTHORIZATION, AUTHORIZATION_PREFIX } from 'be/utils/consts'
 
 const isNeedMock = import.meta.env.VITE_APP_NEED_MOCK === 'true'
 
@@ -31,7 +32,7 @@ service.interceptors.request.use(
     // do something before request is sent
     const token = getToken()
     if (token) {
-      config.headers[ACCESS_TOKEN] = 'Bearer ' + token
+      config.headers[AUTHORIZATION] = AUTHORIZATION_PREFIX + ' ' + token
       // 所有请求加HEADER
     }
     if (config.params && config.method?.toLocaleLowerCase() === 'get') {

@@ -13,6 +13,10 @@ export class AppInterceptor implements NestInterceptor {
         return new CommonResult().success(data);
       }),
       catchError((err) => {
+        if (err.code) {
+          // 自定义错误 不需要打印
+          return of(new CommonResult().fail(err.message, err.code));
+        }
         this.logger.error(err, err.stack);
 
         if (err.status) {

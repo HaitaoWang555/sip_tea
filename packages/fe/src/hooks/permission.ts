@@ -26,7 +26,7 @@ function usePermission(): React.ReactElement<any, string | React.JSXElementConst
         if (user && user.menus) {
           if (
             !user.menus
-              .map((i) => i.name)
+              .map((i) => i.title)
               .concat(constantRoutesPath)
               .includes(location.pathname)
           ) {

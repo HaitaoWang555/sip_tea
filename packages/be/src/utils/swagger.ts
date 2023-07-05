@@ -2,12 +2,19 @@ import { applyDecorators, INestApplication, Type, Logger } from '@nestjs/common'
 import { ApiOkResponse, DocumentBuilder, getSchemaPath, SwaggerModule } from '@nestjs/swagger';
 import { PageInfo } from '@/common/api/common-page';
 import { CommonResult } from '@/common/api/common-result';
+import { AUTHORIZATION_PREFIX } from './consts';
 
 export async function setupSwagger(app: INestApplication): Promise<void> {
   const config = new DocumentBuilder()
     .setTitle('nest example')
     .setDescription('The nest API description')
     .setVersion('1.0')
+    .addSecurity(AUTHORIZATION_PREFIX, {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Authorization',
+    })
+    .addSecurityRequirements(AUTHORIZATION_PREFIX)
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [CommonResult, PageInfo],

@@ -1,7 +1,5 @@
 import type { User } from '@/pages/login/api'
 
-export const ACCESS_TOKEN = 'Authorization'
-
 function getTokenKey() {
   return window['pro-layout-localStoragePrefix'] + 'Token'
 }

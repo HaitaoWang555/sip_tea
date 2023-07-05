@@ -1,6 +1,7 @@
 enum ResultCode {
   SUCCESS = 200,
   FAILED = 500,
+  LOGIN_FAILED = 500,
   VALIDATE_FAILED = 412,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
@@ -13,8 +14,9 @@ enum ResultCode {
 enum ResultMessage {
   SUCCESS = '操作成功',
   FAILED = '操作失败',
+  LOGIN_FAILED = '登录失败',
   VALIDATE_FAILED = '参数检验失败',
-  UNAUTHORIZED = '暂未登录或token已经过期',
+  UNAUTHORIZED = '暂未登录或登录已经过期',
   FORBIDDEN = '没有相关权限',
   BAD_REQUEST = 'Bad Request',
   NOT_FOUND = 'Not Found',
