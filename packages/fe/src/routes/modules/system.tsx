@@ -6,6 +6,7 @@ import DepartmentList from '@/pages/system/department/list'
 import RoleList from '@/pages/system/role/list'
 import MenuList from '@/pages/system/menu/list'
 import UserList from '@/pages/system/user/list'
+import ResourceList from '@/pages/system/resource/list'
 
 const systemRouter = {
   path: '/system',
@@ -17,6 +18,11 @@ const systemRouter = {
       path: '/system/menu',
       label: '菜单',
       element: <MenuList />,
+    },
+    {
+      path: '/system/resource',
+      label: '资源',
+      element: <ResourceList />,
     },
     {
       path: '/system/user',

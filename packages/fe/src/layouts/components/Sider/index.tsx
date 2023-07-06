@@ -53,7 +53,7 @@ const MySider = (props: Props) => {
   }
 
   useEffect(() => {
-    // if (!user.id) return
+    if (!user.id) return
     function formatMenu(arr: RouteObject[]) {
       if (!user.menus) {
         if (import.meta.env.VITE_APP_NEED_MOCK === 'true') {
@@ -62,7 +62,7 @@ const MySider = (props: Props) => {
           return []
         }
       } else {
-        const menusPath = user.menus.map((i) => i.title).concat('/')
+        const menusPath = user.menus.map((i) => i.url).concat('/')
         arr = arr.filter((r) => !r.hidden && menusPath.includes(r.path as string))
       }
 

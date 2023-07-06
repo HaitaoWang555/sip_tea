@@ -3,9 +3,11 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { SearchRoleDto } from './dto/search-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, Equal } from 'typeorm';
+import { Repository, Like, Equal, In } from 'typeorm';
 import { Role } from './entities/role.entity';
 import { PageInfo } from '@/common/api/common-page';
+import { Menu } from '../menu/type';
+import { Resource } from '../resource/type';
 
 @Injectable()
 export class RoleService {
@@ -29,22 +31,66 @@ export class RoleService {
   }
 
   create(createRoleDto: CreateRoleDto) {
-    return this.roleRepository.save(createRoleDto);
+    const role = createRoleDto as Role;
+    this.changeRole(role);
+    return this.roleRepository.save(role);
   }
 
   findAll() {
     return this.roleRepository.find();
   }
 
-  findOne(id: number) {
-    return this.roleRepository.findOneBy({ id });
+  async findOne(id: number) {
+    const role = await this.roleRepository.findOne({
+      where: { id },
+      relations: { menus: true, resources: true },
+    });
+    role.menuIds = role.menus.map((i) => i.id);
+    role.resourceIds = role.resources.map((i) => i.id);
+    return role;
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return this.roleRepository.update({ id }, updateRoleDto);
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    const role = await this.findOne(id);
+    Object.assign(role, updateRoleDto);
+    this.changeRole(role);
+    return this.roleRepository.save(role);
   }
 
   remove(id: number) {
     return this.roleRepository.delete(id);
+  }
+
+  async findMenusByRoleIds(ids: number[]) {
+    const roles = await this.roleRepository.find({
+      where: { id: In(ids) },
+      relations: { menus: true },
+    });
+    return roles.map((i) => i.menus).flat();
+  }
+
+  async findResourcesByRoleIds(ids: number[]) {
+    const resources = await this.roleRepository.find({
+      where: { id: In(ids) },
+      relations: { resources: true },
+    });
+    return resources.map((i) => i.resources).flat();
+  }
+
+  private changeRole(role: Role) {
+    if (role.menuIds && role.menuIds.length > 0) {
+      role.menus = role.menuIds.map((i) => {
+        return {
+          id: i,
+        } as Menu;
+      });
+    }
+    if (role.resourceIds && role.resourceIds.length > 0) {
+      role.resources = role.resourceIds.map((i) => {
+        return {
+          id: i,
+        } as Resource;
+      });
+    }
   }
 }

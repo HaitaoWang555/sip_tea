@@ -1,9 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { IsNotEmpty, IsEnum } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Base } from '@/common/entities/base';
+
+import { Role } from '../../role/entities/role.entity';
 
 /**
  * 菜单
@@ -45,4 +47,10 @@ export class Menu extends Base {
   @Column({ comment: '前端路径', length: 128 })
   @IsNotEmpty()
   url: string;
+
+  /**
+   * 角色
+   */
+  @ManyToMany(() => Role, (role) => role.menus)
+  roles?: Role[];
 }

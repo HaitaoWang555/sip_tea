@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SearchUserDto } from './dto/search-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, Equal, In, FindOptionsWhere, FindOptionsSelect } from 'typeorm';
+import { Repository, Like, Equal, In, FindOptionsWhere } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PageInfo } from '@/common/api/common-page';
 import { Position } from '../position/type';

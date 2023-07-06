@@ -1,11 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
-import { IsNotEmpty, IsEnum } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { IsNotEmpty, IsEnum, Allow } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { Base } from '@/common/entities/base';
 
 import { User } from '../../user/entities/user.entity';
+import { Menu } from '../../menu/entities/menu.entity';
+import { Resource } from '../../resource/entities/resource.entity';
 /**
  * 角色
  */
@@ -45,4 +47,46 @@ export class Role extends Base {
    */
   @ManyToMany(() => User, (user) => user.roles)
   users?: User[];
+
+  /**
+   * 菜单
+   */
+  @ManyToMany(() => Menu, (menu) => menu.roles)
+  @JoinTable()
+  @Allow()
+  menus?: Menu[];
+
+  /**
+   * 菜单id 集合
+   */
+  @Allow()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((i) => Number(i));
+    } else {
+      return value;
+    }
+  })
+  menuIds?: number[];
+
+  /**
+   * 资源
+   */
+  @ManyToMany(() => Resource, (r) => r.roles)
+  @JoinTable()
+  @Allow()
+  resources?: Resource[];
+
+  /**
+   * 资源id 集合
+   */
+  @Allow()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((i) => Number(i));
+    } else {
+      return value;
+    }
+  })
+  resourceIds?: number[];
 }

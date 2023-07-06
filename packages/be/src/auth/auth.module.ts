@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { UserModule } from '@/system/user/user.module';
+import { RoleModule } from '@/modules';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from '@/system/user/user.module';
         };
       },
     }),
+    RoleModule,
   ],
   providers: [
     AuthService,

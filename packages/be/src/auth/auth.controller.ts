@@ -23,6 +23,9 @@ export class AuthController {
    */
   @Get('profile')
   getProfile(@Request() req) {
+    if (req.user && req.user.sub) {
+      return this.authService.profile(req.user.sub);
+    }
     return req.user;
   }
 }

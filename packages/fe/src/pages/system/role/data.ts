@@ -1,4 +1,6 @@
 import type { ProItem } from '@/types/components-utils'
+import { tree as findAllMenu } from '../menu/api'
+import { findAll as findAllResource } from '../resource/api'
 export const columnList: ProItem[] = [
   {
     width: '120px',
@@ -31,6 +33,45 @@ export const columnList: ProItem[] = [
     isSearch: true,
     isForm: true,
     noTable: false,
+  },
+  {
+    dataIndex: 'menuIds',
+    title: '菜单',
+    valueType: 'tree-select',
+    formAttrs: {
+      multiple: true,
+      showSearch: true,
+      treeDefaultExpandAll: true,
+      treeCheckStrictly: true,
+      treeCheckable: true,
+      showCheckedStrategy: 'SHOW_ALL',
+    },
+    optionMth: findAllMenu,
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    noCacheOptionMth: true,
+    isForm: true,
+    noTable: true,
+    noInfo: true,
+  },
+  {
+    dataIndex: 'resourceIds',
+    title: '资源',
+    valueType: 'select',
+    formAttrs: {
+      mode: 'multiple',
+    },
+    optionMth: findAllResource,
+    optionsKey: {
+      label: 'title',
+      value: 'id',
+    },
+    noCacheOptionMth: true,
+    isForm: true,
+    noTable: true,
+    noInfo: true,
   },
   {
     width: '120px',
