@@ -2,6 +2,26 @@ import type { ProItem } from '@/types/components-utils'
 import { Position, findAll as findAllPosition } from '../position/api'
 import { Department, findAll as findAllDepartment } from '../department/api'
 import { Role, findAll as findAllRole } from '../role/api'
+import { verify } from './api'
+
+function checkUsername(rule: any, value: string) {
+  return new Promise((resolve, reject) => {
+    if (!value) {
+      rule.message = '请输入用户名！'
+      reject()
+    } else {
+      verify(value)
+        .then(() => {
+          resolve(value)
+        })
+        .catch(() => {
+          rule.message = '用户名重复！'
+          reject()
+        })
+    }
+  })
+}
+
 export const columnList: ProItem[] = [
   {
     width: '120px',
@@ -17,12 +37,16 @@ export const columnList: ProItem[] = [
     title: '用户名',
     valueType: 'input',
     formItemAttrs: {
-      rules: [{ required: true }],
+      validateTrigger: ['onChange', 'onBlur'],
+      rules: [{ required: true, validator: checkUsername, validateTrigger: 'onBlur' }],
     },
     isSearch: true,
     isForm: true,
     noTable: false,
     fixed: 'left',
+    isShowFormItem: (formParam, formType) => {
+      return formType === 'add'
+    },
   },
   {
     width: '120px',
@@ -36,6 +60,9 @@ export const columnList: ProItem[] = [
     isForm: false,
     noTable: true,
     noInfo: true,
+    isShowFormItem: (formParam, formType) => {
+      return formType === 'add'
+    },
   },
   {
     width: '200px',

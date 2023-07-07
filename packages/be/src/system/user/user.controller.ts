@@ -61,4 +61,12 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  /**
+   * 验证用户名是否可用
+   */
+  @Get('/verify/:username')
+  verifyUsername(@Param('username') username: string) {
+    return this.userService.verifyUsername(username);
+  }
 }

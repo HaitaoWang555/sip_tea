@@ -10,6 +10,7 @@ import { Position } from '../position/type';
 import { Department } from '../department/type';
 import { Role } from '../role/type';
 import { encrypt } from '@/utils/crypto';
+import { ApiException } from '@/common/api/error';
 
 @Injectable()
 export class UserService {
@@ -52,9 +53,11 @@ export class UserService {
     return new PageInfo(searchUserDto.pageNum, searchUserDto.pageSize, data[1], data[0]);
   }
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = createUserDto as User;
     this.changeUser(user);
+    await this.verifyUsername(user.username);
+
     user.password = encrypt(user.password);
     return this.userRepository.save(user);
   }
@@ -86,7 +89,6 @@ export class UserService {
     const user = await this.findOne(id);
     Object.assign(user, updateUserDto);
     this.changeUser(user);
-    delete user.password;
     return this.userRepository.save(user);
   }
 
@@ -115,6 +117,17 @@ export class UserService {
           id: i,
         } as Role;
       });
+    }
+  }
+
+  async verifyUsername(username: string) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id'])
+      .where('user.username = :username', { username })
+      .getMany();
+    if (user && user.length > 0) {
+      throw new ApiException('用户名重复！');
     }
   }
 }

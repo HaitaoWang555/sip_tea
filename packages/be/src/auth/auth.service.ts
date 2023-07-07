@@ -15,7 +15,7 @@ export class AuthService {
   async signIn(username: string, pass: string): Promise<SignInResultDto> {
     const user = await this.userService.findOneByUsername(username);
     if (!user || user.password !== encrypt(pass)) {
-      throw new ApiException(ResultCode.LOGIN_FAILED, ResultMessage.LOGIN_FAILED);
+      throw new ApiException(ResultMessage.LOGIN_FAILED, ResultCode.LOGIN_FAILED);
     }
     const payload = { username: user.username, sub: user.id };
     return {

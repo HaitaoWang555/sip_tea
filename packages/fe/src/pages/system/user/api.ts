@@ -49,3 +49,10 @@ export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
     method: 'delete',
   })
 }
+
+export function verify(username: string): AxiosPromise<ResponseBodyType<void>> {
+  return request({
+    url: '/user/verify/' + username,
+    method: 'get',
+  })
+}

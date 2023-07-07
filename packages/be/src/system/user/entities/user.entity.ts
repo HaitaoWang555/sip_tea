@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinTable, ManyToMany, Index } from 'typeorm';
 import { IsNotEmpty, Allow, IsEnum, IsEmail } from 'class-validator';
 import { Status } from '@/common/enum';
 import { ApiProperty } from '@nestjs/swagger';
@@ -24,12 +24,13 @@ export class User extends Base {
   /**
    * 用户名
    */
+  @Index({ unique: true })
   @Column({ comment: '用户名', length: 64 })
   @IsNotEmpty()
   username: string;
 
   /**
-   * 密码 TODO: 密码暂时为空
+   * 密码
    */
   @Column({ comment: '密码', length: 512, select: false })
   @IsNotEmpty()
