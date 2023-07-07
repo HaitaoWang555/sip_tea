@@ -11,12 +11,17 @@ import { Department } from '../department/type';
 import { Role } from '../role/type';
 import { encrypt } from '@/utils/crypto';
 import { ApiException } from '@/common/api/error';
+import { InjectRedis } from '@/redis/redis.decorators';
+import { Redis } from 'ioredis';
+import { REDIS_USER_RESOURCE } from '@/utils/consts';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRedis()
+    private readonly redis: Redis,
   ) {}
 
   async query(searchUserDto: SearchUserDto) {
@@ -89,10 +94,14 @@ export class UserService {
     const user = await this.findOne(id);
     Object.assign(user, updateUserDto);
     this.changeUser(user);
+    if (user.roleIds && user.roleIds.length > 0) {
+      this.delRedisCache(id);
+    }
     return this.userRepository.save(user);
   }
 
   remove(id: number) {
+    this.delRedisCache(id);
     return this.userRepository.delete(id);
   }
 
@@ -129,5 +138,10 @@ export class UserService {
     if (user && user.length > 0) {
       throw new ApiException('用户名重复！');
     }
+  }
+
+  private delRedisCache(id: number) {
+    const redisKey = REDIS_USER_RESOURCE + ':' + id;
+    this.redis.del(redisKey);
   }
 }

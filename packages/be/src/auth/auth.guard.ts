@@ -60,15 +60,16 @@ export class AuthGuard implements CanActivate {
   private async verifyResource(id: number, url: string, method: string) {
     const urls = await this.authService.getUserResource(id);
     for (let index = 0; index < urls.length; index++) {
+      let temUrl = url;
       const element = urls[index];
       if (['GET', 'POST', 'DELETE', 'PATCH', 'DELETE'].some((i) => element.startsWith(i))) {
-        url = method + ':' + url;
+        temUrl = method + ':' + temUrl;
       }
       if (element.endsWith('/**')) {
         const startUrl = element.slice(0, -3);
-        if (url.startsWith(startUrl)) return;
+        if (temUrl.startsWith(startUrl)) return;
       } else {
-        if (element === url) {
+        if (element === temUrl) {
           return;
         }
       }

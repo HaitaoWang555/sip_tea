@@ -3,13 +3,11 @@ import { AuthService } from './auth.service';
 import { Public } from '../decorators/public.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
-import { InjectRedis } from '@/redis/redis.decorators';
-import { Redis } from 'ioredis';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService, @InjectRedis() private readonly redis: Redis) {}
+  constructor(private authService: AuthService) {}
 
   /**
    * 登录

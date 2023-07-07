@@ -6,12 +6,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { Resource } from './entities/resource.entity';
 import { PageInfo } from '@/common/api/common-page';
+import { InjectRedis } from '@/redis/redis.decorators';
+import { Redis } from 'ioredis';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class ResourceService {
   constructor(
     @InjectRepository(Resource)
     private resourceRepository: Repository<Resource>,
+    @InjectRedis()
+    private readonly redis: Redis,
+    private roleService: RoleService,
   ) {}
 
   async query(searchResourceDto: SearchResourceDto) {
@@ -40,10 +46,27 @@ export class ResourceService {
   }
 
   update(id: number, updateResourceDto: UpdateResourceDto) {
+    this.delRedisCache(id);
     return this.resourceRepository.update({ id }, updateResourceDto);
   }
 
   remove(id: number) {
+    this.delRedisCache(id);
     return this.resourceRepository.delete(id);
+  }
+
+  private async effectRoles(id: number) {
+    const resource = await this.resourceRepository.findOne({
+      where: { id },
+      relations: { roles: true },
+    });
+    return resource.roles;
+  }
+
+  async delRedisCache(id: number) {
+    const roles = await this.effectRoles(id);
+    roles.forEach((i) => {
+      this.roleService.delRedisCache(i.id);
+    });
   }
 }
