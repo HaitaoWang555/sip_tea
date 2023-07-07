@@ -7,6 +7,7 @@ import { AppInterceptor } from './app.interceptor';
 import { join } from 'path';
 import * as modules from './modules';
 import { AuthModule } from './auth/auth.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -25,6 +26,12 @@ import { AuthModule } from './auth/auth.module';
       logging: process.env.LOGGING && process.env.LOGGING === '1',
       synchronize: process.env.SYNCHRONIZE && process.env.SYNCHRONIZE === '1',
       namingStrategy: new SnakeNamingStrategy(),
+    }),
+    RedisModule.forRoot({
+      config: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+      },
     }),
     AuthModule,
     ...Object.values(modules),

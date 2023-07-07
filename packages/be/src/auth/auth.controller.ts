@@ -3,14 +3,16 @@ import { AuthService } from './auth.service';
 import { Public } from '../decorators/public.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
+import { InjectRedis } from '@/redis/redis.decorators';
+import { Redis } from 'ioredis';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, @InjectRedis() private readonly redis: Redis) {}
 
   /**
-   * 登陆
+   * 登录
    */
   @Public()
   @Post('login')
@@ -19,7 +21,7 @@ export class AuthController {
   }
 
   /**
-   * 获取登陆用户
+   * 获取登录用户
    */
   @Get('profile')
   getProfile(@Request() req) {
