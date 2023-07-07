@@ -71,6 +71,6 @@ export class DepartmentController {
    */
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.departmentService.remove(+id);
+    return this.departmentService.remove(id.split(',').map((i) => Number(i)));
   }
 }

@@ -65,9 +65,9 @@ export class RoleService {
     return this.roleRepository.save(role);
   }
 
-  remove(id: number) {
-    this.delRedisCache(id);
-    return this.roleRepository.delete(id);
+  remove(ids: number[]) {
+    ids.forEach((i) => this.delRedisCache(i));
+    return this.roleRepository.delete(ids);
   }
 
   async findMenusByRoleIds(ids: number[]) {

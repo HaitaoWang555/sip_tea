@@ -5,8 +5,7 @@ import { query, create, update, findOne, remove } from './api'
 import type { CreatePositionDto, UpdatePositionDto, SearchPositionDtoWithNotPage, Position } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button } from 'antd'
-import { ActionRenderProps } from '@/components/Crud/actionRender'
+import { Button, Modal, message } from 'antd'
 import { ProTableSearchParams } from '@/types/api'
 
 function PositionCrud() {
@@ -17,6 +16,7 @@ function PositionCrud() {
   const [open, setOpen] = useState(false)
   const [formParams, setFormParams] = useState<Position>()
   const [formType, setFormType] = useState('add')
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
   function formatParams(values: SearchPositionDtoWithNotPage) {
     return values
@@ -57,25 +57,35 @@ function PositionCrud() {
     })
   }
 
+  function batchDel() {
+    Modal.confirm({
+      title: '再次确认是否删除！',
+      onOk() {
+        return new Promise((resolve) => {
+          remove(selectedRowKeys.join(',')).then((res) => {
+            message.success(res.data.message)
+            setQueryParams(Object.assign({ doNotReset: true }, queryParam))
+            resolve(true)
+          })
+        })
+      },
+    })
+  }
+
   function OperatorTableChild() {
     return (
       <>
-        <Button type="primary">其它</Button>
-      </>
-    )
-  }
-  function TableActionChild(props: ActionRenderProps<Position>) {
-    function otherMethod() {
-      console.log(props)
-    }
-
-    return (
-      <>
-        <Button type="link" onClick={otherMethod}>
-          其它
+        <Button type="primary" danger onClick={batchDel}>
+          批量删除
         </Button>
       </>
     )
+  }
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedRowKeys)
+    },
   }
 
   return (
@@ -97,8 +107,8 @@ function PositionCrud() {
       del={del}
       submit={submit}
       operatorTableChild={() => <OperatorTableChild />}
-      tableActionChild={(props: ActionRenderProps<Position>) => {
-        return <TableActionChild {...props} />
+      tableProps={{
+        rowSelection: { ...rowSelection },
       }}
     ></Crud>
   )

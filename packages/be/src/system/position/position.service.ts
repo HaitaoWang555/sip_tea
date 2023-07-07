@@ -45,7 +45,7 @@ export class PositionService {
     return this.positionRepository.update({ id }, updatePositionDto);
   }
 
-  remove(id: number) {
-    return this.positionRepository.delete(id);
+  remove(ids: number[]) {
+    return this.positionRepository.delete(ids);
   }
 }

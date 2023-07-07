@@ -54,7 +54,7 @@ export class DepartmentService {
     return this.departmentRepository.update({ id }, updateDepartmentDto);
   }
 
-  remove(id: number) {
-    return this.departmentRepository.delete(id);
+  remove(ids: number[]) {
+    return this.departmentRepository.delete(ids);
   }
 }

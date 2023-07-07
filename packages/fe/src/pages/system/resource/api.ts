@@ -49,7 +49,7 @@ export function update(data: UpdateResourceDto & Resource): AxiosPromise<Respons
   })
 }
 
-export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function remove(id: number | string): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/resource/' + id,
     method: 'delete',

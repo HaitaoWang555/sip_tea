@@ -59,6 +59,6 @@ export class ResourceController {
    */
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.resourceService.remove(+id);
+    return this.resourceService.remove(id.split(',').map((i) => Number(i)));
   }
 }

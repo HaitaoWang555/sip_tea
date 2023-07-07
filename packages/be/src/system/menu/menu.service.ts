@@ -54,7 +54,7 @@ export class MenuService {
     return this.menuRepository.update({ id }, updateMenuDto);
   }
 
-  remove(id: number) {
-    return this.menuRepository.delete(id);
+  remove(ids: number[]) {
+    return this.menuRepository.delete(ids);
   }
 }

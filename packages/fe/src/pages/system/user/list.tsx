@@ -5,7 +5,7 @@ import { query, create, update, findOne, remove } from './api'
 import type { CreateUserDto, UpdateUserDto, SearchUserDtoWithNotPage, User } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button } from 'antd'
+import { Button, Modal, message } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 
@@ -17,6 +17,7 @@ function UserCrud() {
   const [open, setOpen] = useState(false)
   const [formParams, setFormParams] = useState<User>()
   const [formType, setFormType] = useState('add')
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
   function formatParams(values: SearchUserDtoWithNotPage) {
     return values
@@ -60,10 +61,33 @@ function UserCrud() {
     })
   }
 
+  function batchDel() {
+    Modal.confirm({
+      title: '再次确认是否删除！',
+      onOk() {
+        return new Promise((resolve) => {
+          remove(selectedRowKeys.join(',')).then((res) => {
+            message.success(res.data.message)
+            setQueryParams(Object.assign({ doNotReset: true }, queryParam))
+            resolve(true)
+          })
+        })
+      },
+    })
+  }
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedRowKeys)
+    },
+  }
+
   function OperatorTableChild() {
     return (
       <>
-        <Button type="primary">其它</Button>
+        <Button type="primary" danger onClick={batchDel}>
+          批量删除
+        </Button>
       </>
     )
   }
@@ -102,6 +126,9 @@ function UserCrud() {
       operatorTableChild={() => <OperatorTableChild />}
       tableActionChild={(props: ActionRenderProps<User>) => {
         return <TableActionChild {...props} />
+      }}
+      tableProps={{
+        rowSelection: { ...rowSelection },
       }}
     ></Crud>
   )

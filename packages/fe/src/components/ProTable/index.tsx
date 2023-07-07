@@ -123,7 +123,7 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
   }, [props.queryParams])
 
   useEffect(() => {
-    if (props.tableProps && !props.tableProps.pagination) {
+    if (props.tableProps && props.tableProps.pagination === false) {
       // 不分页
       Api.tablePageKey.data = TREEDATAKEY
     } else {

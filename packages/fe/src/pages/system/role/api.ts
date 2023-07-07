@@ -43,7 +43,7 @@ export function update(data: UpdateRoleDto & Role): AxiosPromise<ResponseBodyTyp
   })
 }
 
-export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function remove(id: number | string): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/role/' + id,
     method: 'delete',

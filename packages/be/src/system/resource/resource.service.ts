@@ -50,9 +50,9 @@ export class ResourceService {
     return this.resourceRepository.update({ id }, updateResourceDto);
   }
 
-  remove(id: number) {
-    this.delRedisCache(id);
-    return this.resourceRepository.delete(id);
+  remove(ids: number[]) {
+    ids.forEach((i) => this.delRedisCache(i));
+    return this.resourceRepository.delete(ids);
   }
 
   private async effectRoles(id: number) {

@@ -100,9 +100,9 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  remove(id: number) {
-    this.delRedisCache(id);
-    return this.userRepository.delete(id);
+  remove(ids: number[]) {
+    ids.forEach((i) => this.delRedisCache(i));
+    return this.userRepository.delete(ids);
   }
 
   private changeUser(user: User) {

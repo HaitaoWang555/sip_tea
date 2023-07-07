@@ -5,7 +5,7 @@ import { query, create, update, findOne, remove, tree } from './api'
 import type { CreateMenuDto, UpdateMenuDto, SearchMenuDtoWithNotPage, Menu } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button } from 'antd'
+import { Button, Modal, message } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 
@@ -17,6 +17,7 @@ function MenuCrud() {
   const [open, setOpen] = useState(false)
   const [formParams, setFormParams] = useState<Menu>()
   const [formType, setFormType] = useState('add')
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
 
   function formatParams(values: SearchMenuDtoWithNotPage) {
     return values
@@ -57,22 +58,47 @@ function MenuCrud() {
     })
   }
 
+  function batchDel() {
+    Modal.confirm({
+      title: '再次确认是否删除！',
+      onOk() {
+        return new Promise((resolve) => {
+          remove(selectedRowKeys.join(',')).then((res) => {
+            message.success(res.data.message)
+            setQueryParams(Object.assign({ doNotReset: true }, queryParam))
+            resolve(true)
+          })
+        })
+      },
+    })
+  }
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedRowKeys)
+    },
+  }
+
   function OperatorTableChild() {
     return (
       <>
-        <Button type="primary">其它</Button>
+        <Button type="primary" danger onClick={batchDel}>
+          批量删除
+        </Button>
       </>
     )
   }
   function TableActionChild(props: ActionRenderProps<Menu>) {
-    function otherMethod() {
-      console.log(props)
+    function addNext() {
+      setFormType('add')
+      setFormParams({ parentId: props.record.id } as Menu)
+      setOpen(true)
     }
 
     return (
       <>
-        <Button type="link" onClick={otherMethod}>
-          其它
+        <Button type="link" onClick={addNext}>
+          添加下级
         </Button>
       </>
     )
@@ -100,7 +126,10 @@ function MenuCrud() {
       tableActionChild={(props: ActionRenderProps<Menu>) => {
         return <TableActionChild {...props} />
       }}
-      tableProps={{ pagination: false }}
+      tableProps={{
+        rowSelection: { ...rowSelection },
+        pagination: false,
+      }}
     ></Crud>
   )
 }

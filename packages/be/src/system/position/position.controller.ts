@@ -59,6 +59,6 @@ export class PositionController {
    */
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.positionService.remove(+id);
+    return this.positionService.remove(id.split(',').map((i) => Number(i)));
   }
 }

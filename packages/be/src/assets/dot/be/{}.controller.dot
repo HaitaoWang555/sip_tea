@@ -80,7 +80,7 @@ $blankline
    */
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.{{=it.tableName}}Service.remove(+id);
+    return this.{{=it.tableName}}Service.remove(id.split(',').map((i) => Number(i)));
   }
 }
 $blankline

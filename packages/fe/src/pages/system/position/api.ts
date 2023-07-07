@@ -49,7 +49,7 @@ export function update(data: UpdatePositionDto & Position): AxiosPromise<Respons
   })
 }
 
-export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function remove(id: number | string): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/position/' + id,
     method: 'delete',

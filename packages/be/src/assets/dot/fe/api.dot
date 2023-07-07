@@ -58,7 +58,7 @@ export function update(data: Update{{=className}}Dto & {{=className}}): AxiosPro
   })
 }
 $blankline
-export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function remove(id: number | string): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/{{=it.tableName}}/' + id,
     method: 'delete',

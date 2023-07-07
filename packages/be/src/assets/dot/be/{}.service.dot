@@ -70,8 +70,8 @@ $blankline
     return this.{{=it.tableName}}Repository.update({ id }, update{{=className}}Dto);
   }
 $blankline
-  remove(id: number) {
-    return this.{{=it.tableName}}Repository.delete(id);
+  remove(ids: number[]) {
+    return this.{{=it.tableName}}Repository.delete(ids);
   }
 }
 $blankline

@@ -51,7 +51,7 @@ export function update(data: UpdateMenuDto & Menu): AxiosPromise<ResponseBodyTyp
   })
 }
 
-export function remove(id: number): AxiosPromise<ResponseBodyType<void>> {
+export function remove(id: number | string): AxiosPromise<ResponseBodyType<void>> {
   return request({
     url: '/menu/' + id,
     method: 'delete',
