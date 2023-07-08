@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
 import { Button, Modal, message } from 'antd'
 import { ProTableSearchParams } from '@/types/api'
+import { optionType } from '@/types/components-utils'
 
 function RoleCrud() {
   const [list, updateList] = useColumnList(columnList)
@@ -40,12 +41,27 @@ function RoleCrud() {
   function loadInfo() {
     if (!formParams) throw new Error()
     return findOne(formParams.id).then((res) => {
+      if (res.data.data.menuIds) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        res.data.data.menuIds = res.data.data.menuIds.map((i) => {
+          return {
+            value: i,
+          }
+        })
+      }
       return res
     })
   }
 
   function submit(params: (CreateRoleDto | UpdateRoleDto) & Role) {
     const met = formType === 'add' ? create : update
+    if (params.menuIds && params.menuIds.length > 0) {
+      const menuIds = params.menuIds as unknown as optionType[]
+      params.menuIds = menuIds.map((i) => i.value as number)
+    }
+    if (params.menus) delete params.menus
+    if (params.resources) delete params.resources
     return met(params).then((res) => {
       return res
     })
