@@ -96,6 +96,7 @@ export default function Login() {
   const [form, setForm] = useState<FormInstance<unknown>>()
   const navigate = useNavigate()
   const login = useStore((state) => state.login)
+  const getInfo = useStore((state) => state.getInfo)
 
   function onRender(form: FormInstance<unknown>) {
     setForm(form)
@@ -111,7 +112,9 @@ export default function Login() {
     login(params)
       .then((res) => {
         setToken(res.data.data.token)
-        navigate('/')
+        getInfo().then(() => {
+          navigate('/')
+        })
         message.success(res.data.message)
       })
       .catch((err) => {
