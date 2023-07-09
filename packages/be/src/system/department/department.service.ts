@@ -21,7 +21,7 @@ export class DepartmentService {
         status: searchDepartmentDto.status && Equal(searchDepartmentDto.status),
         code: searchDepartmentDto.code && Like('%' + searchDepartmentDto.code + '%'),
       },
-      skip: searchDepartmentDto.pageNum - 1,
+      skip: (searchDepartmentDto.pageNum - 1) * searchDepartmentDto.pageSize,
       take: searchDepartmentDto.pageSize,
     });
 

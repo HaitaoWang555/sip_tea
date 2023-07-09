@@ -29,7 +29,7 @@ export class GenTableService {
         tableName: searchGenTableDto.tableName && Like('%' + searchGenTableDto.tableName + '%'),
         tableComment: searchGenTableDto.tableComment && Like('%' + searchGenTableDto.tableComment + '%'),
       },
-      skip: searchGenTableDto.pageNum - 1,
+      skip: (searchGenTableDto.pageNum - 1) * searchGenTableDto.pageSize,
       take: searchGenTableDto.pageSize,
     });
 

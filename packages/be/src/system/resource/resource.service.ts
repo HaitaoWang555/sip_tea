@@ -26,7 +26,7 @@ export class ResourceService {
         title: searchResourceDto.title && Like('%' + searchResourceDto.title + '%'),
         url: searchResourceDto.url && Like('%' + searchResourceDto.url + '%'),
       },
-      skip: searchResourceDto.pageNum - 1,
+      skip: (searchResourceDto.pageNum - 1) * searchResourceDto.pageSize,
       take: searchResourceDto.pageSize,
     });
 

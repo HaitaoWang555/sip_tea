@@ -28,7 +28,7 @@ export class RoleService {
         code: searchRoleDto.code && Like('%' + searchRoleDto.code + '%'),
         status: searchRoleDto.status && Equal(searchRoleDto.status),
       },
-      skip: searchRoleDto.pageNum - 1,
+      skip: (searchRoleDto.pageNum - 1) * searchRoleDto.pageSize,
       take: searchRoleDto.pageSize,
     });
 

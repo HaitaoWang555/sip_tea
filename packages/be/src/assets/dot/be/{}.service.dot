@@ -31,7 +31,7 @@ $blankline
 {{?}}
 {{~}}
       },
-      skip: search{{=className}}Dto.pageNum - 1,
+      skip: (search{{=className}}Dto.pageNum - 1) * search{{=className}}Dto.pageSize,
       take: search{{=className}}Dto.pageSize,
     });
 $blankline

@@ -50,7 +50,7 @@ export class UserService {
         status: searchUserDto.status && Equal(searchUserDto.status),
         ...where,
       },
-      skip: searchUserDto.pageNum - 1,
+      skip: (searchUserDto.pageNum - 1) * searchUserDto.pageSize,
       take: searchUserDto.pageSize,
       relations: { positions: true, departments: true, roles: true },
     });

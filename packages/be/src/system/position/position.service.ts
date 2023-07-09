@@ -22,7 +22,7 @@ export class PositionService {
         postRank: searchPositionDto.postRank && Equal(searchPositionDto.postRank),
         status: searchPositionDto.status && Equal(searchPositionDto.status),
       },
-      skip: searchPositionDto.pageNum - 1,
+      skip: (searchPositionDto.pageNum - 1) * searchPositionDto.pageSize,
       take: searchPositionDto.pageSize,
     });
 

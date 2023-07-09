@@ -21,7 +21,7 @@ export class MenuService {
         code: searchMenuDto.code && Equal(searchMenuDto.code),
         url: searchMenuDto.url && Like('%' + searchMenuDto.url + '%'),
       },
-      skip: searchMenuDto.pageNum - 1,
+      skip: (searchMenuDto.pageNum - 1) * searchMenuDto.pageSize,
       take: searchMenuDto.pageSize,
     });
 
