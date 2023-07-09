@@ -28,6 +28,7 @@ export const columnList: ProItem[] = [
     title: '是否包含基础字段',
     valueType: 'switch',
     renderType: 'dict',
+    defaultValue: false,
     option: [
       {
         label: '包含',
