@@ -63,8 +63,9 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
     const params = Object.assign(
       {},
       {
-        [Api.tablePageKey.page]: pageParams ? pageParams.current : paginationParams.current,
-        [Api.tablePageKey.pageSize]: pageParams ? pageParams.pageSize : paginationParams.pageSize,
+        [Api.tablePageKey.page]: pageParams && pageParams.current ? pageParams.current : paginationParams.current,
+        [Api.tablePageKey.pageSize]:
+          pageParams && pageParams.pageSize ? pageParams.pageSize : paginationParams.pageSize,
         filters: TableFilters,
         sorter: TableSorter,
       }
