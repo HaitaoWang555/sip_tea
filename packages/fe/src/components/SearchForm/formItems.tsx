@@ -3,7 +3,7 @@ import { DatePicker, Input, InputNumber, Select, TreeSelect } from 'antd'
 const { RangePicker } = DatePicker
 
 export default function FormItems(item: ProItem) {
-  if (item.valueType === 'input') {
+  if (item.valueType === 'input' || item.valueType === 'text-area') {
     return <Input {...item.formAttrs} allowClear />
   } else if (item.valueType === 'select') {
     return <Select options={item.option} {...item.formAttrs} allowClear />

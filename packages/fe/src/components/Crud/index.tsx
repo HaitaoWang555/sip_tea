@@ -159,6 +159,7 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
       <ProTable
         columnList={formatTableAction(props.columnList)}
         loadData={props.loadData}
+        loadCount={props.loadCount}
         queryParams={props.queryParams}
         searchDataCallBack={searchDataCallBack}
         operatorRender={OperatorTableRender({

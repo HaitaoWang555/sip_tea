@@ -13,6 +13,7 @@ import { TableProps } from 'antd/lib/table/InternalTable'
 export type Props<RecordType> = {
   columnList: any
   loadData: (tableParams: any) => AxiosPromise | Promise<any>
+  loadCount?: () => AxiosPromise | Promise<any>
   style?: CSSProperties
   queryParams?: any
   searchDataCallBack?: (val?: boolean) => void
@@ -71,6 +72,15 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
       }
     )
     if (props.searchDataCallBack) props.searchDataCallBack(true)
+    if (props.loadCount) {
+      props.loadCount().then((res) => {
+        setPaginationParams((p) => {
+          return Object.assign({}, p, {
+            total: findObjValByDeepKey(res, Api.responseKey),
+          })
+        })
+      })
+    }
     props
       .loadData(params)
       .then((res) => {
