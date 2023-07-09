@@ -8,6 +8,7 @@ export type Props = {
   title?: string
   column?: number
   type?: 'dialog'
+  layout?: 'horizontal' | 'vertical'
   setOpen?: (value: React.SetStateAction<boolean>) => void
   formValues?: Record<string, unknown>
   children?: React.ReactNode
@@ -39,6 +40,7 @@ export default function ProInfo(props: Props) {
           title={props.title}
           bordered
           column={props.column || { xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+          layout={props.layout}
         >
           {props.columnList
             .filter((i) => !i.noInfo)

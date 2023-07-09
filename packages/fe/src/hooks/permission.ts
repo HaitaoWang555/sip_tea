@@ -38,7 +38,7 @@ function usePermission(): React.ReactElement<any, string | React.JSXElementConst
       }
     }
     Modal.destroyAll()
-  }, [location, navigate, getInfo])
+  }, [location.pathname, user])
 
   return element
 }

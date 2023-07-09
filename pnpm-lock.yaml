@@ -68,6 +68,9 @@ importers:
       mysql2:
         specifier: 3.3.5
         version: 3.3.5
+      redis-info:
+        specifier: 3.1.0
+        version: 3.1.0
       reflect-metadata:
         specifier: 0.1.13
         version: 0.1.13
@@ -105,6 +108,9 @@ importers:
       '@types/node':
         specifier: 18.16.12
         version: 18.16.12
+      '@types/redis-info':
+        specifier: 3.0.0
+        version: 3.0.0
       '@types/supertest':
         specifier: 2.0.12
         version: 2.0.12
@@ -2011,6 +2017,10 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
       csstype: 3.1.2
+    dev: true
+
+  /@types/redis-info@3.0.0:
+    resolution: {integrity: sha512-uvjYcIvPGAIJvnRT3y6jacP1Qqs3hNQLBeKDvDtJOh5ADISsMsMJK15WzP++cfRfAwb1ZafAXwC3YYC/uKAENQ==}
     dev: true
 
   /@types/scheduler@0.16.3:
@@ -6984,6 +6994,12 @@ packages:
   /redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
     engines: {node: '>=4'}
+    dev: false
+
+  /redis-info@3.1.0:
+    resolution: {integrity: sha512-ER4L9Sh/vm63DkIE0bkSjxluQlioBiBgf5w1UuldaW/3vPcecdljVDisZhmnCMvsxHNiARTTDDHGg9cGwTfrKg==}
+    dependencies:
+      lodash: 4.17.21
     dev: false
 
   /redis-parser@3.0.0:

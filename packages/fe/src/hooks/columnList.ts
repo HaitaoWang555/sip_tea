@@ -39,7 +39,7 @@ function useColumnList(list: ProItem[]): [ProItem[], (element?: ProItem | undefi
     if (import.meta.env.DEV && import.meta.hot && list.length && !equalColumnList(list, columnList)) {
       set(formatColumnList(list, Api.responseKey, updateColumn))
     }
-  }, [list])
+  }, [JSON.stringify(list)])
 
   return [columnList, updateColumn]
 }

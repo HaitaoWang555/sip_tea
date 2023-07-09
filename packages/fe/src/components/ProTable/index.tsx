@@ -137,7 +137,7 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
       <Card>
         <div className={styles['table-operator']}>
           <div>{props.operatorRender && props.operatorRender()}</div>
-          <Setting></Setting>
+          <Setting getDate={getDate}></Setting>
         </div>
         <Table
           sticky
