@@ -50,6 +50,6 @@ export class Department extends Base {
   /**
    * 用户
    */
-  @ManyToMany(() => User, (user) => user.positions)
+  @ManyToMany(() => User, (user) => user.positions, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   users?: User[];
 }

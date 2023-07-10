@@ -50,6 +50,7 @@ export class RoleService {
       where: { id },
       relations: { menus: true, resources: true },
     });
+    if (!role) return;
     role.menuIds = role.menus.map((i) => i.id);
     role.resourceIds = role.resources.map((i) => i.id);
     return role;
@@ -60,13 +61,13 @@ export class RoleService {
     Object.assign(role, updateRoleDto);
     this.changeRole(role);
     if (role.resourceIds && role.resourceIds.length > 0) {
-      this.delRedisCache(id);
+      await this.delRedisCache(id);
     }
     return this.roleRepository.save(role);
   }
 
-  remove(ids: number[]) {
-    ids.forEach((i) => this.delRedisCache(i));
+  async remove(ids: number[]) {
+    await Promise.all(ids.map(async (i) => await this.delRedisCache(i)));
     return this.roleRepository.delete(ids);
   }
 
@@ -108,14 +109,18 @@ export class RoleService {
       where: { id },
       relations: { users: true },
     });
+    if (!role) return;
     return role.users;
   }
 
   async delRedisCache(id: number) {
     const users = await this.effectUsers(id);
-    users.forEach((i) => {
-      const redisKey = REDIS_USER_RESOURCE + ':' + i.id;
-      this.redis.del(redisKey);
-    });
+    if (!users) return;
+    await Promise.all(
+      users.map(async (i) => {
+        const redisKey = REDIS_USER_RESOURCE + ':' + i.id;
+        await this.redis.del(redisKey);
+      }),
+    );
   }
 }

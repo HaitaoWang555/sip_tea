@@ -45,13 +45,13 @@ export class ResourceService {
     return this.resourceRepository.findOneBy({ id });
   }
 
-  update(id: number, updateResourceDto: UpdateResourceDto) {
-    this.delRedisCache(id);
+  async update(id: number, updateResourceDto: UpdateResourceDto) {
+    await this.delRedisCache(id);
     return this.resourceRepository.update({ id }, updateResourceDto);
   }
 
-  remove(ids: number[]) {
-    ids.forEach((i) => this.delRedisCache(i));
+  async remove(ids: number[]) {
+    await Promise.all(ids.map(async (i) => await this.delRedisCache(i)));
     return this.resourceRepository.delete(ids);
   }
 
@@ -60,13 +60,17 @@ export class ResourceService {
       where: { id },
       relations: { roles: true },
     });
+    if (!resource) return;
     return resource.roles;
   }
 
   async delRedisCache(id: number) {
     const roles = await this.effectRoles(id);
-    roles.forEach((i) => {
-      this.roleService.delRedisCache(i.id);
-    });
+    if (!roles) return;
+    await Promise.all(
+      roles.map(async (i) => {
+        await this.roleService.delRedisCache(i.id);
+      }),
+    );
   }
 }

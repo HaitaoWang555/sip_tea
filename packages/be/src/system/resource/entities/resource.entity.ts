@@ -32,6 +32,6 @@ export class Resource extends Base {
   /**
    * 角色
    */
-  @ManyToMany(() => Role, (role) => role.resources)
+  @ManyToMany(() => Role, (role) => role.resources, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   roles?: Role[];
 }

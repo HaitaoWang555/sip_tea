@@ -51,6 +51,6 @@ export class Menu extends Base {
   /**
    * 角色
    */
-  @ManyToMany(() => Role, (role) => role.menus)
+  @ManyToMany(() => Role, (role) => role.menus, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   roles?: Role[];
 }

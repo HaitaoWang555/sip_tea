@@ -76,6 +76,7 @@ export class UserService {
       where: { id },
       relations: { positions: true, departments: true, roles: true },
     });
+    if (!user) return;
     user.positionIds = user.positions.map((i) => i.id);
     user.departmentIds = user.departments.map((i) => i.id);
     user.roleIds = user.roles.map((i) => i.id);

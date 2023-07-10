@@ -45,7 +45,7 @@ export class Role extends Base {
   /**
    * 用户
    */
-  @ManyToMany(() => User, (user) => user.roles)
+  @ManyToMany(() => User, (user) => user.roles, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   users?: User[];
 
   /**
