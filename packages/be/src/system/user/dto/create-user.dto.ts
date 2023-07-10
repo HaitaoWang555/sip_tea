@@ -10,4 +10,5 @@ export class CreateUserDto extends PickType(User, [
   'positionIds',
   'departmentIds',
   'roleIds',
+  'loginTime',
 ]) {}

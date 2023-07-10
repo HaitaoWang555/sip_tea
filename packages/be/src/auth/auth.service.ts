@@ -2,14 +2,15 @@ import { ApiException } from '@/common/api/error';
 import { ResultCode, ResultMessage } from '@/common/api/result-enum';
 import { UserService } from '@/system/user/user.service';
 import { encrypt } from '@/utils/crypto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SignInResultDto } from './dto/sign-in-result.dto';
 import { ProfileDto } from './dto/profile.dto';
 import { RoleService } from '@/system/role/role.service';
 import { InjectRedis } from '@/redis/redis.decorators';
 import { Redis } from 'ioredis';
-import { REDIS_USER_RESOURCE } from '@/utils/consts';
+import { REDIS_USER_RESOURCE, REDIS_USER_CAPTCHA, REDIS_USER_LOGOUT_TOKEN } from '@/utils/consts';
+import { createMathExpr } from 'svg-captcha';
+import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,14 +21,25 @@ export class AuthService {
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
-  async signIn(username: string, pass: string): Promise<SignInResultDto> {
-    const user = await this.userService.findOneByUsername(username);
-    if (!user || user.password !== encrypt(pass)) {
+  async signIn(signInDto: SignInDto): Promise<SignInSuccessDto> {
+    // captcha 验证
+    const captchaKey = REDIS_USER_CAPTCHA + ':' + signInDto.captchaKey;
+    const captchaValue = await this.redis.get(captchaKey);
+    if (captchaValue !== signInDto.captcha) {
+      throw new ApiException('验证码错误！');
+    }
+    this.redis.del(captchaKey);
+
+    const user = await this.userService.findOneByUsername(signInDto.username);
+    if (!user || user.password !== encrypt(signInDto.password)) {
       throw new ApiException(ResultMessage.LOGIN_FAILED, ResultCode.LOGIN_FAILED);
     }
+
     const payload = { username: user.username, sub: user.id };
+    const token = await this.jwtService.signAsync(payload);
+    this.userService.update(user.id, { loginTime: new Date() });
     return {
-      token: await this.jwtService.signAsync(payload),
+      token: token,
     };
   }
 
@@ -57,5 +69,39 @@ export class AuthService {
     this.redis.lpush(redisKey, ...urls);
 
     return urls;
+  }
+
+  async captcha(key: string, ip: string) {
+    const ipKey = REDIS_USER_CAPTCHA + ':' + ip;
+    const ipValue = await this.redis.get(ipKey);
+    const maxIpValue = 20;
+    if (ipValue && Number(ipValue) > maxIpValue) {
+      throw new ApiException('请求频繁！');
+    }
+
+    if (ipValue) {
+      const expire = await this.redis.ttl(ipKey);
+      this.redis.setex(ipKey, expire, Number(ipValue) + 1);
+    } else {
+      this.redis.setex(ipKey, 60, 1);
+    }
+
+    const data = createMathExpr({ mathMin: 1, mathMax: 99, mathOperator: '+/-', width: 90, height: 35 });
+    this.redis.setex(REDIS_USER_CAPTCHA + ':' + key, 60, data.text);
+    return data.data;
+  }
+
+  logout(token: string) {
+    if (!token) return;
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: process.env.SECRET,
+      });
+
+      const time = payload.exp - Math.floor(Date.now() / 1000);
+      this.redis.setex(REDIS_USER_LOGOUT_TOKEN + ':' + token, time, '');
+    } catch (error) {
+      throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
+    }
   }
 }

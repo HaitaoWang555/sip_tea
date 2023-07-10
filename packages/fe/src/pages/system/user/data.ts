@@ -179,7 +179,7 @@ export const columnList: ProItem[] = [
     },
   },
   {
-    width: '120px',
+    width: '180px',
     dataIndex: 'loginTime',
     title: '最后登录时间',
     isSearch: false,

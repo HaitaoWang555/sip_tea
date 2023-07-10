@@ -1,22 +1,29 @@
-import { LoginParams, User, adminUserLogin, adminUserInfo, adminUserLogout, TokenType } from '@/pages/login/api'
+import {
+  SignInDto,
+  ProfileDto,
+  adminUserLogin,
+  adminUserInfo,
+  adminUserLogout,
+  SignInSuccessDto,
+} from '@/pages/login/api'
 import { ResponseBodyType } from '@/types/api'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import { AxiosResponse } from 'axios'
 import { StateCreator } from 'zustand'
 
 export interface UserSlice {
   token: string
-  user: User
-  login: (params: LoginParams) => Promise<AxiosResponse<ResponseBodyType<TokenType>>>
-  getInfo: () => Promise<AxiosResponse<ResponseBodyType<User>>>
+  user: ProfileDto
+  login: (params: SignInDto) => Promise<AxiosResponse<ResponseBodyType<SignInSuccessDto>>>
+  getInfo: () => Promise<AxiosResponse<ResponseBodyType<ProfileDto>>>
   logout: () => Promise<boolean>
   reset: () => void
 }
 export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set, get) => ({
   token: getToken(),
-  user: {},
+  user: {} as ProfileDto,
   login: (params) => {
-    return new Promise<AxiosResponse<ResponseBodyType<TokenType>>>((resolve, reject) => {
+    return new Promise<AxiosResponse<ResponseBodyType<SignInSuccessDto>>>((resolve, reject) => {
       adminUserLogin(params)
         .then((res) => {
           set(() => ({ token: res.data.data.token }))
@@ -28,7 +35,7 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     })
   },
   getInfo() {
-    return new Promise<AxiosResponse<ResponseBodyType<User>>>((resolve, reject) => {
+    return new Promise<AxiosResponse<ResponseBodyType<ProfileDto>>>((resolve, reject) => {
       adminUserInfo()
         .then((res) => {
           set(() => ({ user: res.data.data }))
@@ -43,6 +50,7 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     return new Promise<boolean>((resolve, reject) => {
       adminUserLogout()
         .then(() => {
+          removeToken()
           get().reset()
           resolve(true)
         })
@@ -52,6 +60,6 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     })
   },
   reset() {
-    set({ user: {}, token: '' })
+    set({ user: {} as ProfileDto, token: '' })
   },
 })

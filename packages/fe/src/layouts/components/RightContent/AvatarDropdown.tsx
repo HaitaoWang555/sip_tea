@@ -1,6 +1,5 @@
-import { removeToken } from '@/utils/auth'
 import { LogoutOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown } from 'antd'
+import { Avatar, Dropdown, Modal } from 'antd'
 import { useStore } from '@/stores/index'
 import styles from './styles.module.less'
 
@@ -29,14 +28,23 @@ const AvatarDropdown = () => {
   function onMenuClick({ key }: { key: string; keyPath: string[] }) {
     switch (key) {
       case 'logout':
-        logout()
-          .then(() => {
-            removeToken()
-            window.location.href = '/#/w/login'
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+        Modal.confirm({
+          title: '再次确认是否退出！',
+          onOk() {
+            return new Promise((resolve, reject) => {
+              logout()
+                .then(() => {
+                  window.location.href = '/#/w/login'
+                  resolve(true)
+                })
+                .catch((err) => {
+                  console.log(err)
+                  reject()
+                })
+            })
+          },
+        })
+
         break
 
       default:
@@ -54,7 +62,7 @@ const AvatarDropdown = () => {
       }}
     >
       <span className={styles.action}>
-        <AvatarLogo src={user.icon} />
+        <AvatarLogo />
         <span className={styles.name}>{user.nickName}</span>
       </span>
     </Dropdown>

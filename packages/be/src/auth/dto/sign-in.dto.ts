@@ -14,6 +14,18 @@ export class SignInDto {
    */
   @IsNotEmpty()
   password: string;
+
+  /**
+   * 验证码
+   */
+  @IsNotEmpty()
+  captcha: string;
+
+  /**
+   * 验证码Key
+   */
+  @IsNotEmpty()
+  captchaKey: string;
 }
 
 /**

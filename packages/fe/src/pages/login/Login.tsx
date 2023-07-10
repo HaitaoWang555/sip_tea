@@ -1,8 +1,8 @@
 import ProForm from '@/components/ProForm'
 import useColumnList from '@/hooks/columnList'
-import { FormInstance, message, Button, Input, Spin, Form } from 'antd'
+import { message, Button, Input, Spin, Form } from 'antd'
 import { useEffect, useState } from 'react'
-import { randomImage, LoginParams } from './api'
+import { randomImage, SignInDto } from './api'
 import styles from './styles.module.less'
 import checkCode from '@/assets/checkcode.png'
 import { setToken } from '@/utils/auth'
@@ -34,15 +34,15 @@ const columnList: ProItem[] = [
       type: 'password',
     },
   },
-  // {
-  //   dataIndex: 'captcha',
-  //   title: '验证码',
-  //   formRender: (props: ProItem) => <CaptchaFormItem {...props} />,
-  //   isForm: true,
-  //   formItemAttrs: {
-  //     rules: [{ required: true, trigger: 'blur' }],
-  //   },
-  // },
+  {
+    dataIndex: 'captcha',
+    title: '验证码',
+    formRender: (props: ProItem) => <CaptchaFormItem {...props} />,
+    isForm: true,
+    formItemAttrs: {
+      rules: [{ required: true, trigger: 'blur' }],
+    },
+  },
 ]
 
 function CaptchaFormItem(props: ProItem) {
@@ -80,7 +80,11 @@ function CaptchaFormItem(props: ProItem) {
       <Spin spinning={spin}>
         <div className={styles.imgWrap}>
           {randCodeImage ? (
-            <img id="randCodeImage" src={randCodeImage} onClick={handleChangeCheckCode} />
+            <div
+              id="randCodeImage"
+              dangerouslySetInnerHTML={{ __html: randCodeImage }}
+              onClick={handleChangeCheckCode}
+            ></div>
           ) : (
             <img src={checkCode} onClick={handleChangeCheckCode} />
           )}
@@ -93,20 +97,11 @@ function CaptchaFormItem(props: ProItem) {
 export default function Login() {
   const [list] = useColumnList(columnList)
   const [loading, setLoading] = useState(false)
-  const [form, setForm] = useState<FormInstance<unknown>>()
   const navigate = useNavigate()
   const login = useStore((state) => state.login)
   const getInfo = useStore((state) => state.getInfo)
 
-  function onRender(form: FormInstance<unknown>) {
-    setForm(form)
-  }
-
-  function resetForm() {
-    form?.resetFields()
-  }
-
-  function onSubmit(params: LoginParams) {
+  function onSubmit(params: SignInDto) {
     setLoading(true)
     params.captchaKey = randomImageKey
     login(params)
@@ -124,17 +119,15 @@ export default function Login() {
       })
       .finally(() => {
         setLoading(false)
-        resetForm()
       })
   }
 
   return (
     <>
-      <div id="userLayout">
-        <ProForm columnList={list} onSubmit={onSubmit} onRender={onRender}>
+      <div className={styles.userLayout}>
+        <ProForm columnList={list} onSubmit={onSubmit}>
           <div className="footer-btn-wrap-card">
-            <Button onClick={resetForm}>重置</Button>
-            <Button type="primary" loading={loading} htmlType="submit">
+            <Button type="primary" loading={loading} htmlType="submit" size="large" style={{ width: '100%' }}>
               提交
             </Button>
           </div>

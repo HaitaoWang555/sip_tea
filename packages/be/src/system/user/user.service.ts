@@ -91,8 +91,7 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(id);
-    Object.assign(user, updateUserDto);
+    const user = Object.assign({ id }, updateUserDto) as User;
     this.changeUser(user);
     if (user.roleIds && user.roleIds.length > 0) {
       this.delRedisCache(id);

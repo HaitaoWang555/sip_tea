@@ -2,7 +2,7 @@ import { InjectRedis } from '@/redis/redis.decorators';
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { parse } from 'redis-info';
-import { REDIS_USER_RESOURCE } from '@/utils/consts';
+import { REDIS_USER_RESOURCE, REDIS_USER_CAPTCHA, REDIS_USER_LOGOUT_TOKEN } from '@/utils/consts';
 import { ApiException } from '@/common/api/error';
 
 @Injectable()
@@ -23,6 +23,16 @@ export class CacheService {
         label: '用户资源缓存',
         value: REDIS_USER_RESOURCE,
         type: 'list',
+      },
+      {
+        label: '用户验证码',
+        value: REDIS_USER_CAPTCHA,
+        type: 'string',
+      },
+      {
+        label: '用户退出Token',
+        value: REDIS_USER_LOGOUT_TOKEN,
+        type: 'string',
       },
     ];
   }

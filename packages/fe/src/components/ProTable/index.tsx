@@ -86,11 +86,15 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
       .then((res) => {
         const list = findObjValByDeepKey(res, Api.tablePageKey.data)
         setPaginationParams((p) => {
-          return Object.assign({}, p, {
+          const pageObj = {
             current: params[Api.tablePageKey.page],
             pageSize: params[Api.tablePageKey.pageSize],
             total: findObjValByDeepKey(res, Api.tablePageKey.totalData),
-          })
+          }
+          if (pageObj.total === 0) {
+            delete pageObj.total
+          }
+          return Object.assign({}, p, pageObj)
         })
         setData(list)
       })
