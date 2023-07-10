@@ -26,17 +26,22 @@ export default function TableColumnActionRender<RecordType extends object>(props
       Modal.confirm({
         title: '再次确认是否删除！',
         onOk() {
-          return new Promise((resolve) => {
+          return new Promise((resolve, reject) => {
             props.del &&
-              props.del(record).then((res) => {
-                props.setQueryParams &&
-                  props.setQueryParams((q) => {
-                    return Object.assign({ doNotReset: true }, q)
-                  })
-                message.success(res.data.message)
+              props
+                .del(record)
+                .then((res) => {
+                  props.setQueryParams &&
+                    props.setQueryParams((q) => {
+                      return Object.assign({ doNotReset: true }, q)
+                    })
+                  message.success(res.data.message)
 
-                resolve(res)
-              })
+                  resolve(res)
+                })
+                .catch(() => {
+                  reject()
+                })
           })
         },
       })

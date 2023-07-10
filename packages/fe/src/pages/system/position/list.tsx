@@ -61,12 +61,16 @@ function PositionCrud() {
     Modal.confirm({
       title: '再次确认是否删除！',
       onOk() {
-        return new Promise((resolve) => {
-          remove(selectedRowKeys.join(',')).then((res) => {
-            message.success(res.data.message)
-            setQueryParams(Object.assign({ doNotReset: true }, queryParam))
-            resolve(true)
-          })
+        return new Promise((resolve, reject) => {
+          remove(selectedRowKeys.join(','))
+            .then((res) => {
+              message.success(res.data.message)
+              setQueryParams(Object.assign({ doNotReset: true }, queryParam))
+              resolve(true)
+            })
+            .catch(() => {
+              reject()
+            })
         })
       },
     })
