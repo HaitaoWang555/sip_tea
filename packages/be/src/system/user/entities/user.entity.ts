@@ -52,6 +52,13 @@ export class User extends Base {
   nickName: string;
 
   /**
+   * 头像
+   */
+  @Column({ comment: '头像', length: 512 })
+  @Allow()
+  icon: string;
+
+  /**
    * 最后登录时间
    */
   @Column({

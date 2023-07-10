@@ -180,7 +180,7 @@ function ProForm<RecordType extends object>(props: Props<RecordType>) {
                 </Card>
               )
             })}
-            {props.children && <div style={{ marginTop: 20, borderBottom: '1px solid #f0f0f0' }}>{props.children}</div>}
+            {props.children && <div style={{ marginTop: 20 }}>{props.children}</div>}
             {props.type === 'dialog' && (
               <div className="footer-btn-wrap">
                 <Button

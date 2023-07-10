@@ -1,0 +1,46 @@
+
+.gridContent {
+  background-color: white;
+  padding: 15px 0;
+  .main {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    .leftMenu {
+      width: 224px;
+      :global {
+        .ant-menu-inline {
+          border: none;
+        }
+        .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+          font-weight: bold;
+        }
+      }
+    }
+    .right {
+      flex: 1;
+      padding: 8px 40px;
+      .title {
+        margin-bottom: 12px;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 28px;
+      }
+    }
+  }
+}
+
+.uploadIcon {
+  position: relative;
+  .avatar {
+    position: absolute;
+    left: 80px;
+    top: 3px;
+    margin-right: 8px;
+    color: var(--ant-primary-color);
+    vertical-align: top;
+    background: hsla(0,0%,100%,.85);
+  }
+}
