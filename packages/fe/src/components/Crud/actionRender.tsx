@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import { ResponseBodyType } from '@/types/api'
+import { ConvertInterfaceToDict } from '@/types/components-utils'
 import { Button, message, Modal } from 'antd'
 import { AxiosPromise } from 'axios'
 
@@ -9,6 +11,7 @@ export type Props<RecordType> = {
   setQueryParams?: React.Dispatch<React.SetStateAction<Partial<RecordType>>>
   del?: (params: RecordType) => AxiosPromise<ResponseBodyType<void>>
   tableActionChild?: (params: Props<RecordType> & { record: RecordType }) => JSX.Element
+  submit?: (params: ConvertInterfaceToDict<RecordType>) => AxiosPromise<ResponseBodyType<unknown>>
 }
 
 export type ActionRenderProps<RecordType> = Props<RecordType> & { record: RecordType }
@@ -66,24 +69,29 @@ export default function TableColumnActionRender<RecordType extends object>(props
         >
           详情
         </Button>
-        <Button
-          type="link"
-          onClick={() => {
-            edit(record)
-          }}
-        >
-          修改
-        </Button>
-        <Button
-          type="link"
-          danger
-          onClick={() => {
-            del(record)
-          }}
-        >
-          删除
-        </Button>
-        {/* eslint-disable-next-line react/prop-types */}
+        {props.submit && (
+          <Button
+            type="link"
+            onClick={() => {
+              edit(record)
+            }}
+          >
+            修改
+          </Button>
+        )}
+
+        {props.del && (
+          <Button
+            type="link"
+            danger
+            onClick={() => {
+              del(record)
+            }}
+          >
+            删除
+          </Button>
+        )}
+
         <>{props.tableActionChild && props.tableActionChild({ ...props, record })}</>
       </div>
     )

@@ -10,3 +10,4 @@ export { CacheModule } from './monitor/cache/cache.module';
 export { PoetryModule } from './cms/poetry/poetry.module';
 
 export { UploadModule } from './upload/upload.module';
+export { OperatelogModule } from './monitor/operateLog/operateLog.module';

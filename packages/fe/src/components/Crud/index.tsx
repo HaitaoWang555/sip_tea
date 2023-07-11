@@ -118,6 +118,7 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
           setQueryParams: props.setQueryParams,
           del: props.del,
           tableActionChild: props.tableActionChild,
+          submit: props.submit,
         })
       }
     })
@@ -167,6 +168,7 @@ function Crud<RecordType extends object>(props: Props<RecordType>) {
           setFormParams: props.setFormParams,
           setOpen: props.setOpen,
           operatorTableChild: props.operatorTableChild,
+          submit: props.submit,
         })}
         tableProps={props.tableProps}
         style={{ marginTop: '24px' }}

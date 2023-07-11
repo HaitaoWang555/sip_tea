@@ -7,7 +7,10 @@ import { SearchPoetryDto, SearchPoetryDtoWithNotPage } from './dto/search-poetry
 import { ApiPaginatedResponse } from '@/utils/swagger';
 import { Poetry } from './entities/poetry.entity';
 import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
+import { Log } from '@/common/decorators/log.decorator';
+import { OperateLog } from '@/common/enum/operate-log';
 
+@Log()
 @ApiTags('poetry')
 @Controller('poetry')
 export class PoetryController {
@@ -16,6 +19,7 @@ export class PoetryController {
   /**
    * 分页查询
    */
+  @Log(OperateLog.NORESULT)
   @Get('/query')
   @ApiPaginatedResponse(Poetry)
   query(@Query() searchPoetryDto: SearchPoetryDto) {

@@ -1,10 +1,15 @@
+/* eslint-disable react/prop-types */
+import { ResponseBodyType } from '@/types/api'
+import { ConvertInterfaceToDict } from '@/types/components-utils'
 import { Button } from 'antd'
+import { AxiosPromise } from 'axios'
 
 export type Props<RecordType> = {
   setFormType?: React.Dispatch<React.SetStateAction<string>>
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>
   setFormParams?: React.Dispatch<React.SetStateAction<RecordType | undefined>>
   operatorTableChild?: () => JSX.Element
+  submit?: (params: ConvertInterfaceToDict<RecordType>) => AxiosPromise<ResponseBodyType<unknown>>
 }
 
 export default function OperatorTableRender<RecordType extends object>(props: Props<RecordType>) {
@@ -19,10 +24,12 @@ export default function OperatorTableRender<RecordType extends object>(props: Pr
   return function OperatorRender() {
     return (
       <>
-        <Button type="primary" onClick={add}>
-          新增
-        </Button>
-        {/* eslint-disable-next-line react/prop-types */}
+        {props.submit && (
+          <Button type="primary" onClick={add}>
+            新增
+          </Button>
+        )}
+
         {props.operatorTableChild && props.operatorTableChild()}
       </>
     )
