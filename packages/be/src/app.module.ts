@@ -8,6 +8,8 @@ import { join } from 'path';
 import * as modules from './modules';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis/redis.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { UPLOAD_FILE } from './utils/consts';
 
 @Module({
   imports: [
@@ -32,6 +34,10 @@ import { RedisModule } from './redis/redis.module';
         host: process.env.REDIS_HOST,
         port: Number(process.env.REDIS_PORT),
       },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', UPLOAD_FILE),
+      serveStaticOptions: { index: false },
     }),
     AuthModule,
     ...Object.values(modules),

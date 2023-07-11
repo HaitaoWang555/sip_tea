@@ -10,6 +10,7 @@ import { ProItem } from '@/types/components-utils'
 import styles from './styles.module.less'
 import MyUpload from '@/components/ProForm/MyUpload'
 import { columnList } from './data'
+import { staticUrl } from '@/utils/request'
 
 type FormValue = Omit<User, 'positions' | 'departments'> & {
   position?: string
@@ -29,8 +30,8 @@ function SettingsBase() {
           size="small"
           className={styles.avatar}
           src={
-            (props.formParams && props.formParams.icon) ||
-            'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
+            (props.formParams && staticUrl(props.formParams.icon)) ||
+            '//gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
           }
           alt="avatar"
         />
@@ -69,7 +70,6 @@ function SettingsBase() {
 
   function onSubmit(params: FormValue) {
     setLoading(true)
-    params.id = user.id
     updateAccount(params)
       .then((res) => {
         message.success(res.data.message)

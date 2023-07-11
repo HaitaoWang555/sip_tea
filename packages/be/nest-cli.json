@@ -10,7 +10,8 @@
         "introspectComments": true,
         "controllerKeyOfComment": "summary"
       }
-    }]
+    }],
+    "assets": [{ "include": "static/**/*", "watchAssets": true }]
   },
   "generateOptions": {
     "spec": false

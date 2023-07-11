@@ -2,6 +2,7 @@ import { LogoutOutlined } from '@ant-design/icons'
 import { Avatar, Dropdown, Modal } from 'antd'
 import { useStore } from '@/stores/index'
 import styles from './styles.module.less'
+import { staticUrl } from '@/utils/request'
 
 const AvatarLogo = ({ src }: { src?: string }) => {
   return (
@@ -62,7 +63,7 @@ const AvatarDropdown = () => {
       }}
     >
       <span className={styles.action}>
-        <AvatarLogo />
+        <AvatarLogo src={staticUrl(user.icon)} />
         <span className={styles.name}>{user.nickName}</span>
       </span>
     </Dropdown>

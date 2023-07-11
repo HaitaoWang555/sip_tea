@@ -11,6 +11,7 @@ import { Redis } from 'ioredis';
 import { REDIS_USER_RESOURCE, REDIS_USER_CAPTCHA, REDIS_USER_LOGOUT_TOKEN } from '@/utils/consts';
 import { createMathExpr } from 'svg-captcha';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
+import { UpdateProfileDto } from './type';
 
 @Injectable()
 export class AuthService {
@@ -103,5 +104,9 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
     }
+  }
+
+  updateProfile(id: number, updateProfileDto: UpdateProfileDto) {
+    return this.userService.update(id, updateProfileDto);
   }
 }

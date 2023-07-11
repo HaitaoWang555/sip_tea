@@ -21,6 +21,15 @@ function formatGetParams(params: Record<string, any>) {
   }
 }
 
+export function staticUrl(url?: string) {
+  if (!url) return ''
+  if (url.startsWith('/') && !url.startsWith('//')) {
+    return import.meta.env.VITE_APP_BASE_API + url
+  } else {
+    return url
+  }
+}
+
 // create an axios instance
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,

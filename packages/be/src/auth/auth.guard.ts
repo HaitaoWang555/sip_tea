@@ -64,6 +64,8 @@ export class AuthGuard implements CanActivate {
   }
 
   private async verifyResource(id: number, url: string, method: string) {
+    const ignoreUrls = process.env.IGNORE_URLS && process.env.IGNORE_URLS.split(';');
+    if (ignoreUrls.includes(url)) return;
     const urls = await this.authService.getUserResource(id);
     for (let index = 0; index < urls.length; index++) {
       let temUrl = url;

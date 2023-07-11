@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Ip, Param, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Ip, Param, Post, Put, Request, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from '../decorators/public.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
 import { extractTokenFromHeader } from '@/utils/common';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ResultMessage } from '@/common/api/result-enum';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -30,7 +32,6 @@ export class AuthController {
   /**
    * 退出
    */
-  @Public()
   @Post('logout')
   logout(@Request() req) {
     const token = extractTokenFromHeader(req);
@@ -46,5 +47,17 @@ export class AuthController {
       return this.authService.profile(req.user.sub);
     }
     return req.user;
+  }
+
+  /**
+   * 修改自己信息
+   */
+  @Put('profile')
+  updateProfile(@Request() req, @Body() updateProfileDto: UpdateProfileDto) {
+    if (req.user && req.user.sub) {
+      return this.authService.updateProfile(req.user.sub, updateProfileDto);
+    } else {
+      throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
+    }
   }
 }
