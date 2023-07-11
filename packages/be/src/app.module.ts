@@ -37,6 +37,7 @@ import { UPLOAD_FILE } from './utils/consts';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', UPLOAD_FILE),
+      renderPath: join(__dirname, '..', UPLOAD_FILE),
       serveStaticOptions: { index: false },
     }),
     AuthModule,
