@@ -10,7 +10,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { ResultMessage } from '@/common/api/result-enum';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '../common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { extractTokenFromHeader } from '@/utils/common';
 import { Redis } from 'ioredis';

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Ip, Param, Post, Put, Request, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from '../decorators/public.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
 import { extractTokenFromHeader } from '@/utils/common';

@@ -54,7 +54,7 @@ export class User extends Base {
   /**
    * 头像
    */
-  @Column({ comment: '头像', length: 512 })
+  @Column({ comment: '头像', length: 512, nullable: true })
   @Allow()
   icon: string;
 

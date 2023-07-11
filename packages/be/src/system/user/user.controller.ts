@@ -7,7 +7,9 @@ import { SearchUserDto } from './dto/search-user.dto';
 import { ApiPaginatedResponse } from '@/utils/swagger';
 import { User } from './entities/user.entity';
 import { IsNotObjectEmpty } from '@/common/pipes/is-not-object-empty';
+import { Log } from '@/common/decorators/log.decorator';
 
+@Log()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
