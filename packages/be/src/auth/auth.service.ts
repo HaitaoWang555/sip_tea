@@ -33,7 +33,7 @@ export class AuthService {
 
     const user = await this.userService.findOneByUsername(signInDto.username);
     if (!user || user.password !== encrypt(signInDto.password)) {
-      throw new ApiException(ResultMessage.LOGIN_FAILED, ResultCode.LOGIN_FAILED);
+      throw new ApiException(ResultMessage.LOGIN_FAILED, ResultCode.FAILED);
     }
 
     const payload = { username: user.username, sub: user.id };

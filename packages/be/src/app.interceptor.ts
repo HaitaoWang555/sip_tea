@@ -12,7 +12,10 @@ import { OperateLog } from './common/enum/operate-log';
 export class AppInterceptor implements NestInterceptor {
   private readonly logger = new Logger(AppInterceptor.name);
 
-  constructor(private reflector: Reflector, private operatelogService: OperatelogService) {}
+  constructor(
+    private reflector: Reflector,
+    private operatelogService: OperatelogService,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const loggerType = this.reflector.getAllAndOverride<string>(LOGGER_TYPE, [
