@@ -44,8 +44,12 @@ export class AuthService {
     };
   }
 
-  async profile(id: number) {
+  async profile(id: number, token?: string) {
     const user = await this.userService.findOne(id);
+    if (!user) {
+      await this.logout(token);
+      throw new ApiException(ResultMessage.UNAUTHORIZED, ResultCode.UNAUTHORIZED);
+    }
     const profile: ProfileDto = user;
     const roleIds = profile.roleIds;
     if (roleIds && roleIds.length > 0) {
@@ -92,7 +96,7 @@ export class AuthService {
     return data.data;
   }
 
-  logout(token: string) {
+  async logout(token: string) {
     if (!token) return;
     try {
       const payload = this.jwtService.verify(token, {
@@ -100,7 +104,7 @@ export class AuthService {
       });
 
       const time = payload.exp - Math.floor(Date.now() / 1000);
-      this.redis.setex(REDIS_USER_LOGOUT_TOKEN + ':' + token, time, '');
+      await this.redis.setex(REDIS_USER_LOGOUT_TOKEN + ':' + token, time, '');
     } catch (error) {
       throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
     }

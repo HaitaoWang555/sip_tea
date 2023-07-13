@@ -44,7 +44,8 @@ export class AuthController {
   @Get('profile')
   getProfile(@Request() req) {
     if (req.user && req.user.sub) {
-      return this.authService.profile(req.user.sub);
+      const token = extractTokenFromHeader(req);
+      return this.authService.profile(req.user.sub, token);
     }
     return req.user;
   }
