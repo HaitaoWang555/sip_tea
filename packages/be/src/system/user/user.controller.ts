@@ -71,4 +71,11 @@ export class UserController {
   verifyUsername(@Param('username') username: string) {
     return this.userService.verifyUsername(username);
   }
+  /**
+   * 重置用户密码
+   */
+  @Patch('/resetPassword/:id')
+  resetPassword(@Param('id') id: string) {
+    return this.userService.resetPassword(+id);
+  }
 }

@@ -222,7 +222,7 @@ export const columnList: ProItem[] = [
     renderType: 'date',
   },
   {
-    width: '200px',
+    width: '240px',
     dataIndex: 'action',
     fixed: 'right',
     title: '操作',

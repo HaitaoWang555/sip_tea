@@ -56,3 +56,10 @@ export function verify(username: string): AxiosPromise<ResponseBodyType<void>> {
     method: 'get',
   })
 }
+
+export function resetPassword(id: number): AxiosPromise<ResponseBodyType<string>> {
+  return request({
+    url: '/user/resetPassword/' + id,
+    method: 'patch',
+  })
+}

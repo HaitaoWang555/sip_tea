@@ -15,6 +15,7 @@ import { InjectRedis } from '@/redis/redis.decorators';
 import { Redis } from 'ioredis';
 import { REDIS_USER_RESOURCE } from '@/utils/consts';
 import { UpdatePassword } from './dto/update-password';
+import { generateRandomString } from '@/utils/common';
 
 @Injectable()
 export class UserService {
@@ -152,5 +153,14 @@ export class UserService {
       throw new ApiException('原密码错误！');
     }
     return this.userRepository.update({ id: user.id }, { password: encrypt(updatePassword.newPassword) });
+  }
+
+  async resetPassword(id: number) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    const newPassword = generateRandomString(9);
+    await this.userRepository.update({ id: user.id }, { password: encrypt(newPassword) });
+    return newPassword;
   }
 }

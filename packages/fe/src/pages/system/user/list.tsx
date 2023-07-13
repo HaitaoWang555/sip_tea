@@ -1,11 +1,11 @@
 import Crud from '@/components/Crud'
 import useColumnList from '@/hooks/columnList'
 import { columnList } from './data'
-import { query, create, update, findOne, remove } from './api'
+import { query, create, update, findOne, remove, resetPassword } from './api'
 import type { CreateUserDto, UpdateUserDto, SearchUserDtoWithNotPage, User } from './api'
 import { useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
-import { Button, Modal, message } from 'antd'
+import { Button, Modal, message, notification } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
 
@@ -96,14 +96,32 @@ function UserCrud() {
     )
   }
   function TableActionChild(props: ActionRenderProps<User>) {
-    function otherMethod() {
-      console.log(props)
+    function resetPasswordFn() {
+      Modal.confirm({
+        title: '再次确认是否重置密码！',
+        onOk() {
+          return new Promise((resolve, reject) => {
+            resetPassword(props.record.id)
+              .then((res) => {
+                notification.info({
+                  message: '密码重置成功！',
+                  description: res.data.data,
+                  placement: 'top',
+                })
+                resolve(true)
+              })
+              .catch(() => {
+                reject()
+              })
+          })
+        },
+      })
     }
 
     return (
       <>
-        <Button type="link" onClick={otherMethod}>
-          其它
+        <Button type="link" onClick={resetPasswordFn}>
+          重置密码
         </Button>
       </>
     )
