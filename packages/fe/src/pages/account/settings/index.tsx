@@ -3,6 +3,7 @@ import { Menu } from 'antd'
 import BaseView from './base'
 import styles from './styles.module.less'
 import { ItemType } from 'antd/es/menu/hooks/useItems'
+import Security from './security'
 
 type SettingsStateKeys = 'base' | 'security' | 'binding' | 'notification'
 type SettingsState = {
@@ -46,6 +47,9 @@ function AccountSettings() {
     switch (selectKey) {
       case 'base':
         return <BaseView />
+
+      case 'security':
+        return <Security />
       default:
         return null
     }

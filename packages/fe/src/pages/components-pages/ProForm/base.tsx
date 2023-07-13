@@ -5,17 +5,18 @@ import { Button, FormInstance, message } from 'antd'
 import { baseData } from './data'
 import useColumnList from '@/hooks/columnList'
 
+let formInstance: FormInstance<unknown>
+
 export default function BaseProForm() {
   const [list] = useColumnList(baseData)
   const [loading, setLoading] = useState(false)
-  const [form, setForm] = useState<FormInstance<unknown>>()
 
   function onRender(form: FormInstance<unknown>) {
-    setForm(form)
+    formInstance = form
   }
 
   function resetForm() {
-    form?.resetFields()
+    formInstance?.resetFields()
   }
 
   function onSubmit(params: any) {

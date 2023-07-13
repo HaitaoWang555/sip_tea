@@ -14,6 +14,7 @@ import { ApiException } from '@/common/api/error';
 import { InjectRedis } from '@/redis/redis.decorators';
 import { Redis } from 'ioredis';
 import { REDIS_USER_RESOURCE } from '@/utils/consts';
+import { UpdatePassword } from './dto/update-password';
 
 @Injectable()
 export class UserService {
@@ -143,5 +144,13 @@ export class UserService {
   private delRedisCache(id: number) {
     const redisKey = REDIS_USER_RESOURCE + ':' + id;
     this.redis.del(redisKey);
+  }
+
+  async changePassword(username: string, updatePassword: UpdatePassword) {
+    const user = await this.findOneByUsername(username);
+    if (user.password !== encrypt(updatePassword.oldPassword)) {
+      throw new ApiException('原密码错误！');
+    }
+    return this.userRepository.update({ id: user.id }, { password: encrypt(updatePassword.newPassword) });
   }
 }

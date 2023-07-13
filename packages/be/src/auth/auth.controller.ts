@@ -6,6 +6,7 @@ import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
 import { extractTokenFromHeader } from '@/utils/common';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ResultMessage } from '@/common/api/result-enum';
+import { UpdatePassword } from '@/system/user/dto/update-password';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -57,6 +58,18 @@ export class AuthController {
   updateProfile(@Request() req, @Body() updateProfileDto: UpdateProfileDto) {
     if (req.user && req.user.sub) {
       return this.authService.updateProfile(req.user.sub, updateProfileDto);
+    } else {
+      throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
+    }
+  }
+
+  /**
+   * 修改自己密码
+   */
+  @Put('profile/password')
+  updateProfilePassword(@Request() req, @Body() updatePassword: UpdatePassword) {
+    if (req.user && req.user.sub) {
+      return this.authService.updateProfilePassword(req.user.username, updatePassword);
     } else {
       throw new UnauthorizedException(ResultMessage.UNAUTHORIZED);
     }

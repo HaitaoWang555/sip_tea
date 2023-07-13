@@ -53,7 +53,7 @@ function BaseCrud() {
   function loadInfo() {
     if (!formParams) throw new Error()
     return findOne(formParams.id).then((res) => {
-      setEditableColumns(res.data.data.columns)
+      setEditableColumns(res.data.data.columns ? res.data.data.columns : [])
       return res
     })
   }

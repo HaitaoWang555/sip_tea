@@ -12,6 +12,7 @@ import { REDIS_USER_RESOURCE, REDIS_USER_CAPTCHA, REDIS_USER_LOGOUT_TOKEN } from
 import { createMathExpr } from 'svg-captcha';
 import { SignInDto, SignInSuccessDto } from './dto/sign-in.dto';
 import { UpdateProfileDto } from './type';
+import { UpdatePassword } from '@/system/user/dto/update-password';
 
 @Injectable()
 export class AuthService {
@@ -112,5 +113,9 @@ export class AuthService {
 
   updateProfile(id: number, updateProfileDto: UpdateProfileDto) {
     return this.userService.update(id, updateProfileDto);
+  }
+
+  updateProfilePassword(username: string, updatePassword: UpdatePassword) {
+    return this.userService.changePassword(username, updatePassword);
   }
 }
