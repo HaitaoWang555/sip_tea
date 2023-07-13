@@ -11,11 +11,13 @@ import { RedisModule } from './redis/redis.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UPLOAD_FILE } from './utils/consts';
 
+const envFilePath = process.env.NODE_ENV === 'prod' ? '.env' : `.env.${process.env.NODE_ENV}`;
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

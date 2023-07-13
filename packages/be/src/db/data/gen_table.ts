@@ -1,0 +1,68 @@
+import { GenTable } from '../../gen_table/entities/gen_table.entity';
+
+export const gen_table: GenTable[] = [
+  {
+    id: 3,
+    tableName: 'department',
+    tableComment: '部门',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 1,
+  },
+  {
+    id: 6,
+    tableName: 'position',
+    tableComment: '职位',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 0,
+  },
+  {
+    id: 17,
+    tableName: 'role',
+    tableComment: '角色',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 0,
+  },
+  {
+    id: 18,
+    tableName: 'menu',
+    tableComment: '菜单',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 1,
+  },
+  {
+    id: 19,
+    tableName: 'user',
+    tableComment: '用户',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 0,
+  },
+  {
+    id: 20,
+    tableName: 'resource',
+    tableComment: '资源',
+    package: 'system',
+    isHaveBase: 1,
+    isTree: 0,
+  },
+  {
+    id: 21,
+    tableName: 'poetry',
+    tableComment: '诗词',
+    package: 'cms',
+    isHaveBase: 0,
+    isTree: 0,
+  },
+  {
+    id: 22,
+    tableName: 'operateLog',
+    tableComment: '操作日志',
+    package: 'monitor',
+    isHaveBase: 0,
+    isTree: 0,
+  },
+];
