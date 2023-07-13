@@ -34,12 +34,12 @@ function useColumnList(list: ProItem[]): [ProItem[], (element?: ProItem | undefi
     updateOptions()
   }, [columnList])
 
-  useEffect(() => {
-    // 开发 热更新使用
-    if (import.meta.env.DEV && import.meta.hot && list.length && !equalColumnList(list, columnList)) {
-      set(formatColumnList(list, Api.responseKey, updateColumn))
-    }
-  }, [JSON.stringify(list)])
+  // useEffect(() => {
+  //   // 开发 热更新使用
+  //   if (import.meta.env.DEV && import.meta.hot && list.length && !equalColumnList(list, columnList)) {
+  //     set(formatColumnList(list, Api.responseKey, updateColumn))
+  //   }
+  // }, [JSON.stringify(list)])
 
   return [columnList, updateColumn]
 }

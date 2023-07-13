@@ -12,6 +12,7 @@ export const columnList: ProItem[] = [
     width: '120px',
     dataIndex: 'path',
     title: '请求路径',
+    fixed: 'left',
     valueType: 'input',
     isSearch: true,
     noTable: false,
@@ -34,7 +35,7 @@ export const columnList: ProItem[] = [
     noTable: false,
   },
   {
-    width: 'auto',
+    width: '300px',
     dataIndex: 'query',
     title: 'query',
     isSearch: false,
@@ -48,7 +49,7 @@ export const columnList: ProItem[] = [
     noTable: false,
   },
   {
-    width: 'auto',
+    width: '300px',
     dataIndex: 'body',
     title: 'body',
     isSearch: false,

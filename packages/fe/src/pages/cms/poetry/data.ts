@@ -39,7 +39,7 @@ export const columnList: ProItem[] = [
     noTable: false,
   },
   {
-    width: 'auto',
+    width: '300px',
     dataIndex: 'content',
     title: '内容',
     valueType: 'text-area',
