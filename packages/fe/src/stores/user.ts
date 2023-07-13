@@ -11,6 +11,9 @@ import { getToken, removeToken } from '@/utils/auth'
 import { AxiosResponse } from 'axios'
 import { StateCreator } from 'zustand'
 
+import componentsPagesRouter from '@/routes/modules/components-pages'
+import { flatTree } from '@/utils/tree'
+
 export interface UserSlice {
   token: string
   user: ProfileDto
@@ -38,6 +41,17 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     return new Promise<AxiosResponse<ResponseBodyType<ProfileDto>>>((resolve, reject) => {
       adminUserInfo()
         .then((res) => {
+          if (import.meta.env.VITE_APP_ENV === 'development') {
+            let staticUrl: any[] = []
+            flatTree([componentsPagesRouter], staticUrl)
+            staticUrl = staticUrl.map((i) => {
+              return {
+                title: i.label,
+                url: i.path,
+              }
+            })
+            res.data.data.menus.push(...staticUrl)
+          }
           set(() => ({ user: res.data.data }))
           resolve(res)
         })

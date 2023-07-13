@@ -2,8 +2,9 @@ import ProTable from '@/components/ProTable'
 import useColumnList from '@/hooks/columnList'
 import { userList, UserParams } from '@/pages/components-pages/api'
 import { ProItem } from '@/types/components-utils'
-import { useState } from 'react'
 import { getOptions } from '../api'
+import { useContext, useEffect, useState } from 'react'
+import { ApiContext, DATAKEY } from '@/context/api-context'
 
 const columnList: ProItem[] = [
   {
@@ -30,6 +31,7 @@ const columnList: ProItem[] = [
 export default function ProTableBase() {
   const [queryParam] = useState<UserParams>()
   const [list] = useColumnList(columnList)
+  const Api = useContext(ApiContext)
 
   function loadData(tableParams: any) {
     if (Object.assign(tableParams.sorter)) {
@@ -41,5 +43,12 @@ export default function ProTableBase() {
     })
   }
 
-  return <ProTable columnList={list} loadData={loadData} />
+  useEffect(() => {
+    Api.tablePageKey.data = 'data.data.records'
+    return () => {
+      Api.tablePageKey.data = DATAKEY
+    }
+  }, [])
+
+  return <ProTable columnList={list} loadData={loadData} freezeApi={true} />
 }

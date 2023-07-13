@@ -2,10 +2,11 @@ import Crud from '@/components/Crud'
 import useColumnList from '@/hooks/columnList'
 import { columnList } from './data'
 import { UserEntity, userList, UserParams, addUser, editUser, userInfo, delUser } from '@/pages/components-pages/api'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getFormDefaultValues } from '@/utils/components'
 import { Button } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
+import { ApiContext, DATAKEY } from '@/context/api-context'
 
 function BaseCrud() {
   const [list, updateList] = useColumnList(columnList)
@@ -13,6 +14,7 @@ function BaseCrud() {
   const [open, setOpen] = useState(false)
   const [formParams, setFormParams] = useState<UserEntity>()
   const [formType, setFormType] = useState('add')
+  const Api = useContext(ApiContext)
 
   function formatParams(values: UserParams) {
     if (values.createAt && values.createAt instanceof Array) values.createAt = values.createAt.join(',')
@@ -73,6 +75,13 @@ function BaseCrud() {
     )
   }
 
+  useEffect(() => {
+    Api.tablePageKey.data = 'data.data.records'
+    return () => {
+      Api.tablePageKey.data = DATAKEY
+    }
+  }, [])
+
   return (
     <Crud<UserEntity>
       title="用户"
@@ -94,6 +103,7 @@ function BaseCrud() {
       tableActionChild={(props: ActionRenderProps<UserEntity>) => {
         return <TableActionChild {...props} />
       }}
+      freezeApi={true}
     ></Crud>
   )
 }

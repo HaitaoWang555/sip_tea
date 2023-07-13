@@ -19,6 +19,7 @@ export type Props<RecordType> = {
   searchDataCallBack?: (val?: boolean) => void
   operatorRender?: () => JSX.Element
   tableProps?: TableProps<RecordType>
+  freezeApi?: boolean
 }
 
 type MyTablePaginationConfig = {
@@ -138,11 +139,13 @@ export default function ProTable<RecordType extends object>(props: Props<RecordT
   }, [props.queryParams])
 
   useEffect(() => {
-    if (props.tableProps && props.tableProps.pagination === false) {
-      // 不分页
-      Api.tablePageKey.data = TREEDATAKEY
-    } else {
-      Api.tablePageKey.data = DATAKEY
+    if (!props.freezeApi) {
+      if (props.tableProps && props.tableProps.pagination === false) {
+        // 不分页
+        Api.tablePageKey.data = TREEDATAKEY
+      } else {
+        Api.tablePageKey.data = DATAKEY
+      }
     }
     initColumns(props.columnList)
   }, [props.columnList])

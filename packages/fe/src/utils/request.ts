@@ -62,7 +62,7 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   async (response) => {
-    if (import.meta.env.ENV === 'production' && isNeedMock) {
+    if (import.meta.env.VITE_APP_ENV === 'production' && isNeedMock) {
       const mockRes = await mock(response)
       if (mockRes) {
         return Promise.resolve(mockRes) as unknown as AxiosResponse<any, any>

@@ -39,3 +39,13 @@ export function findItemInTree(tree: any[], key: any, urls: any[]): any {
 export function hasPermission(urls: (string | undefined)[], route: any) {
   return constantRoutesPath.includes(route.path || '') || urls.includes(route.path || '')
 }
+
+export function flatTree(tree: any[], result: any[]) {
+  for (let index = 0; index < tree.length; index++) {
+    const element = tree[index]
+    result.push(element)
+    if (element.children && element.children.length > 0) {
+      flatTree(element.children, result)
+    }
+  }
+}
