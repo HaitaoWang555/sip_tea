@@ -8,6 +8,7 @@ import { getFormDefaultValues } from '@/utils/components'
 import { Button, Modal, message, notification } from 'antd'
 import { ActionRenderProps } from '@/components/Crud/actionRender'
 import { ProTableSearchParams } from '@/types/api'
+import { PermissionWrap } from '@/components/PermissionWrap'
 
 function UserCrud() {
   const [list, updateList] = useColumnList(columnList)
@@ -120,9 +121,11 @@ function UserCrud() {
 
     return (
       <>
-        <Button type="link" onClick={resetPasswordFn}>
-          重置密码
-        </Button>
+        <PermissionWrap urls={['/system/user/updatePassword']}>
+          <Button type="link" onClick={resetPasswordFn}>
+            重置密码
+          </Button>
+        </PermissionWrap>
       </>
     )
   }

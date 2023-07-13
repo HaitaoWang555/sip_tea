@@ -47,6 +47,28 @@ export const columnList: ProItem[] = [
   },
   {
     width: '120px',
+    dataIndex: 'type',
+    title: '类型',
+    valueType: 'select',
+    formItemAttrs: {
+      rules: [{ required: true }],
+    },
+    isForm: true,
+    noTable: false,
+    renderType: 'dict',
+    option: [
+      {
+        label: '菜单',
+        value: 1,
+      },
+      {
+        label: '按钮',
+        value: 2,
+      },
+    ],
+  },
+  {
+    width: '120px',
     dataIndex: 'code',
     title: '状态',
     valueType: 'select',
@@ -69,7 +91,8 @@ export const columnList: ProItem[] = [
     ],
   },
   {
-    width: '120px',
+    width: '300px',
+    minWidth: '260px',
     dataIndex: 'url',
     title: '前端路径',
     valueType: 'input',
@@ -91,7 +114,7 @@ export const columnList: ProItem[] = [
     renderType: 'date',
   },
   {
-    width: '180px',
+    width: '240px',
     dataIndex: 'action',
     fixed: 'right',
     title: '操作',

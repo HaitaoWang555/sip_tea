@@ -1,9 +1,12 @@
 import request from '@/utils/request'
 import type { ResponseBodyType } from '@/types/api'
 import type { AxiosPromise } from 'axios'
-import type { SignInDto, SignInSuccessDto, ProfileDto as P } from 'be/auth/type'
-import type { User } from 'be/system/user/type'
-type ProfileDto = P & User
+import type { SignInDto, SignInSuccessDto } from 'be/auth/type'
+import { Menu } from '../system/menu/api'
+import { User } from '../system/user/api'
+type ProfileDto = {
+  menus: Menu[]
+} & User
 export type { SignInDto, SignInSuccessDto, ProfileDto }
 
 export function randomImage(key: string): AxiosPromise<ResponseBodyType<string>> {
