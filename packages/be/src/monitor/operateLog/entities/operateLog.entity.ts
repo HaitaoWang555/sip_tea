@@ -80,7 +80,7 @@ export class Operatelog {
    */
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   status: Status;
 
   /**

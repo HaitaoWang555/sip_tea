@@ -56,7 +56,7 @@ export class User extends Base {
    */
   @Column({ comment: '头像', length: 512, nullable: true })
   @Allow()
-  icon: string;
+  icon?: string;
 
   /**
    * 最后登录时间
@@ -73,7 +73,7 @@ export class User extends Base {
       },
     },
   })
-  loginTime: Date;
+  loginTime?: Date;
 
   /**
    * 状态
@@ -81,7 +81,7 @@ export class User extends Base {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   status: Status;
 
   /**

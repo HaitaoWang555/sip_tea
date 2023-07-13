@@ -38,7 +38,7 @@ export class Menu extends Base {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   code: Status;
 
   /**

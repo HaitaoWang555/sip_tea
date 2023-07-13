@@ -42,7 +42,7 @@ export class GenTable extends Base {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   isHaveBase: Status;
 
   /**
@@ -52,7 +52,7 @@ export class GenTable extends Base {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   isTree: Status;
 
   /**
@@ -60,11 +60,11 @@ export class GenTable extends Base {
    */
   @OneToMany(() => GenTableColumn, (column) => column.table, { cascade: true })
   @Allow()
-  columns: GenTableColumn[];
+  columns?: GenTableColumn[];
 
   /**
    * 本次要生成的文件
    */
   @Allow()
-  templeteFiles: string[];
+  templeteFiles?: string[];
 }

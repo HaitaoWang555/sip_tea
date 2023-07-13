@@ -58,7 +58,7 @@ export class {{=className}} {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column({ default: Status.NO })
+  @Column({ default: Status.NO, type: 'tinyint' })
   {{=column.columnName}}: Status;
 {{?}}
   {{??}}

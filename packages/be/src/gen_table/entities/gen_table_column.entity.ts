@@ -55,7 +55,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isPk: Status;
 
   /**
@@ -64,7 +64,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isTable: Status;
 
   /**
@@ -73,7 +73,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isForm: Status;
 
   /**
@@ -82,7 +82,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isQuery: Status;
 
   /**
@@ -91,7 +91,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isInfo: Status;
 
   /**
@@ -100,7 +100,7 @@ export class GenTableColumn {
   @ApiProperty({ enum: [Status.YES, Status.NO] })
   @Type(() => Number)
   @IsEnum(Status)
-  @Column()
+  @Column({ default: Status.NO, type: 'tinyint' })
   isRequired: Status;
 
   /**

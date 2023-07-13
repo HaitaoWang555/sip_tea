@@ -28,7 +28,7 @@ export class Base {
       },
     },
   })
-  createdAt: Date;
+  createdAt?: Date;
   /**
    * 更新时间
    */
@@ -46,7 +46,7 @@ export class Base {
       },
     },
   })
-  updatedAt: Date;
+  updatedAt?: Date;
 
   /**
    * 备注
