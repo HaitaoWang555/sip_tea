@@ -16,6 +16,7 @@ import { extractTokenFromHeader } from '@/utils/common';
 import { Redis } from 'ioredis';
 import { InjectRedis } from '@/redis/redis.decorators';
 import { REDIS_USER_LOGOUT_TOKEN } from '@/utils/consts';
+import { LOGGER_TYPE } from '@/common/decorators/log.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -32,12 +33,18 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+    const loggerType = this.reflector.getAllAndOverride<string>(LOGGER_TYPE, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    const request: Request = context.switchToHttp().getRequest();
+    request['loggerType'] = loggerType;
+    request['starting'] = Date.now();
     if (isPublic) {
       // 💡 See this condition
       return true;
     }
 
-    const request: Request = context.switchToHttp().getRequest();
     const token = extractTokenFromHeader(request);
     const isLogout = await this.redis.exists(REDIS_USER_LOGOUT_TOKEN + ':' + token);
     if (!token || isLogout === 1) {

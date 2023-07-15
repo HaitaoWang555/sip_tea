@@ -2,7 +2,7 @@ import { ApiException } from '@/common/api/error';
 import { ResultCode, ResultMessage } from '@/common/api/result-enum';
 import { UserService } from '@/system/user/user.service';
 import { encrypt } from '@/utils/crypto';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ProfileDto } from './dto/profile.dto';
 import { RoleService } from '@/system/role/role.service';
@@ -16,6 +16,8 @@ import { UpdatePassword } from '@/system/user/dto/update-password';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
@@ -39,7 +41,9 @@ export class AuthService {
 
     const payload = { username: user.username, sub: user.id };
     const token = await this.jwtService.signAsync(payload);
-    this.userService.update(user.id, { loginTime: new Date() });
+    this.userService.update(user.id, { loginTime: new Date() }).catch((err) => {
+      this.logger.error(err);
+    });
     return {
       token: token,
     };

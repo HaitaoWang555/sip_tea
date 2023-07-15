@@ -11,7 +11,7 @@ import { RedisModule } from './redis/redis.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UPLOAD_FILE } from './utils/consts';
 
-const envFilePath = process.env.NODE_ENV === 'prod' ? '.env' : `.env.${process.env.NODE_ENV}`;
+const envFilePath = process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}`;
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ const envFilePath = process.env.NODE_ENV === 'prod' ? '.env' : `.env.${process.e
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DB,
       entities: [join(__dirname, '**', '/entities/*.entity.{ts,js}')],
-      logging: process.env.LOGGING && process.env.LOGGING === '1',
+      logging: process.env.NODE_ENV === 'production' ? ['error', 'warn', 'schema'] : true,
       synchronize: process.env.SYNCHRONIZE && process.env.SYNCHRONIZE === '1',
       namingStrategy: new SnakeNamingStrategy(),
     }),

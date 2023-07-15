@@ -48,7 +48,7 @@ export class Operatelog {
   /**
    * body
    */
-  @Column({ comment: 'body', length: 2048, nullable: true })
+  @Column({ comment: 'body', type: 'text', nullable: true })
   body: string;
 
   /**
@@ -60,7 +60,7 @@ export class Operatelog {
   /**
    * 错误信息
    */
-  @Column({ comment: '错误信息', length: 2048, nullable: true, select: false })
+  @Column({ comment: '错误信息', type: 'text', nullable: true, select: false })
   error: string;
 
   /**
