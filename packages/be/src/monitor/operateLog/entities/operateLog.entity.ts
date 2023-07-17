@@ -30,7 +30,7 @@ export class Operatelog {
   /**
    * ip
    */
-  @Column({ comment: 'ip', length: 16, nullable: true })
+  @Column({ comment: 'ip', length: 64, nullable: true })
   ip: string;
 
   /**
