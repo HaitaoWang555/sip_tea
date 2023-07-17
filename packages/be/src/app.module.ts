@@ -34,13 +34,14 @@ const envFilePath = process.env.NODE_ENV === 'production' ? '.env' : `.env.${pro
     RedisModule.forRoot({
       config: {
         host: process.env.REDIS_HOST,
+        username: 'default',
         port: Number(process.env.REDIS_PORT),
+        password: process.env.REDIS_PASSWORD,
       },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', UPLOAD_FILE),
       renderPath: join(__dirname, '..', UPLOAD_FILE),
-      serveStaticOptions: { index: false },
     }),
     AuthModule,
     ...Object.values(modules),

@@ -4,12 +4,14 @@ import react from '@vitejs/plugin-react-swc'
 const pathSrc = path.resolve(__dirname, 'src')
 const beSrc = path.resolve(__dirname, '../be/src')
 import mockPlugin from './plugins/mock'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const isBuild = command === 'build'
   const env = loadEnv(mode, process.cwd())
   const devPlugins = []
+  const isNeedMock = env.VITE_APP_NEED_MOCK === 'true'
 
   if (!isBuild) {
     devPlugins.push()
@@ -29,7 +31,7 @@ export default defineConfig(({ command, mode }) => {
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
       __BUILD_DATE__: JSON.stringify(new Date().toLocaleString()),
     },
-    plugins: [react(), mockPlugin(command), ...devPlugins],
+    plugins: [react(), mockPlugin(command, isNeedMock), ...devPlugins],
     server: {
       proxy: {
         [env.VITE_APP_BASE_API]: {
@@ -54,7 +56,17 @@ export default defineConfig(({ command, mode }) => {
         },
       },
       rollupOptions: {
-        plugins: [],
+        plugins:
+          env.VITE_APP_NEED_VISUALIZER === 'true'
+            ? [
+                visualizer(() => {
+                  return {
+                    filename: path.join('dist', 'stats.html'),
+                    gzipSize: true,
+                  }
+                }),
+              ]
+            : [],
         output: {
           manualChunks(id) {
             if (

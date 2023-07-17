@@ -57,7 +57,7 @@ function requestMiddleware() {
   return middleware
 }
 
-export default function myPlugin(command: 'build' | 'serve'): Plugin {
+export default function myPlugin(command: 'build' | 'serve', isNeedMock: boolean): Plugin {
   return {
     name: 'vite-plugin-mock',
     configureServer: async ({ middlewares }) => {
@@ -69,7 +69,7 @@ export default function myPlugin(command: 'build' | 'serve'): Plugin {
       if (command === 'build' && id.endsWith('/src/utils/prodMock.ts')) {
         // build: 由 Rollup 调用的插件
         return {
-          code: `${injectCode}\n${code}`,
+          code: isNeedMock ? `${injectCode}\n${code}` : code,
         }
       } else {
         return null

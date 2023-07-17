@@ -128,7 +128,7 @@ export default function Login() {
         <ProForm columnList={list} onSubmit={onSubmit}>
           <div className="footer-btn-wrap-card">
             <Button type="primary" loading={loading} htmlType="submit" size="large" style={{ width: '100%' }}>
-              提交
+              登录
             </Button>
           </div>
         </ProForm>

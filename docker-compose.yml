@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes: 
+      - ~/docker_data/sip_tea/icons:/usr/local/lib/sip_tea/packages/be/static/icons
+    depends_on:
+      - nest-mysql
+      - nest-redis
+
+  nest-mysql:
+    image: mysql:8
+    container_name: nest-mysql
+    environment:
+      MYSQL_DATABASE: sip_tea
+      TZ: Asia/Shanghai
+    volumes:
+      - ~/docker_data/mysql8/data:/var/lib/mysql
+      - ~/docker_data/mysql8/log:/var/log/mysql
+      - ~/docker_data/mysql8/mysql-files:/var/lib/mysql-files/
+      - ~/docker_data/mysql8/conf:/etc/mysql/conf.d
+    command:
+      [
+        'mysqld',
+        '--innodb-buffer-pool-size=80M',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci',
+        '--default-time-zone=+8:00',
+        '--lower-case-table-names=1'
+      ]
+    env_file:
+      - .env
+
+  nest-redis:
+    container_name: nest-redis
+    image: redis:7
+    volumes:
+      - ~/docker_data/redis/data:/data
+      - ~/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf  --requirepass ${REDIS_PASSWORD} --bind nest-redis
+    env_file:
+      - .env
