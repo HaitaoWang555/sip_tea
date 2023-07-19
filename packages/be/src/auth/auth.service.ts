@@ -84,13 +84,13 @@ export class AuthService {
   async captcha(key: string, ip: string) {
     const ipKey = REDIS_USER_CAPTCHA + ':' + ip;
     const ipValue = await this.redis.get(ipKey);
+    const expire = await this.redis.ttl(ipKey);
     const maxIpValue = 20;
     if (ipValue && Number(ipValue) > maxIpValue) {
       throw new ApiException('请求频繁！');
     }
 
-    if (ipValue) {
-      const expire = await this.redis.ttl(ipKey);
+    if (ipValue && expire) {
       this.redis.setex(ipKey, expire, Number(ipValue) + 1);
     } else {
       this.redis.setex(ipKey, 60, 1);
