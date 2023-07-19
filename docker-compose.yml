@@ -6,12 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '80:3000'
     volumes: 
       - ~/docker_data/sip_tea/:/usr/local/lib/sip_tea/packages/be/static/
     depends_on:
       - nest-mysql
       - nest-redis
+    restart: on-failure
+    env_file:
+      - .env
 
   nest-mysql:
     image: mysql:8
@@ -32,6 +35,7 @@ services:
         '--default-time-zone=+8:00',
         '--lower-case-table-names=1'
       ]
+    restart: always
     env_file:
       - .env
 
@@ -42,5 +46,6 @@ services:
       - ~/docker_data/redis/data:/data
       - ~/docker_data/redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf  --requirepass ${REDIS_PASSWORD} --bind nest-redis
+    restart: always
     env_file:
       - .env
