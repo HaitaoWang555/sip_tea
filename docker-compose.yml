@@ -8,7 +8,7 @@ services:
     ports:
       - '3000:3000'
     volumes: 
-      - ~/docker_data/sip_tea/icons:/usr/local/lib/sip_tea/packages/be/static/icons
+      - ~/docker_data/sip_tea/:/usr/local/lib/sip_tea/packages/be/static/
     depends_on:
       - nest-mysql
       - nest-redis
@@ -18,7 +18,6 @@ services:
     container_name: nest-mysql
     environment:
       MYSQL_DATABASE: sip_tea
-      TZ: Asia/Shanghai
     volumes:
       - ~/docker_data/mysql8/data:/var/lib/mysql
       - ~/docker_data/mysql8/log:/var/log/mysql
