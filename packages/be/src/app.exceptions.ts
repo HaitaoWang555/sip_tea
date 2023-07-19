@@ -35,7 +35,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           result: '',
           error: JSON.stringify(exception),
           time: (Date.now() - request['starting']) / 1000,
-          createdBy: request['user'].username,
+          createdBy: request['user'] && request['user'].username,
           status: 1,
           createdAt: new Date(),
         })
