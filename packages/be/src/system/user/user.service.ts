@@ -66,7 +66,9 @@ export class UserService {
     await this.verifyUsername(user.username);
 
     user.password = encrypt(user.password);
-    return this.userRepository.save(user);
+    const userRes = await this.userRepository.save(user);
+    delete userRes.password;
+    return userRes;
   }
 
   findAll() {
