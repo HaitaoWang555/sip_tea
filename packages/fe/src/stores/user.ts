@@ -41,7 +41,7 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     return new Promise<AxiosResponse<ResponseBodyType<ProfileDto>>>((resolve, reject) => {
       adminUserInfo()
         .then((res) => {
-          if (import.meta.env.VITE_APP_ENV === 'development') {
+          if (import.meta.env.VITE_APP_ENV !== 'production') {
             let staticUrl: any[] = []
             flatTree([componentsPagesRouter], staticUrl)
             staticUrl = staticUrl.map((i) => {

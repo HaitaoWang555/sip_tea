@@ -9,6 +9,7 @@
     "be:debug": "pnpm run -C packages/be start:debug",
     "be:start": "pnpm run -C packages/be start:prod",
     "fe:dev": "pnpm run -C packages/fe dev",
+    "fe:mock": "pnpm run -C packages/fe mock",
     "fe:build": "pnpm run -C packages/fe build",
     "lib:build": "pnpm run -C packages/lib build",
     "be:lint": "pnpm run -C packages/be lint",

@@ -51,6 +51,9 @@ service.interceptors.request.use(
       config.url = config.url.replace('/mock', '')
       config.baseURL = ''
     }
+    if (import.meta.env.VITE_APP_ENV === 'mock') {
+      config.baseURL = ''
+    }
     return config
   },
   (error) => {
