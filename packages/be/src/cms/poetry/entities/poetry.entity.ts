@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { IsNotEmpty, Allow } from 'class-validator';
 
 /**
@@ -15,6 +15,7 @@ export class Poetry {
   /**
    * 标题
    */
+  @Index()
   @Column({ comment: '标题', length: 64 })
   @IsNotEmpty()
   title: string;
@@ -22,6 +23,7 @@ export class Poetry {
   /**
    * 朝代
    */
+  @Index()
   @Column({ comment: '朝代', length: 16, nullable: true })
   @IsNotEmpty()
   dynasty: string;
@@ -29,6 +31,7 @@ export class Poetry {
   /**
    * 作者
    */
+  @Index()
   @Column({ comment: '作者', length: 16, nullable: true })
   @Allow()
   author: string;
@@ -36,6 +39,7 @@ export class Poetry {
   /**
    * 内容
    */
+  @Index({ fulltext: true })
   @Column({ comment: '内容', nullable: true, type: 'text' })
   @Allow()
   content: string;

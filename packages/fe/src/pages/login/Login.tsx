@@ -18,6 +18,7 @@ const columnList: ProItem[] = [
     title: '姓名',
     valueType: 'input',
     isForm: true,
+    defaultValue: 'guest',
     formItemAttrs: {
       rules: [{ required: true, trigger: 'blur' }],
     },
@@ -27,6 +28,7 @@ const columnList: ProItem[] = [
     title: '密码',
     valueType: 'input',
     isForm: true,
+    defaultValue: 'guest',
     formItemAttrs: {
       rules: [{ required: true, trigger: 'blur' }],
     },
