@@ -3,6 +3,7 @@
 ###################
 
 FROM node:18-slim As development
+RUN npm config set registry https://registry.npmmirror.com/
 
 WORKDIR /usr/local/lib/sip_tea
 ENV PNPM_HOME="/pnpm"
